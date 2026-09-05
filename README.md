@@ -1,13 +1,31 @@
 # FormulaBench
 
-FormulaBench is a reproducible system for generating and validating complex Excel formulas
-with Qwen3.8-27B. It is an entry for **Research / Track 2** of the Encode x Ylookup Rebuild
-Private Markets Hackathon.
+[![checks](https://github.com/MasteraSnackin/FormulaBench/actions/workflows/ci.yml/badge.svg)](https://github.com/MasteraSnackin/FormulaBench/actions/workflows/ci.yml)
 
-The project takes a plain-English spreadsheet instruction and an initial workbook, then writes
-one completed workbook per task. It is built around the official
+FormulaBench turns a plain-English spreadsheet instruction and an initial workbook into a
+completed Excel workbook using `Qwen/Qwen3.8-27B`. Before it writes anything, it checks the exact
+worksheets and cells requested, validates the model's structured answer and rejects incomplete or
+unsafe edits.
+
+This is our **Research / Track 2** entry for the Encode x Ylookup Rebuild Private Markets
+Hackathon. It uses prompt engineering and a deterministic workbook pipeline rather than
+fine-tuning. Evaluation follows the official
 [SpreadsheetBench Verified](https://huggingface.co/datasets/KAKA22/SpreadsheetBench) evaluation
 contract.
+
+## Result at a glance
+
+| Public evaluation | Result |
+| --- | ---: |
+| Tasks graded | 400/400 |
+| Tasks passed | 133/400 |
+| Pass rate | 33.25% |
+| Cell accuracy | 40.56% |
+| Missing tasks / evaluator errors | 0 / 0 |
+
+The score is below the organiser's reported approximately 59% reference. The inference settings
+and output contracts differ, so this result describes the frozen FormulaBench configuration. It
+is not a controlled comparison with the organiser's run.
 
 ## Judge links
 
@@ -19,17 +37,46 @@ contract.
 - [Dataset and scaffold provenance](PROVENANCE.md)
 - [Passing GitHub checks](https://github.com/MasteraSnackin/FormulaBench/actions/runs/33991876175)
 
-Once the dataset is downloaded and `TINKER_API_KEY` is available in your shell, the complete
-containerised run is:
+## How a task moves through FormulaBench
+
+```mermaid
+flowchart LR
+    request[/Plain-English request/]
+    workbook[(Initial workbook)]
+    inspect[Inspect workbook]
+    context[Build workbook evidence]
+    model["Qwen/Qwen3.8-27B"]
+    valid{Contract valid?}
+    apply[Apply safe edits]
+    fallback[Pristine fallback]
+    verify[Reopen workbook]
+    artifacts[Outputs and traces]
+    evaluator[Official evaluator]
+
+    request --> inspect
+    workbook --> inspect
+    inspect --> context
+    context --> model
+    model --> valid
+    valid -->|Yes| apply
+    valid -->|No| fallback
+    apply --> verify
+    verify --> artifacts
+    fallback --> artifacts
+    artifacts --> evaluator
+```
+
+## Quick start
+
+Download the dataset, provide `TINKER_API_KEY` through the environment and run:
 
 ```sh
 ./scripts/run_docker.sh
 ```
 
-The script refuses a missing dataset and requires a credential for any paid inference. A fresh
-run requires an empty output directory; an explicit resume validates every checkpoint before it
-reuses anything. The stored-response replay described below is credential-free. None of these
-modes deletes prior results.
+The script stops if the dataset or credential is missing. A fresh run requires an empty output
+directory. Resume mode validates each checkpoint before reuse, while stored-response replay does
+not need a credential. None of these modes deletes previous results.
 
 ## Why this approach
 
