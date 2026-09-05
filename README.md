@@ -9,6 +9,16 @@ one completed workbook per task. It is built around the official
 [SpreadsheetBench Verified](https://huggingface.co/datasets/KAKA22/SpreadsheetBench) evaluation
 contract.
 
+## Judge links
+
+- [Submission overview](SUBMISSION.md)
+- [Official 400-task evaluation results](submissions/formulabench/results.json)
+- [Prediction manifest](submissions/formulabench/predictions.jsonl)
+- [Generated workbook outputs](submissions/formulabench/outputs/)
+- [Complete model traces](submissions/formulabench/traces/)
+- [Dataset and scaffold provenance](PROVENANCE.md)
+- [Passing GitHub checks](https://github.com/MasteraSnackin/FormulaBench/actions/runs/33991876175)
+
 Once the dataset is downloaded and `TINKER_API_KEY` is available in your shell, the complete
 containerised run is:
 
