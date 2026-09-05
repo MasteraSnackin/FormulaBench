@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="FormulaBench: an auditable Excel formula-generation research submission for the Encode x Ylookup hackathon.">
+    <meta name="theme-color" content="#10262b">
+    <title>FormulaBench — Research evidence</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to the evidence</a>
+    <header class="site-header">
+      <a class="wordmark" href="index.html" aria-label="FormulaBench home">
+        <span class="wordmark-mark" aria-hidden="true">ƒx</span>
+        <span>FormulaBench</span>
+      </a>
+      <span class="track-label">Research / Track 2</span>
+      <nav aria-label="Primary">
+        <a href="#method">Method</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#limits">Limits</a>
+        <a href="presentation.html">Deck</a>
+        <a href="video.html">Video</a>
+        <a href="https://github.com/MasteraSnackin/FormulaBench">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Encode × Ylookup · complete public benchmark</p>
+          <h1 id="hero-title">A formula that runs is not necessarily right.</h1>
+          <p class="lede">FormulaBench turns a spreadsheet instruction and an initial workbook into an auditable output. It checks exact target coverage, formula safety and workbook integrity before the organiser-supplied evaluator checks the answer.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#evidence">Inspect the result</a>
+            <a class="button button-secondary" href="https://github.com/MasteraSnackin/FormulaBench/tree/main/submissions/formulabench">Open run artefacts</a>
+          </div>
+        </div>
+        <div class="hero-score" role="img" aria-label="133 of 400 public benchmark tasks passed">
+          <span class="score-kicker">Public self-evaluation</span>
+          <span class="score-fraction"><strong>133</strong><span>/ 400</span></span>
+          <span class="score-rule" aria-hidden="true"><i></i></span>
+          <span class="score-caption">33.25% pass rate</span>
+        </div>
+      </section>
+
+      <section class="run-proof" aria-label="Frozen result provenance">
+        <span class="status-dot" aria-hidden="true"></span>
+        <strong>Frozen public run</strong>
+        <span>400 evaluated · 0 missing · 0 evaluator errors</span>
+        <a href="https://github.com/MasteraSnackin/FormulaBench/blob/main/submissions/formulabench/results.json">results.json</a>
+        <code title="SHA-256">c1e6fb6b…66be0d</code>
+      </section>
+
+      <section class="section score-section" id="evidence" aria-labelledby="score-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">01 / measured result</p>
+            <h2 id="score-title">One score, three useful views</h2>
+          </div>
+          <p>Task pass rate is the ranking metric: every evaluated cell must be correct. Cell accuracy shows partial correctness but cannot turn a failed task into a pass.</p>
+        </div>
+
+        <div class="view-switch" role="group" aria-label="Choose result view">
+          <button type="button" class="is-active" data-view="overall" aria-pressed="true">All tasks</button>
+          <button type="button" data-view="cell" aria-pressed="false">Cell-level</button>
+          <button type="button" data-view="sheet" aria-pressed="false">Sheet-level</button>
+        </div>
+
+        <div class="score-stage" aria-live="polite">
+          <div class="score-summary">
+            <p id="view-label" class="mono-label">All 400 public tasks</p>
+            <p class="large-metric"><span id="passed-count">133</span><small> passed</small></p>
+            <p id="view-detail">of 400 tasks</p>
+          </div>
+          <div class="measure-list">
+            <div class="measure">
+              <div class="measure-copy"><span>Task pass rate</span><strong id="pass-rate">33.25%</strong></div>
+              <div class="bar" role="img" aria-label="Task pass rate 33.25 percent"><i id="pass-bar" style="--value:33.25%"></i></div>
+            </div>
+            <div class="measure">
+              <div class="measure-copy"><span>Cell accuracy</span><strong id="cell-rate">40.56%</strong></div>
+              <div class="bar" role="img" aria-label="Cell accuracy 40.56 percent"><i id="cell-bar" style="--value:40.56%"></i></div>
+            </div>
+            <p id="cell-detail" class="measure-note">120,824 of 297,882 cells correct</p>
+          </div>
+        </div>
+        <noscript><p class="noscript-note">JavaScript is only used to switch between aggregate views. The complete result remains available in results.json.</p></noscript>
+      </section>
+
+      <section class="section method-section" id="method" aria-labelledby="method-title">
+        <div class="section-heading compact-heading">
+          <div>
+            <p class="eyebrow">02 / controlled path</p>
+            <h2 id="method-title">The workbook is handled as evidence</h2>
+          </div>
+          <p>One logical model sample per task. No arbitrary model-written Python. No partial edits published as success.</p>
+        </div>
+        <ol class="pipeline">
+          <li><span>01</span><strong>Inspect</strong><p>Read formula and cached-value views of the initial workbook.</p></li>
+          <li><span>02</span><strong>Context</strong><p>Build bounded, sheet-aware evidence with answer ranges first.</p></li>
+          <li><span>03</span><strong>Sample</strong><p>Ask Qwen3.8-27B once at temperature zero with thinking disabled.</p></li>
+          <li><span>04</span><strong>Validate</strong><p>Reject missing, duplicate, overlapping, outside or unsafe assignments.</p></li>
+          <li><span>05</span><strong>Write</strong><p>Apply to a fresh copy, save atomically and reopen for verification.</p></li>
+          <li><span>06</span><strong>Evaluate</strong><p>Recalculate in isolation, then use the organiser-supplied evaluator.</p></li>
+        </ol>
+      </section>
+
+      <section class="section finding-section" aria-labelledby="finding-title">
+        <div class="finding-number" aria-hidden="true">94.84%</div>
+        <div class="finding-copy">
+          <p class="eyebrow">03 / the useful failure</p>
+          <h2 id="finding-title">Most wrong cells survived the structural checks.</h2>
+          <p>94.84% of wrong cells were in contract-valid workbooks. The harness can prove that an answer is complete, bounded and safely written; it cannot prove that the spreadsheet logic is semantically correct.</p>
+          <dl class="finding-details">
+            <div><dt>46</dt><dd>final fail-closed fallbacks</dd></div>
+            <div><dt>84.76%</dt><dd>of wrong cells came from four tasks with more than 10,000 targets</dd></div>
+            <div><dt>24.10%</dt><dd>pass rate when context was truncated, versus 41.95% when it was not</dd></div>
+          </dl>
+          <p class="qualification">The truncation figures are an association in this run, not proof of causation.</p>
+        </div>
+      </section>
+
+      <section class="section integrity-section" id="limits" aria-labelledby="integrity-title">
+        <div class="integrity-title">
+          <p class="eyebrow">04 / evaluation integrity</p>
+          <h2 id="integrity-title">What this result does—and does not—show</h2>
+        </div>
+        <div class="integrity-columns">
+          <div>
+            <h3>Supported by the evidence</h3>
+            <ul>
+              <li>All 400 public tasks produced outputs and were evaluated.</li>
+              <li>The fixed configuration passed 133 tasks.</li>
+              <li>Validation and replay behaviour is traceable task by task.</li>
+              <li>The code, predictions, outputs and evaluator result are public.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Not claimed</h3>
+            <ul>
+              <li>The public benchmark is not a statistically unseen holdout.</li>
+              <li>The 33.25% score is not an improvement over the organiser’s approximate 59% reference.</li>
+              <li>The two runs used materially different reasoning and output contracts.</li>
+              <li>Passing the static formula gate does not make active workbook content universally safe.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section next-section" aria-labelledby="next-title">
+        <p class="eyebrow">05 / next experiment</p>
+        <h2 id="next-title">Use rules where rules are reliable. Verify execution where semantics decide.</h2>
+        <p>The failure distribution points to a hybrid next step: deterministic engines for large transformations, paired with isolated formula execution and output invariants for model-authored logic.</p>
+        <div class="resource-line">
+          <a href="presentation.html">View presentation</a>
+          <a href="video.html">Watch demo video</a>
+          <a href="https://github.com/MasteraSnackin/FormulaBench/blob/main/experiments/README.md">Read failure analysis</a>
+          <a href="https://github.com/MasteraSnackin/FormulaBench">Inspect repository</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>FormulaBench · Research / Track 2</span>
+      <span>Public evidence viewer · no live model calls or API keys</span>
+    </footer>
+  </body>
+</html>

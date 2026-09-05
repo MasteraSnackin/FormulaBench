@@ -98,7 +98,8 @@ and the replay made zero additional model calls. The final set contains 354 acce
 46 pristine input fallbacks.
 
 LibreOffice `7.4.7.2` recalculation and the organiser's evaluator graded all 400 tasks with zero
-missing items and zero errors. The official result is 133/400 task passes, `pass_rate=0.3325` and
+missing items and zero errors. This public self-evaluation result is 133/400 task passes,
+`pass_rate=0.3325` and
 `cell_accuracy=0.4056`; cell-level task pass rate is `0.3273` and sheet-level task pass rate is
 `0.3440`. The complete result is `submissions/formulabench/results.json`, SHA-256
 `c1e6fb6b540bb7272f4c537773e2a4826dd649d882c9b7fb549df9bccc66be0d`.
@@ -168,6 +169,12 @@ applied without credentials or provider calls using:
   public buckets are reporting partitions rather than statistically untouched holdouts.
 - `PROVENANCE.md` — exact organiser scaffold revision and dataset licence boundary.
 
-## Demo video
+## Public submission links
 
-Pending recorded demonstration; the run and official score are complete.
+- Presentation: https://masterasnackin.github.io/FormulaBench/presentation.html
+- Demo video: https://masterasnackin.github.io/FormulaBench/video.html
+- Live demo: https://masterasnackin.github.io/FormulaBench/
+
+The live demo is a static, evidence-backed results viewer. It makes no paid model calls, requires
+no API keys and reports the complete 400-task public-benchmark result alongside the method,
+failure analysis and reproducibility evidence.
