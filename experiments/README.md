@@ -147,6 +147,42 @@ Reproduce the zero-call replay with:
 The replay path revalidates input, trace and stored-response hashes, is mutually exclusive with
 paid retry, and annotates successful traces with `additional_model_calls=0`.
 
+## Failure analysis
+
+The retained results, predictions and traces show that strict rejection is not the main source of
+the score gap. The 46 fallback workbooks account for 9,143 of 177,058 wrong cells, or 5.16%.
+The 221 contract-valid but semantically incorrect workbooks account for the remaining 167,915
+wrong cells, or 94.84%. Even if all 46 rejected tasks had become passes, the result would have
+been at most 179/400, or 44.75%, before considering whether their answers were correct.
+
+| Target cells | Tasks | Passes | Pass rate | Wrong cells |
+| --- | ---: | ---: | ---: | ---: |
+| 1 | 40 | 24 | 60.00% | 16 |
+| 2–10 | 123 | 37 | 30.08% | 291 |
+| 11–100 | 175 | 59 | 33.71% | 2,213 |
+| 101–500 | 35 | 11 | 31.43% | 2,406 |
+| 501–1,000 | 10 | 0 | 0.00% | 3,703 |
+| 1,001–10,000 | 13 | 2 | 15.38% | 18,353 |
+| Over 10,000 | 4 | 0 | 0.00% | 150,076 |
+
+The four largest transformations therefore contain 84.76% of every wrong cell. Asking the model
+to enumerate these outputs is the clearest cell-accuracy bottleneck. The 400 traces also show a
+strong association with context truncation: 47/195 truncated tasks passed (24.10%), compared with
+86/205 non-truncated tasks (41.95%). This is not proof of causation because complex workbooks are
+more likely to be truncated, but it justifies task-aware retrieval rather than uniform sampling.
+
+The 26 provider-response failures comprise 14 responses that exhausted the 8,192-token limit,
+nine invalid tool-call envelopes and three invalid JSON envelopes. The remaining 20 failures were
+local contract or workbook rejections. Separately, the evaluator's limited first-five mismatch
+samples expose Excel runtime errors in 27 accepted workbooks; this is a lower bound rather than a
+complete error-cell count.
+
+The evidence supports two routes for a next version: formula synthesis plus local recalculation
+checks for cell-level formula tasks, and a small deterministic operation executor for large
+filter, append, sort, group, deduplication, transpose, clear and string-transformation tasks. That
+would let the model select an operation and its parameters without calculating or serialising
+tens of thousands of cells. No such post-score redesign is represented as part of the frozen run.
+
 ## Optional native Tinker and fine-tuning experiments
 
 `baseline/tinker_predict.py` uses [Tinker Cookbook's Qwen3.8

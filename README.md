@@ -153,11 +153,13 @@ zero missing items and zero evaluator errors: 133 tasks passed, for `pass_rate=0
 `0.3440`.
 
 This is below the organiser's reported approximately 59% Qwen3.8-27B baseline. It is not an
-apples-to-apples reproduction: the organiser path uses the model's recommended
+apples-to-apples reproduction: the published organiser runner implies the model's recommended
 `qwen3_8_xhigh_reasoning` renderer and asks for final values, whereas this submission disables
 thinking, prioritises live formulas and enforces exact target coverage plus stricter fail-closed
-workbook checks. The difference explains why the public score should not be presented as a
-baseline improvement; it does not prove which individual design choice caused the gap.
+workbook checks. The organisers did not publish the reference run's traces or explicit renderer,
+so that renderer is inferred from their runner and locked cookbook behaviour. The difference
+means the public score is not a baseline improvement and does not prove which individual design
+choice caused the gap.
 
 Before the first credentialled model run, the 400 public tasks were frozen into deterministic,
 stratified 80-task development, 80-task validation and 240-task final-reporting buckets. The file

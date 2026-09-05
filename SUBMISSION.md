@@ -29,8 +29,9 @@ write-failure responses after a contract repair without credentials or another m
 complete public benchmark, the organiser's evaluator graded all 400 tasks with no missing items or
 errors. FormulaBench passed 133 tasks: 33.25% pass rate and 40.56% cell accuracy. That is below the
 reported approximately 59% organiser baseline. The configurations differ materially—recommended
-xhigh reasoning and final values there, disabled thinking and live-formula-first strict coverage
-here—so we report the gap directly rather than claim an improvement or a controlled causal result.
+xhigh reasoning implied by the published runner and final values there, disabled thinking and
+live-formula-first strict coverage here—so we report the gap directly rather than claim an
+improvement or a controlled causal result.
 
 ## Models
 
