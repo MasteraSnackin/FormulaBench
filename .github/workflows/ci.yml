@@ -1,0 +1,78 @@
+name: checks
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.10"
+          enable-cache: true
+
+      - name: Install locked dependencies
+        run: uv sync --locked
+
+      - name: Run unit tests
+        run: uv run pytest
+
+      - name: Check code quality
+        run: |
+          uv run ruff check formulabench tests experiments baseline/tinker_predict.py
+          uv run ruff format --check formulabench tests experiments baseline/tinker_predict.py
+
+      - name: Build wheel
+        run: uv build --wheel
+
+      - name: Test production container contract
+        run: docker build --target contract-test --tag formulabench:contract-test .
+
+      - name: Smoke-test production image as an arbitrary host user
+        run: |
+          docker build --target runtime --tag formulabench:latest .
+          docker run --rm --user 12345:12345 \
+            --entrypoint /app/.venv/bin/python \
+            formulabench:latest \
+            -c 'from formulabench.provider import validate_native_runtime; validate_native_runtime()'
+
+  public-dataset-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.10"
+          enable-cache: true
+
+      - name: Install locked dependencies
+        run: uv sync --locked
+
+      - name: Download checksum-verified public dataset
+        run: uv run python data/download.py
+
+      - name: Verify public contracts and frozen split
+        env:
+          FORMULABENCH_DATASET_DIR: data/spreadsheetbench_verified_400
+        run: >-
+          uv run pytest
+          tests/test_dataset_contract.py
+          tests/test_public_split.py
+          tests/test_public_benchmark_audit.py

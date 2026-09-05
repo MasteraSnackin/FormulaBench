@@ -1,0 +1,10 @@
+FormulaBench  model=Qwen/Qwen3.8-27B  tasks=400  remaining=400  concurrency=4
+/app/.venv/lib/python3.11/site-packages/openpyxl/worksheet/_reader.py:329: UserWarning: Data Validation extension is not supported and will be removed
+  warn(msg)
+completed  ok=350  failed=50
+output validation  ok=True  issues=0  workbooks=400/400
+stored-response replay  eligible=7  replayed=4  unchanged=3  additional_model_calls=0
+resume validated  completed=400  missing=0  retrying_failures=0
+FormulaBench  model=Qwen/Qwen3.8-27B  tasks=400  remaining=0
+completed  ok=354  failed=46
+output validation  ok=True  issues=0  workbooks=400/400

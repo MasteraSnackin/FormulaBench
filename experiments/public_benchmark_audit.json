@@ -1,0 +1,237 @@
+{
+  "date_and_time": {
+    "golden_target_cells": {
+      "by_instruction_level": {
+        "cell_level": {
+          "date_or_datetime_cells": 71,
+          "non_midnight_datetime_cells": 1,
+          "tasks_with_date_or_datetime_cells": 8,
+          "tasks_with_non_midnight_datetime_cells": 1,
+          "tasks_with_time_cells": 3,
+          "time_cells": 73
+        },
+        "sheet_level": {
+          "date_or_datetime_cells": 10248,
+          "non_midnight_datetime_cells": 36,
+          "tasks_with_date_or_datetime_cells": 29,
+          "tasks_with_non_midnight_datetime_cells": 3,
+          "tasks_with_time_cells": 1,
+          "time_cells": 4
+        }
+      },
+      "date_or_datetime_cells": 10319,
+      "non_midnight_datetime_cells": 37,
+      "tasks_with_date_or_datetime_cells": 37,
+      "tasks_with_non_midnight_datetime_cells": 4,
+      "tasks_with_time_cells": 4,
+      "time_cells": 77
+    },
+    "initial_workbooks": {
+      "by_instruction_level": {
+        "cell_level": {
+          "date_like_text_cells": 459,
+          "tasks_mixing_typed_dates_and_date_like_text": 8,
+          "tasks_mixing_typed_dates_and_non_iso_slash_date_text": 3,
+          "tasks_with_date_like_text_cells": 11,
+          "tasks_with_typed_date_or_time_cells": 93,
+          "typed_date_or_time_cells": 8330
+        },
+        "sheet_level": {
+          "date_like_text_cells": 173,
+          "tasks_mixing_typed_dates_and_date_like_text": 4,
+          "tasks_mixing_typed_dates_and_non_iso_slash_date_text": 4,
+          "tasks_with_date_like_text_cells": 11,
+          "tasks_with_typed_date_or_time_cells": 44,
+          "typed_date_or_time_cells": 13594
+        }
+      },
+      "date_like_text_cells": 632,
+      "tasks_mixing_typed_dates_and_date_like_text": 12,
+      "tasks_mixing_typed_dates_and_non_iso_slash_date_text": 7,
+      "tasks_with_date_like_text_cells": 22,
+      "tasks_with_typed_date_or_time_cells": 137,
+      "typed_date_or_time_cells": 21924
+    },
+    "workbook_date_systems": {
+      "golden": {
+        "1900": 400
+      },
+      "initial": {
+        "1900": 400
+      }
+    }
+  },
+  "golden_targets": {
+    "blank_cell_fraction": 0.4572,
+    "blank_cells": 136206,
+    "by_instruction_level": {
+      "cell_level": {
+        "blank_cell_fraction": 0.1163,
+        "blank_cells": 1747,
+        "cells": 15021,
+        "tasks": 275,
+        "tasks_with_blank_cells": 49
+      },
+      "sheet_level": {
+        "blank_cell_fraction": 0.4754,
+        "blank_cells": 134459,
+        "cells": 282861,
+        "tasks": 125,
+        "tasks_with_blank_cells": 88
+      }
+    },
+    "cells": 297882,
+    "tasks": 400,
+    "tasks_with_blank_cells": 137
+  },
+  "hashes": {
+    "algorithm": "SHA-256",
+    "dataset_binding_sha256": "912752e0388106590e12dcf187049794d070ae4b90967df7d1d122de6e8b55f4",
+    "dataset_manifest_sha256": "bcecaa89a005bd4e3bbe98da150a86e8062c27f262e575d5e47bd9861b3525e7",
+    "golden_workbooks": {
+      "aggregate_sha256": "698132361c1ae8b767d9dd2d98031d69cd7327828a171a581e7f85113fb8a692",
+      "record_count": 400
+    },
+    "initial_workbooks": {
+      "aggregate_sha256": "baf0fe0641751c3721fd4eed690c49f1101f9d13ca13d222e63455cd1bd5e82a",
+      "record_count": 400
+    }
+  },
+  "initial_target_state": {
+    "by_instruction_level": {
+      "cell_level": {
+        "correct_nonblank_prefill_cells": 1234,
+        "initial_nonblank_target_cells": 2323,
+        "nonblank_cells_requiring_clearing": 131,
+        "tasks_requiring_nonblank_cell_clearing": 8,
+        "tasks_with_correct_nonblank_prefill_and_remaining_changes": 148,
+        "tasks_with_initial_nonblank_target_cells": 188
+      },
+      "sheet_level": {
+        "correct_nonblank_prefill_cells": 68056,
+        "initial_nonblank_target_cells": 181472,
+        "nonblank_cells_requiring_clearing": 100752,
+        "tasks_requiring_nonblank_cell_clearing": 43,
+        "tasks_with_correct_nonblank_prefill_and_remaining_changes": 86,
+        "tasks_with_initial_nonblank_target_cells": 98
+      }
+    },
+    "correct_nonblank_prefill_cells": 69290,
+    "initial_nonblank_target_cells": 183795,
+    "nonblank_cells_requiring_clearing": 100883,
+    "tasks_requiring_nonblank_cell_clearing": 51,
+    "tasks_with_correct_nonblank_prefill_and_remaining_changes": 234,
+    "tasks_with_initial_nonblank_target_cells": 286
+  },
+  "limitations": [
+    "This audit opens every public golden workbook. It is descriptive public validation and must not be presented as an untouched held-out result.",
+    "No LibreOffice recalculation is performed. The untouched-input baseline compares the stored data-only values visible to openpyxl.",
+    "Date-like text is a documented syntax heuristic; it does not infer locale or claim that every matching identifier is semantically a date.",
+    "The audit measures evaluator-visible values, not formula quality, style, formatting, macros, charts, or workbook usability."
+  ],
+  "methodology": {
+    "aggregation": "Only dataset-wide and instruction-level totals are emitted. No task ID, sheet name, coordinate, formula, answer value, or per-task result is emitted.",
+    "blank_definition": "A raw golden target value is null or an empty string.",
+    "date_like_text_definition": "Trimmed three-part numeric dates, day/month-name/year dates, and YYYY/MM periods. Timezone-bearing timestamps and free-form text are excluded.",
+    "dynamic_range_resolution": "Whole-column answer ranges use the golden workbook's max_row, matching the shipped evaluator's answer_cells behaviour.",
+    "hash_binding": "Initial and golden aggregates use manifest-order records of UTF-8 task ID, NUL, lowercase workbook SHA-256, and LF. The dataset binding hashes the analysis version plus labelled manifest, initial, and golden digests.",
+    "inputs": [
+      "dataset.json",
+      "initial workbooks",
+      "golden workbooks"
+    ],
+    "preexisting_target_definition": "Initial values are looked up by the evaluator-resolved golden sheet and coordinate. A correct nonblank prefill is a nonblank initial value accepted by sb.values_equal; 'and remaining changes' also requires another mismatch.",
+    "required_clearing_definition": "A nonblank initial target value corresponds to a blank golden target value.",
+    "target_resolution": "sb.answer_cells selects evaluator-visible targets; overlapping coordinates are counted once by the same sheet-and-coordinate mapping used by scoring.",
+    "untouched_input_comparison": "Each golden target value is compared with the untouched initial value at the same resolved key using the shipped sb.values_equal function."
+  },
+  "schema_version": 1,
+  "scope": {
+    "instruction_levels": {
+      "cell_level": {
+        "instruction_type": "Cell-Level Manipulation",
+        "tasks": 275
+      },
+      "sheet_level": {
+        "instruction_type": "Sheet-Level Manipulation",
+        "tasks": 125
+      }
+    },
+    "tasks": 400
+  },
+  "targets": {
+    "by_instruction_level": {
+      "cell_level": {
+        "dynamic_cells": 0,
+        "dynamic_tasks": 0,
+        "finite_cells": 15021,
+        "finite_size_buckets": {
+          "1-100": 256,
+          "10001+": 0,
+          "1001-10000": 3,
+          "101-500": 15,
+          "501-1000": 1
+        },
+        "finite_tasks": 275,
+        "instruction_type": "Cell-Level Manipulation",
+        "scored_cells_including_dynamic": 15021,
+        "tasks": 275
+      },
+      "sheet_level": {
+        "dynamic_cells": 28,
+        "dynamic_tasks": 1,
+        "finite_cells": 282833,
+        "finite_size_buckets": {
+          "1-100": 81,
+          "10001+": 4,
+          "1001-10000": 10,
+          "101-500": 20,
+          "501-1000": 9
+        },
+        "finite_tasks": 124,
+        "instruction_type": "Sheet-Level Manipulation",
+        "scored_cells_including_dynamic": 282861,
+        "tasks": 125
+      }
+    },
+    "dynamic_cells": 28,
+    "dynamic_tasks": 1,
+    "finite_cells": 297854,
+    "finite_size_buckets": {
+      "1-100": 337,
+      "10001+": 4,
+      "1001-10000": 13,
+      "101-500": 35,
+      "501-1000": 10
+    },
+    "finite_tasks": 399,
+    "largest_finite_task_cells": 104110,
+    "scored_cells_including_dynamic": 297882
+  },
+  "untouched_input_baseline": {
+    "by_instruction_level": {
+      "cell_level": {
+        "cell_accuracy": 0.1897,
+        "cells": 15021,
+        "correct_cells": 2850,
+        "pass_rate": 0.0,
+        "passed_tasks": 0,
+        "tasks": 275
+      },
+      "sheet_level": {
+        "cell_accuracy": 0.3598,
+        "cells": 282861,
+        "correct_cells": 101763,
+        "pass_rate": 0.008,
+        "passed_tasks": 1,
+        "tasks": 125
+      }
+    },
+    "cell_accuracy": 0.3512,
+    "cells": 297882,
+    "correct_cells": 104613,
+    "pass_rate": 0.0025,
+    "passed_tasks": 1,
+    "tasks": 400
+  }
+}

@@ -1,0 +1,23 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.venv/
+.pytest_cache/
+.ruff_cache/
+**/__pycache__/
+**/*.py[cod]
+
+data/spreadsheetbench_verified_400/
+submissions/*/
+!submissions/.gitkeep
+!submissions/formulabench/
+!submissions/formulabench/predictions.jsonl
+!submissions/formulabench/run.log
+!submissions/formulabench/results.json
+!submissions/formulabench/outputs/
+!submissions/formulabench/outputs/*.xlsx
+!submissions/formulabench/traces/
+!submissions/formulabench/traces/*.jsonl
+
+# The canonical final run under submissions/formulabench is intentionally not ignored.

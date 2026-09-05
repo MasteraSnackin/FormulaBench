@@ -1,0 +1,17 @@
+.git
+.github
+.venv
+.pytest_cache
+.ruff_cache
+dist
+**/__pycache__
+**/*.py[cod]
+.env
+.env.*
+data/
+submissions/
+outputs/
+traces/
+predictions.jsonl
+results.json
+run.log

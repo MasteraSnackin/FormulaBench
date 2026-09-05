@@ -1,0 +1,537 @@
+{
+  "date": "2026-09-05",
+  "model": "Qwen/Qwen3.8-27B",
+  "purpose": "Sanitised live transport, native-access and complete public benchmark evidence.",
+  "scope": {
+    "benchmark_correctness_claimed": true,
+    "development_canary_correctness_claimed": true,
+    "credential_value_recorded": false,
+    "provider_response_bodies_recorded": false,
+    "request_prompts_recorded": false
+  },
+  "checks": [
+    {
+      "id": "credential_and_model_access",
+      "request": {
+        "max_tokens": 8,
+        "reasoning_effort": "omitted",
+        "tools": false
+      },
+      "outcome": "accepted",
+      "response_model": "Qwen/Qwen3.8-27B"
+    },
+    {
+      "id": "explicit_xhigh_without_tools",
+      "request": {
+        "max_tokens": 8,
+        "reasoning_effort": "xhigh",
+        "tools": false
+      },
+      "outcome": "rejected",
+      "http_status": 400,
+      "exception_class": "BadRequestError"
+    },
+    {
+      "id": "explicit_xhigh_production_schema_auto",
+      "request": {
+        "reasoning_effort": "xhigh",
+        "tool_choice": "auto",
+        "tools": [
+          "submit_spreadsheet_answer"
+        ]
+      },
+      "outcome": "rejected",
+      "http_status": 400,
+      "exception_class": "BadRequestError",
+      "latency_ms": 1491
+    },
+    {
+      "id": "provider_default_production_schema",
+      "request": {
+        "max_tokens": 96,
+        "reasoning_effort": "omitted",
+        "tool_choice": "auto",
+        "tools": [
+          "submit_spreadsheet_answer"
+        ]
+      },
+      "outcome": "accepted",
+      "response_model": "Qwen/Qwen3.8-27B",
+      "response_block_types": [
+        "text"
+      ],
+      "note": "The endpoint accepted the exact production tool schema. The model returned a text block through the compatibility fallback; this was not a workbook canary."
+    },
+    {
+      "id": "provider_default_nonstreaming_workbook_13_1",
+      "request": {
+        "client_max_retries": 2,
+        "max_tokens": 8192,
+        "reasoning_effort": "omitted",
+        "streaming": false,
+        "task_id": "13-1",
+        "temperature": 0.0,
+        "tool_choice": "auto",
+        "tools": [
+          "submit_spreadsheet_answer"
+        ]
+      },
+      "outcome": "connection_failure",
+      "exception_class": "APIConnectionError",
+      "http_attempt_count": "unknown; the client permitted up to three attempts",
+      "input_tokens": null,
+      "latency_ms": 469584,
+      "output_tokens": null,
+      "response_received": false,
+      "fallback": {
+        "byte_identical_to_initial_workbook": true,
+        "sha256": "36e7e5238ac29a506d06a27b73aab4ac6249530c9cfd4b1c40835c7823a39da5"
+      }
+    },
+    {
+      "id": "provider_default_streaming_workbook_54513",
+      "request": {
+        "client_max_retries": 0,
+        "max_tokens": 8192,
+        "reasoning_effort": "omitted",
+        "streaming": true,
+        "task_id": "54513",
+        "temperature": 0.0,
+        "thinking": "omitted",
+        "tool_choice": "auto",
+        "tools": [
+          "submit_spreadsheet_answer"
+        ]
+      },
+      "outcome": "invalid_response_json",
+      "response_model": "Qwen/Qwen3.8-27B",
+      "input_tokens": 0,
+      "latency_ms": 28603,
+      "output_tokens": 1318,
+      "response_received": true,
+      "note": "The streamed text contained analysis ending at a closing think tag, with no tool payload or JSON answer. The response body is not retained in this sanitised record.",
+      "fallback": {
+        "byte_identical_to_initial_workbook": true,
+        "sha256": "63db5ab93f8d10ce0c96563a5f3a5c94a097a3e63e176ebad5e21b33a2ab6750"
+      }
+    },
+    {
+      "id": "thinking_disabled_streaming_workbook_54513",
+      "request": {
+        "client_max_retries": 0,
+        "max_tokens": 8192,
+        "reasoning_effort": "omitted",
+        "streaming": true,
+        "task_id": "54513",
+        "temperature": 0.0,
+        "thinking": "disabled",
+        "tool_choice": "auto",
+        "tools": [
+          "submit_spreadsheet_answer"
+        ]
+      },
+      "outcome": "rejected",
+      "http_status": 400,
+      "exception_class": "BadRequestError",
+      "input_tokens": null,
+      "latency_ms": 283,
+      "output_tokens": null,
+      "response_received": false,
+      "note": "The documented disabled-thinking field was rejected for this base-model request through the compatibility endpoint.",
+      "fallback": {
+        "byte_identical_to_initial_workbook": true,
+        "sha256": "63db5ab93f8d10ce0c96563a5f3a5c94a097a3e63e176ebad5e21b33a2ab6750"
+      }
+    },
+    {
+      "id": "provider_default_required_tool_streaming_workbook_54513",
+      "request": {
+        "client_max_retries": 0,
+        "max_tokens": 8192,
+        "reasoning_effort": "omitted",
+        "streaming": true,
+        "task_id": "54513",
+        "temperature": 0.0,
+        "thinking": "omitted",
+        "tool_choice": {
+          "type": "tool",
+          "name": "submit_spreadsheet_answer"
+        },
+        "tools": [
+          "submit_spreadsheet_answer"
+        ]
+      },
+      "outcome": "api_status_failure",
+      "exception_class": "APIStatusError",
+      "input_tokens": null,
+      "latency_ms": 15156,
+      "output_tokens": null,
+      "response_received": false,
+      "note": "The compatibility endpoint failed before returning tokens. No HTTP status was retained by the sanitised trace, so none is inferred here.",
+      "fallback": {
+        "byte_identical_to_initial_workbook": true,
+        "sha256": "63db5ab93f8d10ce0c96563a5f3a5c94a097a3e63e176ebad5e21b33a2ab6750"
+      }
+    },
+    {
+      "id": "native_session_creation_workbook_54513",
+      "request": {
+        "client_max_retries": 0,
+        "max_tokens": 8192,
+        "num_samples": 1,
+        "project_id": "not explicitly supplied",
+        "renderer": "transformers-chat-template/qwen3.8-disable-thinking-pinned",
+        "sampling_retry_wrapper": "disabled",
+        "streaming": false,
+        "task_id": "54513",
+        "temperature": 0.0,
+        "thinking": "disabled by the native renderer"
+      },
+      "outcome": "project_read_only",
+      "exception_class": "BadRequestError",
+      "http_status": 400,
+      "input_tokens": null,
+      "latency_ms": 133,
+      "output_tokens": null,
+      "response_received": false,
+      "note": "Tinker rejected native sampling-session creation with 'This project is read-only and cannot be modified.' A second session-creation-only diagnostic confirmed the same server response. No model was allocated and no sample was requested.",
+      "fallback": {
+        "byte_identical_to_initial_workbook": true,
+        "sha256": "63db5ab93f8d10ce0c96563a5f3a5c94a097a3e63e176ebad5e21b33a2ab6750"
+      }
+    },
+    {
+      "id": "native_session_creation_explicit_writable_project",
+      "request": {
+        "client_max_retries": 0,
+        "model_sample": false,
+        "project_id": "supplied explicitly and not retained",
+        "sampling_retry_wrapper": "disabled"
+      },
+      "outcome": "accepted",
+      "input_tokens": null,
+      "output_tokens": null,
+      "response_received": false,
+      "note": "Session creation succeeded after selecting an existing writable project with TINKER_PROJECT_ID. The project ID and credential were not retained in this evidence file. No model sample was requested."
+    },
+    {
+      "id": "native_sampling_workbook_54513",
+      "request": {
+        "client_max_retries": 0,
+        "max_tokens": 8192,
+        "num_samples": 1,
+        "project_id": "supplied explicitly and not retained",
+        "renderer": "transformers-chat-template/qwen3.8-disable-thinking-pinned",
+        "sampling_retry_wrapper": "disabled",
+        "streaming": false,
+        "task_id": "54513",
+        "temperature": 0.0,
+        "thinking": "disabled by the native renderer"
+      },
+      "outcome": "accepted",
+      "model_provenance": "configured_base_model",
+      "input_tokens": 6808,
+      "latency_ms": 4730,
+      "output_tokens": 57,
+      "response_received": true,
+      "stop_reason": "stop",
+      "parse_termination": "stop_sequence",
+      "response_format": "qwen_xml_tool_call",
+      "answer": {
+        "sheet": "Sheet1",
+        "cell": "F8",
+        "formula": "=C8*(1-E8)"
+      },
+      "output": {
+        "sha256": "c3f354fc7a6251a0ccecffb96b950e2262b2cdb0288eb982d60f3817d79c43fb",
+        "semantic_cell_changes": 1
+      },
+      "official_evaluation_with_recalculation": {
+        "pass": true,
+        "correct_cells": 1,
+        "graded_cells": 1,
+        "pass_rate": 1.0,
+        "cell_accuracy": 1.0
+      },
+      "limitations": [
+        "The formula recalculates to 15.7455 and displays 15.75 under the existing two-decimal number format; the golden formula rounds internally to exactly 15.75. The supplied evaluator normalises numbers to two decimals, so the task passes under the official contract.",
+        "The authored context was truncated to 74 included cells with 27 omitted and did not include C8; the instruction itself stated the original price and the model inferred the correct workbook reference.",
+        "The immutable run log records a non-fatal pending tinker_session_futures_poller warning after artifacts were committed. The lifecycle repair was subsequently verified by the 13-1 native run."
+      ]
+    },
+    {
+      "id": "native_sampling_workbook_13_1_initial_scaffold",
+      "request": {
+        "client_max_retries": 0,
+        "max_tokens": 8192,
+        "num_samples": 1,
+        "project_id": "supplied explicitly and not retained",
+        "renderer": "transformers-chat-template/qwen3.8-disable-thinking-pinned",
+        "sampling_retry_wrapper": "disabled",
+        "streaming": false,
+        "task_id": "13-1",
+        "temperature": 0.0,
+        "thinking": "disabled by the native renderer"
+      },
+      "outcome": "contract_rejected_missing_cells",
+      "model_provenance": "configured_base_model",
+      "input_tokens": 7434,
+      "latency_ms": 37483,
+      "output_tokens": 1713,
+      "response_received": true,
+      "stop_reason": "stop",
+      "parse_termination": "stop_sequence",
+      "response_format": "qwen_xml_tool_call",
+      "contract": {
+        "required_cells": 120,
+        "returned_cells": 72,
+        "missing_cells": 48,
+        "failure_codes": [
+          "missing_cells"
+        ]
+      },
+      "output": {
+        "byte_identical_to_initial_workbook": true,
+        "sha256": "36e7e5238ac29a506d06a27b73aab4ac6249530c9cfd4b1c40835c7823a39da5"
+      },
+      "official_evaluation_with_recalculation": {
+        "pass": false,
+        "correct_cells": 82,
+        "graded_cells": 120,
+        "pass_rate": 0.0,
+        "cell_accuracy": 0.6833
+      },
+      "shutdown_lifecycle": {
+        "pending_task_warning": false,
+        "repair_verified": true
+      },
+      "limitations": [
+        "The 82 correct cells came from the pristine fallback workbook and are not evidence that the rejected model edits were partially applied.",
+        "The prompt contained every declared source cell but only 40 scattered target cells. The response omitted the existing reference section and one separator row, returned locale-formatted date strings instead of Excel date values, mixed source sections and contained aggregation errors.",
+        "This single development task is failure analysis, not a full benchmark score. A separate revised run below records the later improvement without overwriting this evidence."
+      ]
+    },
+    {
+      "id": "native_sampling_workbook_13_1_revised_scaffold",
+      "request": {
+        "client_max_retries": 0,
+        "max_tokens": 8192,
+        "num_samples": 1,
+        "project_id": "supplied explicitly and not retained",
+        "renderer": "transformers-chat-template/qwen3.8-disable-thinking-pinned",
+        "sampling_retry_wrapper": "disabled",
+        "streaming": false,
+        "task_id": "13-1",
+        "telemetry": "disabled before client construction",
+        "temperature": 0.0,
+        "thinking": "disabled by the native renderer"
+      },
+      "outcome": "accepted_and_contract_valid",
+      "model_provenance": "configured_base_model",
+      "input_tokens": 6982,
+      "latency_ms": 70499,
+      "output_tokens": 3113,
+      "response_received": true,
+      "stop_reason": "stop",
+      "parse_termination": "stop_sequence",
+      "response_format": "qwen_xml_tool_call",
+      "context": {
+        "authored_prompt_characters": 16025,
+        "workbook_context_characters": 11897,
+        "context_records": 98,
+        "candidate_cells": 405,
+        "included_cells": 405,
+        "omitted_cells": 0,
+        "answer_rows": 30,
+        "answer_cells": 120,
+        "source_rows": 56,
+        "source_cells": 280,
+        "context_truncated": false,
+        "input_sha256": "36e7e5238ac29a506d06a27b73aab4ac6249530c9cfd4b1c40835c7823a39da5"
+      },
+      "contract": {
+        "required_cells": 120,
+        "returned_cells": 120,
+        "explicit_cells": 120,
+        "fills": 0,
+        "preserve_ranges": 0,
+        "unmerge_ranges": 0,
+        "failure_codes": []
+      },
+      "output": {
+        "sha256": "aa807f33a6445fa8305fa8a2501e2138444b5dc3bd760bc6bce70d75d2949c42",
+        "prediction_sha256": "6d3c32c57cbaab3f18b8d30c8516f72481e860fbd3ec80d88ce94c34aa812c11",
+        "trace_sha256": "200332d9cfe1cd30f949c78f8868d3e0d52112b46351669eaa1e9d064629a779",
+        "results_sha256": "f7c34a7e892356614868400c70607c8226fbf59977c845178d7de00aeda773b5",
+        "current_contract_replay": "success with zero cell-value differences",
+        "external_link_parts": 0,
+        "vba_parts": 0
+      },
+      "official_evaluation_with_recalculation": {
+        "pass": false,
+        "correct_cells": 116,
+        "graded_cells": 120,
+        "pass_rate": 0.0,
+        "cell_accuracy": 0.9667,
+        "mismatch_cells": [
+          "LISTS!D25",
+          "LISTS!D30",
+          "LISTS!D31",
+          "LISTS!D32"
+        ]
+      },
+      "shutdown_lifecycle": {
+        "pending_task_warning": false,
+        "repair_verified": true
+      },
+      "limitations": [
+        "The four mismatches are arithmetic errors in the final grouped section: three group amounts and the total derived from them.",
+        "A structurally valid workbook and high cell accuracy do not make this a task pass; SpreadsheetBench requires every graded cell to match.",
+        "This is one frozen development task and is not evidence of complete public or private benchmark performance."
+      ]
+    },
+    {
+      "id": "complete_public_benchmark_400",
+      "request": {
+        "client_max_retries": 0,
+        "max_tokens": 8192,
+        "num_samples_per_task_attempt": 1,
+        "project_id": "supplied explicitly and not retained",
+        "renderer": "transformers-chat-template/qwen3.8-disable-thinking-pinned",
+        "sampling_retry_wrapper": "disabled",
+        "streaming": false,
+        "task_count": 400,
+        "telemetry": "disabled before client construction",
+        "temperature": 0.0,
+        "thinking": "disabled by the native renderer"
+      },
+      "outcome": "completed_and_officially_scored",
+      "first_pass": {
+        "completed": 400,
+        "accepted": 350,
+        "failed_closed": 50,
+        "failure_codes": {
+          "model_call_failed": 26,
+          "missing_cells": 12,
+          "workbook_write_failed": 7,
+          "duplicate_cells": 3,
+          "invalid_response_schema": 1,
+          "extra_unmerge_ranges": 1
+        }
+      },
+      "stored_response_replay": {
+        "mode": "stored_response",
+        "eligible_failure_codes": [
+          "workbook_write_failed"
+        ],
+        "eligible": 7,
+        "replayed": 4,
+        "unchanged": 3,
+        "additional_model_calls": 0,
+        "credential_required": false,
+        "reason": "workbook_write_contract_fix"
+      },
+      "final_materialisation": {
+        "accepted": 354,
+        "failed_closed": 46,
+        "failure_codes": {
+          "model_call_failed": 26,
+          "missing_cells": 12,
+          "duplicate_cells": 3,
+          "workbook_write_failed": 3,
+          "invalid_response_schema": 1,
+          "extra_unmerge_ranges": 1
+        },
+        "output_validation": {
+          "ok": true,
+          "issues": 0,
+          "workbooks_present": 400,
+          "workbooks_expected": 400
+        }
+      },
+      "model_response_failures": {
+        "output_limit_exhausted": 14,
+        "tool_grammar": 9,
+        "invalid_json": 3
+      },
+      "official_evaluation_with_recalculation": {
+        "libreoffice_version": "7.4.7.2 40(Build:2)",
+        "items": 400,
+        "graded": 400,
+        "missing": 0,
+        "errors": 0,
+        "passed_tasks": 133,
+        "correct_cells": 120824,
+        "graded_cells": 297882,
+        "pass_rate": 0.3325,
+        "cell_accuracy": 0.4056,
+        "pass_rate_cell_level": 0.3273,
+        "pass_rate_sheet_level": 0.344
+      },
+      "evaluation_isolation": {
+        "network": "disabled",
+        "root_filesystem": "read_only",
+        "linux_capabilities": "all_dropped",
+        "no_new_privileges": true,
+        "host_credentials_present": false
+      },
+      "static_pre_recalculation_audit": {
+        "tasks": 400,
+        "authored_or_changed_formulas": 31240,
+        "inherited_formulas": 25205,
+        "inherited_formulas_rejected_by_model_gate": 327,
+        "inherited_sensitive_parts": 92,
+        "inherited_external_relationships": 153,
+        "problems": []
+      },
+      "result": {
+        "path": "submissions/formulabench/results.json",
+        "sha256": "c1e6fb6b540bb7272f4c537773e2a4826dd649d882c9b7fb549df9bccc66be0d"
+      },
+      "limitations": [
+        "The 33.25% pass rate is below the organiser's reported approximately 59% Qwen3.8-27B reference.",
+        "The published organiser runner implies the cookbook-recommended qwen3_8_xhigh_reasoning renderer and requests final values, whereas this run disabled thinking and prioritised executable formulas under a stricter exact-coverage contract.",
+        "The organisers did not publish the reference run's traces, so its renderer is inferred from the published runner and locked cookbook behaviour rather than independently verified run metadata.",
+        "These public results do not estimate performance on the organiser's private dataset."
+      ]
+    }
+  ],
+  "selected_candidate_after_preflight": {
+    "client_max_retries": 0,
+    "reasoning_effort": "omitted",
+    "renderer": "transformers-chat-template/qwen3.8-disable-thinking-pinned",
+    "status": "the complete public run was materialised and officially scored: 133/400 task passes, 0.3325 pass rate and 0.4056 cell accuracy; the score is below the materially different organiser reference",
+    "streaming": false,
+    "telemetry": "forced off before Tinker client construction",
+    "thinking": "disabled by the native renderer",
+    "tool_enforcement": "rendered prompt plus strict parsed-output validation",
+    "revised_13_1_validation": {
+      "live_model_sample_used": true,
+      "official_correctness_claimed": true,
+      "authored_prompt_characters": 16025,
+      "workbook_context_characters": 11897,
+      "rendered_input_tokens": 6982,
+      "context_records": 98,
+      "candidate_cells": 405,
+      "included_cells": 405,
+      "omitted_cells": 0,
+      "answer_rows": 30,
+      "answer_cells": 120,
+      "source_rows": 56,
+      "source_cells": 280,
+      "context_truncated": false,
+      "returned_cells": 120,
+      "contract_valid": true,
+      "official_correct_cells": 116,
+      "official_graded_cells": 120,
+      "official_pass_rate": 0.0,
+      "official_cell_accuracy": 0.9667,
+      "changes": [
+        "complete compact answer context before declared source data",
+        "strict typed Excel date and datetime values",
+        "explicit finite preservation ranges",
+        "aggregation and exact-coverage instructions"
+      ]
+    }
+  }
+}

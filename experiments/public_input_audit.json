@@ -1,0 +1,44 @@
+{
+  "dataset_tasks": 400,
+  "instruction_types": {
+    "Cell-Level Manipulation": 275,
+    "Sheet-Level Manipulation": 125
+  },
+  "merged_non_anchor_answer_cells": {
+    "cells": 29,
+    "tasks": {
+      "208-20": 5,
+      "38703": 20,
+      "55060": 4
+    }
+  },
+  "method": {
+    "baseline_crop": "rows 1:120, columns A:AD",
+    "golden_files_opened": false,
+    "inputs": [
+      "dataset.json",
+      "initial workbooks"
+    ]
+  },
+  "targets": {
+    "dynamic_task_ids": [
+      "283-32"
+    ],
+    "finite_cells_total": 297854,
+    "largest_finite_task": {
+      "cells": 104110,
+      "id": "455-35"
+    },
+    "tasks_over_1000_cells": 17,
+    "tasks_over_100_cells": 62,
+    "tasks_over_500_cells": 27
+  },
+  "workbooks": {
+    "formula_cells": 27505,
+    "formula_cells_without_readable_cache": 9909,
+    "formula_tasks": 161,
+    "oversized_for_baseline_crop_tasks": 80,
+    "tasks_with_formula_outside_baseline_crop": 18,
+    "tasks_with_nonempty_cell_outside_baseline_crop": 65
+  }
+}
