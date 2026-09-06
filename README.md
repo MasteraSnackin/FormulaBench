@@ -49,33 +49,48 @@ comparable.
 
 ### Controlled Tinker LoRA validation result
 
-FormulaBench also trained a rank-32 LoRA for `Qwen/Qwen3.8-27B` through Tinker on 59 verified
-development examples. The run completed all 15 optimiser steps, saved an indefinite sampler
-checkpoint, and reduced development-validation NLL from `0.060939` to `0.015557`. The same 15
-development-validation tasks were then run through the base model and checkpoint using identical
-production prompts, sampling settings, parser, workbook writer and organiser evaluator.
+FormulaBench also trained a rank-32 LoRA for `Qwen/Qwen3.8-27B` through Tinker on 59 development
+examples whose labels passed FormulaBench's response and workbook contracts. The run completed all
+15 optimiser steps and saved an indefinite sampler checkpoint. Development-validation NLL fell from
+`0.060939` to `0.015557`, meaning that the checkpoint predicted those development labels better;
+NLL is not a measure of spreadsheet correctness.
+
+![Tinker session showing the FormulaBench Qwen3.8-27B rank-32 LoRA training run and non-zero training activity](docs/assets/tinker-training-session.jpg)
+
+This provider-side capture from 6 September 2026 shows the model, LoRA rank, development-training
+partition and non-zero training activity. The dashboard did not provide an
+exact exported average for either throughput or utilisation, so no numerical rate is claimed. Those
+charts show that training activity occurred; they do not measure workbook correctness.
+
+For the controlled correctness comparison, the same 15 development-validation tasks were each run
+once through the base model and checkpoint using identical production prompts, sampling settings,
+parser, workbook writer and organiser evaluator.
 
 | 15-task development-validation comparison | Base model | LoRA checkpoint | Change |
 | --- | ---: | ---: | ---: |
 | Tasks passed | 7/15 | 9/15 | +2 tasks |
 | Pass rate | 46.67% | 60.00% | +13.33 pp |
+| Correct target cells | 432/582 | 449/582 | +17 cells |
 | Cell accuracy | 74.23% | 77.15% | +2.92 pp |
-| Cell-level task pass rate | 45.45% | 63.64% | +18.19 pp |
-| Sheet-level task pass rate | 50.00% | 50.00% | 0.00 pp |
 | Accepted predictions | 14/15 | 15/15 | +1 |
 | Evaluator errors (not inference/write failures) | 0 | 0 | 0 |
 
-Three tasks changed from fail to pass, one changed from pass to fail, and the remaining eleven kept
-their whole-task outcome. The base arm had one fail-closed `workbook_write_failed` prediction; its
-unchanged fallback was still graded, while the checkpoint arm accepted all 15 predictions. The
-result was locally validated against prediction, trace and workbook hashes, with its curated record
-in
-[`experiments/tinker_lora_validation.json`](experiments/tinker_lora_validation.json). It is useful
-checkpoint-selection evidence, not a new 400-task benchmark score: the split is small, drawn from
-the development bucket and used to select this checkpoint, uses one sample per task and excludes
-six development examples whose targets exceed 500 cells. A broader post-freeze comparison is still
-required before claiming generalisation. Raw run directories and recalculated evaluator workbooks
-are not committed, so the public JSON is a hash-recorded summary rather than a self-contained proof.
+![FormulaBench development A/B summary showing base-model and LoRA-checkpoint results on the same 15 tasks](docs/assets/tinker-development-ab.jpg)
+
+This visual summarises the figures in the curated
+[`experiments/tinker_lora_validation.json`](experiments/tinker_lora_validation.json); it is not a
+second or independent evaluation. Three tasks changed from fail to pass, one changed from pass to
+fail, and the remaining eleven kept their whole-task outcome. The base arm had one fail-closed
+`workbook_write_failed` prediction; its unchanged fallback was still graded, while the checkpoint
+arm accepted all 15 predictions.
+
+The result was locally validated against prediction, trace and workbook hashes. It is
+checkpoint-selection evidence, not a new 400-task benchmark score or proof of generalisation: the
+split is small, drawn from the development bucket and used to select this checkpoint. Each arm uses
+one sample per task, and six development examples whose targets exceed 500 cells were excluded before
+the split. A broader post-freeze comparison is still required. Raw run directories and recalculated
+evaluator workbooks are not committed, so the public JSON is a hash-recorded summary rather than a
+self-contained or tamper-proof evidence pack.
 
 ### A pass and a near miss
 
@@ -106,6 +121,7 @@ than treating a formula that runs as a correct answer.
 - [Presentation viewer](https://masterasnackin.github.io/FormulaBench/presentation.html)
 - [Self-evaluation results](submissions/formulabench/results.json)
 - [Tinker LoRA validation evidence](experiments/tinker_lora_validation.json)
+- [Tinker training session](https://tinker.thinkingmachines.ai/sessions/b2d89255-3d84-5796-84a8-e35f658e3470)
 - [Prediction manifest](submissions/formulabench/predictions.jsonl)
 - [Generated workbooks](submissions/formulabench/outputs/)
 - [Model traces](submissions/formulabench/traces/)
@@ -414,7 +430,7 @@ final 33.25% task pass rate. The replay made no additional provider calls.
 
 - [Open the live research overview](https://masterasnackin.github.io/FormulaBench/).
 - [Watch the 67.4-second demo video](https://masterasnackin.github.io/FormulaBench/video.html).
-- [View the nine-slide presentation](https://masterasnackin.github.io/FormulaBench/presentation.html),
+- [View the eleven-slide presentation](https://masterasnackin.github.io/FormulaBench/presentation.html),
   [open the PDF](presentation/FormulaBench-Hackathon-Deck.pdf), or
   [download the PowerPoint source](presentation/FormulaBench-Hackathon-Deck.pptx).
 
