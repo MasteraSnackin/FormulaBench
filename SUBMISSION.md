@@ -5,7 +5,7 @@
 - Team name: FormulaBench
 - Member: [`MasteraSnackin`](https://github.com/MasteraSnackin)
 - Repository: https://github.com/MasteraSnackin/FormulaBench
-- Declared track: Research / Track 2
+- Declared track: Research: Excel Formula Generation (SpreadsheetBench)
 
 ## What we built and why
 

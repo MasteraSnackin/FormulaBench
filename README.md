@@ -4,7 +4,7 @@ A reproducible, fail-closed pipeline for generating and validating Excel formula
 
 [![Checks](https://github.com/MasteraSnackin/FormulaBench/actions/workflows/ci.yml/badge.svg)](https://github.com/MasteraSnackin/FormulaBench/actions/workflows/ci.yml)
 ![Submitted Python runtime](https://img.shields.io/badge/Python-3.11%20runtime-3776AB?logo=python&logoColor=white)
-[![Research Track 2](https://img.shields.io/badge/Encode%20x%20Ylookup-Research%20Track%202-1F6FEB)](SUBMISSION.md)
+[![Research: Excel Formula Generation](https://img.shields.io/badge/Research-Excel%20Formula%20Generation-1F6FEB)](SUBMISSION.md)
 
 ## Description
 
@@ -20,9 +20,9 @@ fallback. It retains one workbook and trace file per task, plus a prediction rec
 checkpoint manifest. A model attempt adds the prompt, any available parsed response, token counts,
 latency and failure state to that trace.
 
-This repository is the **Research / Track 2** entry for the Encode x Ylookup Rebuild Private
-Markets Hackathon. It uses prompt engineering and deterministic validation rather than
-fine-tuning.
+This repository is the **Research Track: Excel Formula Generation (SpreadsheetBench)** entry for
+the Encode x Ylookup Rebuild Private Markets Hackathon. It uses prompt engineering and deterministic
+validation rather than fine-tuning.
 
 ### Public self-evaluation result
 
