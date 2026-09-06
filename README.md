@@ -81,7 +81,7 @@ are not committed, so the public JSON is a hash-recorded summary rather than a s
 
 | Evaluator outcome | Task | What FormulaBench had to do | What happened |
 | --- | --- | --- | --- |
-| Fully passed | [`54513`](submissions/formulabench/traces/54513.jsonl) | Calculate the price of a $34.99 item after a 55% discount. | FormulaBench wrote `=C8*(1-E8)` to `Sheet1!F8`. It calculated `15.7455`, displayed as `$15.75`, and the evaluator marked the target cell correct. |
+| Fully passed | [`54513`](submissions/formulabench/traces/54513.jsonl) | Calculate the price of a $34.99 item after a 55% discount. | FormulaBench wrote `=C8*(1-E8)` to `Sheet1!F8`. It calculated `15.7455`, displayed as `15.75`, and the evaluator marked the target cell correct. |
 | Failed, but nearly complete | [`13-1`](submissions/formulabench/traces/13-1.jsonl) | Combine data from one sheet into another, merge duplicate rows by date and reference, sort the results and calculate totals. | FormulaBench completed 116 of 120 target cells correctly. Four amount cells were wrong, so the strict whole-task result was a failure. |
 
 The four mismatches in task `13-1` were:
