@@ -21,6 +21,7 @@
       <nav aria-label="Primary">
         <a href="#method">Method</a>
         <a href="#evidence">Evidence</a>
+        <a href="#tinker">Tinker A/B</a>
         <a href="#limits">Limits</a>
         <a href="presentation.html">Deck</a>
         <a href="video.html">Video</a>
@@ -91,10 +92,51 @@
         <noscript><p class="noscript-note">JavaScript is only used to switch between aggregate views. The complete result remains available in results.json.</p></noscript>
       </section>
 
+      <section class="section" id="tinker" aria-labelledby="tinker-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">02 / Tinker development A/B</p>
+            <h2 id="tinker-title">LoRA gained two net passes on the same 15 tasks.</h2>
+          </div>
+          <p>Qwen3.8-27B was evaluated before and after rank-32 LoRA training. Both runs used the same development-validation tasks, production prompt contract and organiser evaluator.</p>
+        </div>
+
+        <div class="score-stage">
+          <div class="score-summary">
+            <p class="mono-label">Controlled 15-task comparison</p>
+            <p class="large-metric">+2<small> net passes</small></p>
+            <p>Three fail-to-pass gains and one regression</p>
+          </div>
+          <div class="measure-list">
+            <div class="measure">
+              <div class="measure-copy"><span>Task pass rate</span><strong>46.67% → 60.00%</strong></div>
+              <div class="bar" role="img" aria-label="Task pass rate increased from 46.67 percent to 60 percent"><i style="--value:60%"></i></div>
+              <p>+13.33 percentage points · 7 → 9 tasks passed</p>
+            </div>
+            <div class="measure">
+              <div class="measure-copy"><span>Cell accuracy</span><strong>74.23% → 77.15%</strong></div>
+              <div class="bar" role="img" aria-label="Cell accuracy increased from 74.23 percent to 77.15 percent"><i style="--value:77.15%"></i></div>
+              <p>+2.92 percentage points · 432 → 449 of 582 cells</p>
+            </div>
+          </div>
+        </div>
+
+        <dl class="finding-details">
+          <div><dt>59</dt><dd>training examples · 15 optimiser steps · LoRA rank 32</dd></div>
+          <div><dt>0.060939 → 0.015557</dt><dd>validation negative log-likelihood before and after training</dd></div>
+          <div><dt>14/15 → 15/15</dt><dd>accepted predictions; the base had one fail-closed workbook-write error</dd></div>
+        </dl>
+        <p class="qualification"><strong>Scope:</strong> both organiser evaluations had zero evaluator errors, but the base arm had one pipeline failure whose unchanged fallback remained gradeable. This one-sample-per-task development comparison excludes six examples over 500 target cells and does not replace the frozen 400-task score. The gain needs confirmation on a broader post-freeze reporting split. Raw run and recalculated evaluator artefacts remain local, so the linked JSON is a hash-recorded summary rather than a self-contained proof.</p>
+        <div class="resource-line">
+          <a href="https://github.com/MasteraSnackin/FormulaBench/blob/main/experiments/tinker_lora_validation.json">Inspect the experiment record</a>
+          <a href="https://tinker.thinkingmachines.ai/sessions/b2d89255-3d84-5796-84a8-e35f658e3470">Open the Tinker session</a>
+        </div>
+      </section>
+
       <section class="section method-section" id="method" aria-labelledby="method-title">
         <div class="section-heading compact-heading">
           <div>
-            <p class="eyebrow">02 / controlled path</p>
+            <p class="eyebrow">03 / controlled path</p>
             <h2 id="method-title">FormulaBench treats the workbook as evidence</h2>
           </div>
           <p>Each task gets one logical model sample. The model cannot run arbitrary Python, and FormulaBench never publishes a partial edit as a successful output.</p>
@@ -112,7 +154,7 @@
       <section class="section finding-section" aria-labelledby="finding-title">
         <div class="finding-number" aria-hidden="true">94.84%</div>
         <div class="finding-copy">
-          <p class="eyebrow">03 / the useful failure</p>
+          <p class="eyebrow">04 / the useful failure</p>
           <h2 id="finding-title">Most wrong cells survived the structural checks.</h2>
           <p>94.84% of wrong cells were in contract-valid workbooks. The harness can prove that an answer is complete, bounded and safely written. It cannot prove that the spreadsheet logic is semantically correct.</p>
           <dl class="finding-details">
@@ -126,7 +168,7 @@
 
       <section class="section integrity-section" id="limits" aria-labelledby="integrity-title">
         <div class="integrity-title">
-          <p class="eyebrow">04 / evaluation integrity</p>
+          <p class="eyebrow">05 / evaluation integrity</p>
           <h2 id="integrity-title">What this result shows, and what it does not</h2>
         </div>
         <div class="integrity-columns">
@@ -152,7 +194,7 @@
       </section>
 
       <section class="section next-section" aria-labelledby="next-title">
-        <p class="eyebrow">05 / next experiment</p>
+        <p class="eyebrow">06 / next experiment</p>
         <h2 id="next-title">Use deterministic code for large transformations, then run and check generated formulas.</h2>
         <p>The failure distribution points to a hybrid next step: deterministic engines for large transformations, paired with isolated formula execution and output invariants for model-authored logic.</p>
         <div class="resource-line">

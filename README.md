@@ -23,8 +23,8 @@ latency and failure state to that trace.
 This repository is the **Research Track: Excel Formula Generation (SpreadsheetBench)** entry for
 the Encode x Ylookup Rebuild Private Markets Hackathon. The frozen 400-task result uses prompt
 engineering and deterministic validation rather than fine-tuning. The repository now also contains
-a separate, development-only Tinker LoRA experiment; no result from that experiment is included in
-the score below.
+a separate, development-only Tinker LoRA experiment with a controlled 15-task validation result.
+That small comparison is reported separately and does not replace or alter the frozen score below.
 
 ### Public self-evaluation result
 
@@ -47,6 +47,56 @@ lists a 59.0% one-shot, values-only Qwen3.8-27B reference. FormulaBench disables
 prioritises formulas and applies a stricter fail-closed contract, so the results are not directly
 comparable.
 
+### Controlled Tinker LoRA validation result
+
+FormulaBench also trained a rank-32 LoRA for `Qwen/Qwen3.8-27B` through Tinker on 59 verified
+development examples. The run completed all 15 optimiser steps, saved an indefinite sampler
+checkpoint, and reduced development-validation NLL from `0.060939` to `0.015557`. The same 15
+development-validation tasks were then run through the base model and checkpoint using identical
+production prompts, sampling settings, parser, workbook writer and organiser evaluator.
+
+| 15-task development-validation comparison | Base model | LoRA checkpoint | Change |
+| --- | ---: | ---: | ---: |
+| Tasks passed | 7/15 | 9/15 | +2 tasks |
+| Pass rate | 46.67% | 60.00% | +13.33 pp |
+| Cell accuracy | 74.23% | 77.15% | +2.92 pp |
+| Cell-level task pass rate | 45.45% | 63.64% | +18.19 pp |
+| Sheet-level task pass rate | 50.00% | 50.00% | 0.00 pp |
+| Accepted predictions | 14/15 | 15/15 | +1 |
+| Evaluator errors (not inference/write failures) | 0 | 0 | 0 |
+
+Three tasks changed from fail to pass, one changed from pass to fail, and the remaining eleven kept
+their whole-task outcome. The base arm had one fail-closed `workbook_write_failed` prediction; its
+unchanged fallback was still graded, while the checkpoint arm accepted all 15 predictions. The
+result was locally validated against prediction, trace and workbook hashes, with its curated record
+in
+[`experiments/tinker_lora_validation.json`](experiments/tinker_lora_validation.json). It is useful
+checkpoint-selection evidence, not a new 400-task benchmark score: the split is small, drawn from
+the development bucket and used to select this checkpoint, uses one sample per task and excludes
+six development examples whose targets exceed 500 cells. A broader post-freeze comparison is still
+required before claiming generalisation. Raw run directories and recalculated evaluator workbooks
+are not committed, so the public JSON is a hash-recorded summary rather than a self-contained proof.
+
+### A pass and a near miss
+
+| Evaluator outcome | Task | What FormulaBench had to do | What happened |
+| --- | --- | --- | --- |
+| Fully passed | [`54513`](submissions/formulabench/traces/54513.jsonl) | Calculate the price of a $34.99 item after a 55% discount. | FormulaBench wrote `=C8*(1-E8)` to `Sheet1!F8`. It calculated `15.7455`, displayed as `$15.75`, and the evaluator marked the target cell correct. |
+| Failed, but nearly complete | [`13-1`](submissions/formulabench/traces/13-1.jsonl) | Combine data from one sheet into another, merge duplicate rows by date and reference, sort the results and calculate totals. | FormulaBench completed 116 of 120 target cells correctly. Four amount cells were wrong, so the strict whole-task result was a failure. |
+
+The four mismatches in task `13-1` were:
+
+| Cell | Expected | FormulaBench produced |
+| --- | ---: | ---: |
+| `LISTS!D25` | 1,990 | 2,020 |
+| `LISTS!D30` | 534 | 394 |
+| `LISTS!D31` | 401 | 276 |
+| `LISTS!D32` | 6,495 | 6,260 |
+
+That task reached 96.67% cell accuracy, but the final total was among the four incorrect cells. The
+whole task therefore failed. This is why FormulaBench evaluates the recalculated workbook rather
+than treating a formula that runs as a correct answer.
+
 ### Judge resources
 
 - [Submission overview](SUBMISSION.md)
@@ -55,6 +105,7 @@ comparable.
 - [Demo video](https://masterasnackin.github.io/FormulaBench/video.html)
 - [Presentation viewer](https://masterasnackin.github.io/FormulaBench/presentation.html)
 - [Self-evaluation results](submissions/formulabench/results.json)
+- [Tinker LoRA validation evidence](experiments/tinker_lora_validation.json)
 - [Prediction manifest](submissions/formulabench/predictions.jsonl)
 - [Generated workbooks](submissions/formulabench/outputs/)
 - [Model traces](submissions/formulabench/traces/)
@@ -90,8 +141,8 @@ comparable.
   shared checkpoint manifest.
   A failure before a model call can leave the required trace file empty.
 - Read-only output validation with optional scanning for an explicitly configured secret value.
-- A deterministic development-only SFT corpus, dry-run-first LoRA trainer and checkpoint evaluation
-  path with split, workbook, prompt, answer and row hashes.
+- A deterministic development-only SFT corpus, guarded LoRA trainer and completed checkpoint
+  comparison with split, workbook, prompt, answer, prediction, trace and output hashes.
 - A static GitHub Pages viewer for the retained result, demo video and presentation.
 
 ## Tech Stack
@@ -190,10 +241,15 @@ provider calls:
 Paid training is a separate, explicit action requiring `--execute`, a writable Tinker project, a
 local run directory and a key supplied privately through the environment. See the complete
 [training protocol](training/README.md), including leakage boundaries, measured token counts,
-validation NLL and production-parity checkpoint evaluation. The separate evaluation script runs
-the same 15 development-validation tasks through the base and LoRA weights, scores both with the
-organiser evaluator and emits a hash-bound comparison. The generated corpus and run metadata are
-ignored by Git and do not alter the retained 400-task submission evidence.
+validation NLL and production-parity checkpoint evaluation. The completed experiment improved the
+15-task development-validation pass rate from 46.67% to 60.00% and cell accuracy from 74.23% to
+77.15%. The separate evaluation script scored both arms with the organiser evaluator and emitted a
+provenance-and-hash-bound comparison. It records accepted and failed predictions, rejects an
+all-fallback arm, and does not present cell-accuracy deltas as comparable when evaluator errors
+changed the denominator. The wrappers expose the API key only to paid trainer or inference
+processes. Generated corpus and raw run directories remain ignored by Git; the curated result is in
+[`experiments/tinker_lora_validation.json`](experiments/tinker_lora_validation.json) and does not
+alter the retained 400-task submission evidence.
 
 ## Usage
 
@@ -358,7 +414,7 @@ final 33.25% task pass rate. The replay made no additional provider calls.
 
 - [Open the live research overview](https://masterasnackin.github.io/FormulaBench/).
 - [Watch the 67.4-second demo video](https://masterasnackin.github.io/FormulaBench/video.html).
-- [View the eight-slide presentation](https://masterasnackin.github.io/FormulaBench/presentation.html),
+- [View the nine-slide presentation](https://masterasnackin.github.io/FormulaBench/presentation.html),
   [open the PDF](presentation/FormulaBench-Hackathon-Deck.pdf), or
   [download the PowerPoint source](presentation/FormulaBench-Hackathon-Deck.pptx).
 
@@ -437,8 +493,8 @@ These are proposed improvements, not claims about the frozen 400-task result:
 - Add formula compatibility normalisation and output invariants.
 - Generate and verify the hosted evidence metrics from the hashed evaluation result during
   deployment.
-- Compare the base model and development-only LoRA checkpoint through controlled validation, then
-  make a post-freeze comparison on the historically named `held_out` reporting bucket.
+- Keep the LoRA checkpoint and inference configuration frozen, then make a broader comparison on
+  the historically named `held_out` and `final_only` reporting buckets.
 
 See [`experiments/README.md`](experiments/README.md) for the failure analysis behind the retrieval,
 task-routing, deterministic-operation and controlled-comparison priorities.

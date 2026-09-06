@@ -195,12 +195,21 @@ rather than the production image. This remains a values-only baseline; it is not
 evaluation wire format for a checkpoint trained on FormulaBench's formula-and-tool-call responses.
 
 The implemented SFT path is documented in [`training/README.md`](../training/README.md). Its
-current reproducible preflight contains 59 training examples and 15 development-validation
+reproducible corpus contains 59 training examples and 15 development-validation
 examples, with six explicit over-500-cell exclusions, 468,690 total train tokens and 15 planned
-optimiser steps. The preflight also verifies that Cookbook and production prompt tokens are
-identical and makes zero provider calls. These are corpus and execution-plan measurements, not a
-checkpoint result or a correctness improvement. `scripts/evaluate_checkpoint.sh` performs the
-like-for-like comparison through FormulaBench's production prompt, parser, writer and evaluator.
+optimiser steps. The preflight verifies that Cookbook and production prompt tokens are identical
+and makes zero provider calls. The paid rank-32 LoRA run completed all 15 steps and reduced
+development-validation NLL from `0.060939` to `0.015557`. The like-for-like organiser evaluation
+then improved pass rate from 46.67% (7/15) to 60.00% (9/15) and cell accuracy from 74.23% to
+77.15%, with zero evaluator errors in either arm. Three tasks changed from fail to pass and one
+regressed from pass to fail. The base arm accepted 14/15 predictions and recorded one fail-closed
+`workbook_write_failed`; its unchanged fallback was still graded. The checkpoint accepted all 15.
+The curated evidence is
+[`tinker_lora_validation.json`](tinker_lora_validation.json), including its source hashes and
+checkpoint provenance. This is checkpoint-selection evidence on a small development split, not a
+replacement for the frozen 400-task result or proof of broader generalisation. The raw run and
+recalculated evaluator artefacts are not committed, so the public record does not independently
+reproduce every recorded hash.
 
 Only the frozen development bucket may supply task-specific prompt examples, supervised examples,
 reward examples or checkpoint-selection cases. A spreadsheet-specific training example should

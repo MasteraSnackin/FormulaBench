@@ -69,7 +69,9 @@ unset TINKER_API_KEY
 ```
 
 Paid execution is refused unless all of `--execute`, `--project-id`, a new `--run-dir` path and a
-non-empty `TINKER_API_KEY` are present. A run directory can never be reused, preventing an accidental
+non-empty `TINKER_API_KEY` are present. Dependency synchronisation, corpus construction, validation
+and dry-run tokenisation execute with the key removed from their child-process environment; only the
+explicit paid trainer receives it. A run directory can never be reused, preventing an accidental
 second paid run from overwriting earlier local evidence. The default run performs forward-only
 validation before and after training, sends only the 59 training examples to `forward_backward` and
 the optimiser, pipelines one training request ahead, then saves a resumable state checkpoint and an
@@ -79,6 +81,34 @@ metrics, validation NLL before and after, and the validation delta. It never sto
 Lower validation NLL means the checkpoint predicts the development labels better. It is not proof
 of spreadsheet correctness. Correctness must be measured by generating workbooks and running the
 organiser's evaluator.
+
+## Completed bounded experiment
+
+The guarded Tinker run on 6 September 2026 completed all 15 optimiser steps using LoRA rank 32 on
+the 59-example training partition. Development-validation NLL fell from `0.060939` to `0.015557`.
+Tinker session `b2d89255-3d84-5796-84a8-e35f658e3470` saved two checkpoints, including the
+indefinite sampler checkpoint:
+
+```text
+tinker://b2d89255-3d84-5796-84a8-e35f658e3470:train:0/sampler_weights/formulabench-sft-sampler
+```
+
+The production-parity comparison then ran the same 15 validation tasks through the base model and
+checkpoint. The base passed 7/15 tasks (46.67%) at 74.23% cell accuracy; the checkpoint passed 9/15
+(60.00%) at 77.15% cell accuracy. Both evaluator runs had zero missing tasks and zero evaluator
+errors. Three tasks changed from fail to pass, one regressed from pass to fail, and eleven retained
+their outcome.
+The base arm accepted 14/15 predictions and recorded one fail-closed `workbook_write_failed`; its
+unchanged fallback workbook remained gradeable. The checkpoint arm accepted all 15 predictions.
+
+This result selected and assessed the checkpoint on a small development-validation partition. It
+does not replace the frozen 400-task public result and is not evidence of generalisation to the
+private benchmark. Each arm used one sample per task, and the six development examples with more
+than 500 target cells were excluded before splitting. Freeze the checkpoint and configuration
+before any broader reporting run. The committed, non-secret record is
+[`../experiments/tinker_lora_validation.json`](../experiments/tinker_lora_validation.json); raw run
+directories and recalculated evaluator copies remain ignored by Git, so the JSON is a curated hash
+record rather than a self-contained evidence pack.
 
 ## Reading the Tinker session metrics
 
@@ -112,12 +142,17 @@ export TINKER_PROJECT_ID='<writable-project-id>'
 unset TINKER_PROJECT_ID TINKER_API_KEY
 ```
 
-This is an explicitly paid sampling operation. It independently rebuilds the corpus, derives the
-15 validation IDs, and runs those exact tasks twice through FormulaBench's production prompt,
-Qwen tool-call parser, workbook writer and safety contracts: once with the base model and once with
-the LoRA sampler checkpoint. It then runs the organiser evaluator on both arms and writes a
-task-aligned, input-hash-bound `comparison.json`. The output root must be new, and checkpoint mode
-cannot resume or mix with a base-model run.
+This is an explicitly paid sampling operation and requires both environment variables shown above,
+so the checkpoint is resolved inside the intended writable project. It independently rebuilds the
+corpus, derives the 15 validation IDs, and runs those exact tasks twice through FormulaBench's
+production prompt, Qwen tool-call parser, workbook writer and safety contracts: once with the base
+model and once with the LoRA sampler checkpoint. It then runs the organiser evaluator on both arms
+and writes a task-aligned `comparison.json` bound to evaluator results, predictions, individual
+traces and the expected base/checkpoint provenance. It records accepted and failed predictions,
+refuses to compare an arm with zero accepted answers, and suppresses the cell-accuracy delta when
+evaluator errors make that denominator non-comparable. Non-provider preparation and scoring
+processes do not inherit the API key. The output root must be new, and checkpoint mode cannot
+resume or mix with a base-model run.
 
 Do not use the values-only `baseline/tinker_predict.py` route to evaluate this checkpoint. That
 runner deliberately uses a different prompt and response contract, whereas this SFT experiment is

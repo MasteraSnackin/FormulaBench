@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "experiment": "tinker_lora_development_validation",
+  "status": "complete",
+  "scope": {
+    "description": "Controlled base-versus-LoRA comparison on a 15-task development-validation split.",
+    "public_benchmark_replacement": false,
+    "caveat": "This one-sample-per-task development split is not the frozen 400-task public benchmark. The observed gain requires confirmation on a broader post-freeze reporting split before it can be generalised.",
+    "raw_run_artifacts_committed": false,
+    "recalculated_evaluator_workbooks_retained": false,
+    "public_verifiability": "The committed JSON is a curated hash record. Raw run directories and recalculated evaluator copies remain local, so the public record is not a self-contained or tamper-proof evidence pack."
+  },
+  "frozen_public_benchmark_context": {
+    "tasks": 400,
+    "passed_tasks": 133,
+    "pass_rate": 0.3325,
+    "cell_accuracy": 0.4056,
+    "relationship": "Separate public self-evaluation retained as the headline submission score; not combined with the development A/B."
+  },
+  "model": {
+    "base_model": "Qwen/Qwen3.8-27B",
+    "training_platform": "Tinker",
+    "lora_rank": 32,
+    "session_id": "b2d89255-3d84-5796-84a8-e35f658e3470",
+    "sampler_checkpoint": {
+      "path": "tinker://b2d89255-3d84-5796-84a8-e35f658e3470:train:0/sampler_weights/formulabench-sft-sampler",
+      "reference_sha256": "2d163957502b80845624efdd0938a61006e30be5ad651f393a7d920c03099dae",
+      "ttl_seconds": null
+    }
+  },
+  "training": {
+    "training_examples": 59,
+    "validation_examples": 15,
+    "completed_steps": 15,
+    "validation_nll_before": 0.06093917042016983,
+    "validation_nll_after": 0.015557116828858852,
+    "validation_nll_change": -0.04538205359131098,
+    "wire_format_matches_production": true,
+    "completed_at": "2026-09-06T04:39:48.374003+00:00",
+    "excluded_over_500_target_cells": [
+      {"id": "24-23", "target_cells": 824},
+      {"id": "290-27", "target_cells": 1116},
+      {"id": "455-35", "target_cells": 104110},
+      {"id": "91-34", "target_cells": 574},
+      {"id": "209-30", "target_cells": 6066},
+      {"id": "48921", "target_cells": 4451}
+    ]
+  },
+  "evaluation": {
+    "task_count": 15,
+    "samples_per_task_per_arm": 1,
+    "same_tasks_and_evaluator": true,
+    "base": {
+      "accepted_predictions": 14,
+      "pipeline_failures": {"workbook_write_failed": 1},
+      "passed_tasks": 7,
+      "pass_rate": 0.4667,
+      "correct_cells": 432,
+      "total_cells": 582,
+      "cell_accuracy": 0.7423,
+      "evaluator_errors": 0
+    },
+    "lora": {
+      "accepted_predictions": 15,
+      "pipeline_failures": {},
+      "passed_tasks": 9,
+      "pass_rate": 0.6,
+      "correct_cells": 449,
+      "total_cells": 582,
+      "cell_accuracy": 0.7715,
+      "evaluator_errors": 0
+    },
+    "lora_minus_base": {
+      "net_passed_tasks": 2,
+      "pass_rate_percentage_points": 13.33,
+      "correct_cells": 17,
+      "cell_accuracy_percentage_points": 2.92
+    },
+    "task_transitions": {
+      "fail_to_pass": [
+        "341-14",
+        "58949",
+        "59511"
+      ],
+      "pass_to_fail": [
+        "130-9"
+      ]
+    }
+  },
+  "integrity": {
+    "local_evidence_validation": "provenance-and-hash-bound",
+    "training_corpus_sha256": "c720dbedb34f5ab7ad815cd4788a3762769000259d41d7e013326fbb9d8b642b",
+    "dataset_manifest_sha256": "bcecaa89a005bd4e3bbe98da150a86e8062c27f262e575d5e47bd9861b3525e7",
+    "development_golden_binding_sha256": "7d2f42256cb83a89efbe7487e248b954cce0ba54c608dfbbf7901eddb52d07bc",
+    "split_manifest_sha256": "b2798d5a8951e99b2211e5a573d1bd7f503800bfa6b27abcde71c0f72f681248",
+    "source_artifacts": {
+      "training_run_metadata": {
+        "path": "training/runs/qwen38-sft-v1-20260906T042552Z/run_metadata.json",
+        "sha256": "c588293cf1dd2e0ae6af1269238100a8b8e464d49cd66b0fc90ce3fd329e9a7a"
+      },
+      "training_checkpoints": {
+        "path": "training/runs/qwen38-sft-v1-20260906T042552Z/checkpoints.json",
+        "sha256": "f75d7373be060b0c3b782cca9c8b214b4f779f6b886cda3ec769b1250b1f8251"
+      },
+      "base_results": {
+        "path": "training/runs/checkpoint-evaluation-20260906T044047Z/base-results.json",
+        "sha256": "5113daf73c330ba001c5b76f3bd3e5487400aa0e611cdc6877ca5b1fe1c59618"
+      },
+      "lora_results": {
+        "path": "training/runs/checkpoint-evaluation-20260906T044047Z/checkpoint-results.json",
+        "sha256": "bfd2587f57487d15761dccc842d68b34bd157ff3a7b6f4d17c11421beb874124"
+      },
+      "strict_comparison": {
+        "path": "training/runs/checkpoint-evaluation-20260906T044047Z/comparison.json",
+        "sha256": "66862c15fe2f90c51f8ce55c5537f7ab4f03ef411e3076236c183d31d0d95639"
+      }
+    }
+  }
+}

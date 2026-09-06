@@ -21,33 +21,37 @@ if [[ -z "${TINKER_API_KEY:-}" ]]; then
   echo "TINKER_API_KEY is required and must be supplied through the environment" >&2
   exit 2
 fi
+if [[ -z "${TINKER_PROJECT_ID:-}" ]]; then
+  echo "TINKER_PROJECT_ID is required and must identify the checkpoint's writable project" >&2
+  exit 2
+fi
 if [[ -e "$output_root" || -L "$output_root" ]]; then
   echo "output root must be a new path" >&2
   exit 2
 fi
 
-uv sync --locked --extra native-tinker
+env -u TINKER_API_KEY uv sync --locked --extra native-tinker
 
 # Apply the production checkpoint-path and runtime validation before corpus
 # rebuilding or either paid inference arm. Preflight-only creates no output.
-uv run python -m formulabench.cli \
+env -u TINKER_API_KEY uv run python -m formulabench.cli \
   --dataset-dir "$dataset_dir" \
   --out-dir "$output_root/checkpoint" \
   --sampler-checkpoint "$sampler_checkpoint" \
   --preflight-only
 
-uv run python -m training.corpus build \
+env -u TINKER_API_KEY uv run python -m training.corpus build \
   --dataset-dir "$dataset_dir" \
   --split-manifest experiments/public_split.json \
   --out-dir training/generated
-uv run python -m training.corpus validate \
+env -u TINKER_API_KEY uv run python -m training.corpus validate \
   --dataset-dir "$dataset_dir" \
   --split-manifest experiments/public_split.json \
   --corpus training/generated/corpus.jsonl \
   --manifest training/generated/corpus_manifest.json
 
 validation_ids="$(
-  uv run python -m training.partition_ids \
+  env -u TINKER_API_KEY uv run python -m training.partition_ids \
     --manifest training/generated/corpus_manifest.json \
     --split-manifest experiments/public_split.json \
     --partition validation
@@ -60,9 +64,8 @@ fi
 uv run python -m formulabench.cli \
   --dataset-dir "$dataset_dir" \
   --out-dir "$output_root/base" \
-  --ids "$validation_ids" \
-  --allow-all-failed
-uv run python evaluate.py \
+  --ids "$validation_ids"
+env -u TINKER_API_KEY uv run python evaluate.py \
   --dataset-dir "$dataset_dir" \
   --predictions "$output_root/base/predictions.jsonl" \
   --ids "$validation_ids" \
@@ -72,17 +75,20 @@ uv run python -m formulabench.cli \
   --dataset-dir "$dataset_dir" \
   --out-dir "$output_root/checkpoint" \
   --ids "$validation_ids" \
-  --sampler-checkpoint "$sampler_checkpoint" \
-  --allow-all-failed
-uv run python evaluate.py \
+  --sampler-checkpoint "$sampler_checkpoint"
+env -u TINKER_API_KEY uv run python evaluate.py \
   --dataset-dir "$dataset_dir" \
   --predictions "$output_root/checkpoint/predictions.jsonl" \
   --ids "$validation_ids" \
   --out "$output_root/checkpoint-results.json"
 
-uv run python -m training.compare_results \
+env -u TINKER_API_KEY uv run python -m training.compare_results \
   --base "$output_root/base-results.json" \
+  --base-predictions "$output_root/base/predictions.jsonl" \
+  --base-traces "$output_root/base/traces" \
   --checkpoint "$output_root/checkpoint-results.json" \
+  --checkpoint-predictions "$output_root/checkpoint/predictions.jsonl" \
+  --checkpoint-traces "$output_root/checkpoint/traces" \
   --sampler-checkpoint "$sampler_checkpoint" \
   --manifest training/generated/corpus_manifest.json \
   --split-manifest experiments/public_split.json \

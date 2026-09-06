@@ -11,8 +11,12 @@ if [[ $# -gt 0 && "$1" != --* ]]; then
   shift
 fi
 
+execute=0
 for argument in "$@"; do
   case "$argument" in
+    --execute)
+      execute=1
+      ;;
     --manifest|--manifest=*|--split-manifest|--split-manifest=*)
       echo "run_training.sh fixes the corpus and split manifests; overrides are not allowed" >&2
       exit 2
@@ -20,17 +24,24 @@ for argument in "$@"; do
   esac
 done
 
-uv sync --locked --extra native-tinker
-uv run python -m training.corpus build \
+env -u TINKER_API_KEY uv sync --locked --extra native-tinker
+env -u TINKER_API_KEY uv run python -m training.corpus build \
   --dataset-dir "$dataset_dir" \
   --split-manifest experiments/public_split.json \
   --out-dir training/generated
-uv run python -m training.corpus validate \
+env -u TINKER_API_KEY uv run python -m training.corpus validate \
   --dataset-dir "$dataset_dir" \
   --split-manifest experiments/public_split.json \
   --corpus training/generated/corpus.jsonl \
   --manifest training/generated/corpus_manifest.json
-uv run --extra native-tinker python -m training.train_lora \
-  "$@" \
-  --manifest training/generated/corpus_manifest.json \
-  --split-manifest experiments/public_split.json
+if [[ "$execute" -eq 1 ]]; then
+  uv run --extra native-tinker python -m training.train_lora \
+    "$@" \
+    --manifest training/generated/corpus_manifest.json \
+    --split-manifest experiments/public_split.json
+else
+  env -u TINKER_API_KEY uv run --extra native-tinker python -m training.train_lora \
+    "$@" \
+    --manifest training/generated/corpus_manifest.json \
+    --split-manifest experiments/public_split.json
+fi

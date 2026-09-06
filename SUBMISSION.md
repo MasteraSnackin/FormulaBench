@@ -49,6 +49,9 @@ improvement or a controlled causal result.
 - Tinker SDK telemetry: forced off before client construction and in the runtime environment
 - Fine-tuned checkpoint used for the frozen 400-task result: none
 - Fine-tuning data used for the frozen 400-task result: none
+- Development-only research checkpoint: Tinker LoRA rank 32 on `Qwen/Qwen3.8-27B`
+- Sampler checkpoint:
+  `tinker://b2d89255-3d84-5796-84a8-e35f658e3470:train:0/sampler_weights/formulabench-sft-sampler`
 
 ### Reproducible training extension
 
@@ -61,15 +64,38 @@ prompts, answers and rows by SHA-256. The trainer uses the same disabled-thinkin
 wire format as production, refuses truncation, defaults to zero-call preflight, and requires an
 explicit paid-run flag, writable project ID, fresh run directory and privately supplied key.
 Its checkpoint comparison uses the same production prompt, tool-call parser, workbook writer and
-organiser evaluator for both the base and LoRA arms, then records hash-bound task-aligned deltas.
+organiser evaluator for both the base and LoRA arms, then verifies prediction and trace provenance,
+rejects all-fallback arms, and records hash-bound task-aligned deltas. A cell-accuracy delta is
+withheld whenever evaluator errors would make the underlying denominators non-comparable.
 
-No fine-tuned checkpoint or checkpoint-derived benchmark score is claimed in this submission. A
-future claim must compare the base model and checkpoint under identical sampling settings, use only
-the 15 development-validation tasks for checkpoint selection, then freeze the configuration before
-comparisons on the historically named 80-task `held_out` and 240-task `final_only` reporting
-buckets. Those names define training and checkpoint-selection boundaries, not statistically
-untouched data: the repository already reports an aggregate golden audit and a complete 400-task
-base-model evaluation. See [`training/README.md`](training/README.md) for the exact protocol.
+The guarded paid run completed 15 optimiser steps on 59 development examples. Validation NLL fell
+from `0.060939` to `0.015557`, and Tinker saved resumable state plus an indefinite sampler
+checkpoint. A like-for-like organiser evaluation on the 15 development-validation tasks produced:
+
+| Controlled development-validation comparison | Base | LoRA | Change |
+| --- | ---: | ---: | ---: |
+| Tasks passed | 7/15 | 9/15 | +2 |
+| Pass rate | 46.67% | 60.00% | +13.33 pp |
+| Cell accuracy | 74.23% | 77.15% | +2.92 pp |
+| Accepted predictions | 14/15 | 15/15 | +1 |
+| Evaluator errors (not inference/write failures) | 0 | 0 | 0 |
+
+Three tasks improved from fail to pass while one regressed from pass to fail. This is a real
+checkpoint-derived result, but it is deliberately not presented as a replacement 400-task score or
+as proof of generalisation. The 15 examples come from the development bucket and were used for
+checkpoint selection. The base arm also recorded one fail-closed `workbook_write_failed`
+prediction; its untouched fallback workbook remained gradeable, while the checkpoint arm accepted
+all 15 predictions. Six development examples with more than 500 target cells were excluded before
+the 59/15 split, and each comparison arm used one sample per task. The checkpoint and configuration
+must now remain frozen before comparisons
+on the historically named 80-task `held_out` and 240-task `final_only` reporting buckets. Those
+names define training and selection boundaries, not statistically untouched data: the repository
+already reports an aggregate golden audit and a complete 400-task base-model evaluation. The
+curated, hash-bound record is
+[`experiments/tinker_lora_validation.json`](experiments/tinker_lora_validation.json); see
+[`training/README.md`](training/README.md) for the exact protocol. Raw run directories and
+recalculated evaluator copies remain local, so the committed record is a transparent hash summary,
+not a self-contained or tamper-proof evidence pack.
 
 ## Verified evaluation
 
@@ -189,6 +215,8 @@ applied without credentials or provider calls using:
 - `experiments/public_benchmark_audit.json` — a later aggregate structural audit that did open all
   public golden workbooks; it publishes no task-specific answer values and makes clear why the
   public buckets are reporting partitions rather than statistically untouched holdouts.
+- `experiments/tinker_lora_validation.json` — curated training and like-for-like checkpoint
+  evaluation evidence, including configuration, summary metrics and cryptographic bindings.
 - `PROVENANCE.md` — exact organiser scaffold revision and dataset licence boundary.
 
 ## Public submission links
