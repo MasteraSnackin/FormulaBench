@@ -1,0 +1,1040 @@
+{
+  "tts_provider": "heygen",
+  "voice_id": "05f19352e8f74b0392a8f411eba40de1",
+  "bgm": null,
+  "bgm_pending": false,
+  "bgm_provider": null,
+  "bgm_pid": null,
+  "bgm_log": null,
+  "bgm_mode": null,
+  "bgm_target_duration_s": null,
+  "bgm_seed_duration_s": null,
+  "bgm_loop_count": null,
+  "voices": [
+    {
+      "id": "01",
+      "path": "assets/voice/01.wav",
+      "duration_s": 4.702,
+      "words": [
+        {
+          "id": "w0",
+          "text": "A",
+          "start": 0.28,
+          "end": 0.3
+        },
+        {
+          "id": "w1",
+          "text": "formula",
+          "start": 0.319,
+          "end": 0.719
+        },
+        {
+          "id": "w2",
+          "text": "can",
+          "start": 0.759,
+          "end": 0.939
+        },
+        {
+          "id": "w3",
+          "text": "look",
+          "start": 0.959,
+          "end": 1.12
+        },
+        {
+          "id": "w4",
+          "text": "right,",
+          "start": 1.22,
+          "end": 1.339
+        },
+        {
+          "id": "w5",
+          "text": "reference",
+          "start": 1.599,
+          "end": 2.039
+        },
+        {
+          "id": "w6",
+          "text": "real",
+          "start": 2.079,
+          "end": 2.339
+        },
+        {
+          "id": "w7",
+          "text": "cells,",
+          "start": 2.379,
+          "end": 2.7
+        },
+        {
+          "id": "w8",
+          "text": "and",
+          "start": 3.039,
+          "end": 3.199
+        },
+        {
+          "id": "w9",
+          "text": "still",
+          "start": 3.259,
+          "end": 3.439
+        },
+        {
+          "id": "w10",
+          "text": "return",
+          "start": 3.46,
+          "end": 3.759
+        },
+        {
+          "id": "w11",
+          "text": "the",
+          "start": 3.799,
+          "end": 3.859
+        },
+        {
+          "id": "w12",
+          "text": "wrong",
+          "start": 3.899,
+          "end": 4.059
+        },
+        {
+          "id": "w13",
+          "text": "answer.",
+          "start": 4.159,
+          "end": 4.46
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "path": "assets/voice/02.wav",
+      "duration_s": 6.844,
+      "words": [
+        {
+          "id": "w0",
+          "text": "That’s",
+          "start": 0.099,
+          "end": 0.379
+        },
+        {
+          "id": "w1",
+          "text": "why",
+          "start": 0.379,
+          "end": 0.479
+        },
+        {
+          "id": "w2",
+          "text": "FormulaBench",
+          "start": 0.599,
+          "end": 1.299
+        },
+        {
+          "id": "w3",
+          "text": "doesn’t",
+          "start": 1.339,
+          "end": 1.62
+        },
+        {
+          "id": "w4",
+          "text": "stop",
+          "start": 1.699,
+          "end": 1.899
+        },
+        {
+          "id": "w5",
+          "text": "at",
+          "start": 1.939,
+          "end": 2.039
+        },
+        {
+          "id": "w6",
+          "text": "valid",
+          "start": 2.079,
+          "end": 2.419
+        },
+        {
+          "id": "w7",
+          "text": "syntax.",
+          "start": 2.46,
+          "end": 3.039
+        },
+        {
+          "id": "w8",
+          "text": "It",
+          "start": 3.5,
+          "end": 3.579
+        },
+        {
+          "id": "w9",
+          "text": "asks",
+          "start": 3.659,
+          "end": 3.98
+        },
+        {
+          "id": "w10",
+          "text": "whether",
+          "start": 4,
+          "end": 4.299
+        },
+        {
+          "id": "w11",
+          "text": "every",
+          "start": 4.339,
+          "end": 4.659
+        },
+        {
+          "id": "w12",
+          "text": "target",
+          "start": 4.699,
+          "end": 5.019
+        },
+        {
+          "id": "w13",
+          "text": "cell",
+          "start": 5.139,
+          "end": 5.42
+        },
+        {
+          "id": "w14",
+          "text": "is",
+          "start": 5.46,
+          "end": 5.639
+        },
+        {
+          "id": "w15",
+          "text": "actually",
+          "start": 5.699,
+          "end": 6.159
+        },
+        {
+          "id": "w16",
+          "text": "correct.",
+          "start": 6.179,
+          "end": 6.659
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "path": "assets/voice/03.wav",
+      "duration_s": 8.594,
+      "words": [
+        {
+          "id": "w0",
+          "text": "The",
+          "start": 0.099,
+          "end": 0.239
+        },
+        {
+          "id": "w1",
+          "text": "harness",
+          "start": 0.28,
+          "end": 0.639
+        },
+        {
+          "id": "w2",
+          "text": "inspects",
+          "start": 0.719,
+          "end": 1.259
+        },
+        {
+          "id": "w3",
+          "text": "the",
+          "start": 1.319,
+          "end": 1.359
+        },
+        {
+          "id": "w4",
+          "text": "workbook,",
+          "start": 1.439,
+          "end": 1.899
+        },
+        {
+          "id": "w5",
+          "text": "builds",
+          "start": 2.339,
+          "end": 2.599
+        },
+        {
+          "id": "w6",
+          "text": "sheet-aware",
+          "start": 2.659,
+          "end": 3.159
+        },
+        {
+          "id": "w7",
+          "text": "context,",
+          "start": 3.24,
+          "end": 3.819
+        },
+        {
+          "id": "w8",
+          "text": "samples",
+          "start": 4.199,
+          "end": 4.559
+        },
+        {
+          "id": "w9",
+          "text": "Qwen",
+          "start": 4.639,
+          "end": 4.919
+        },
+        {
+          "id": "w10",
+          "text": "once,",
+          "start": 5,
+          "end": 5.299
+        },
+        {
+          "id": "w11",
+          "text": "then",
+          "start": 5.639,
+          "end": 5.759
+        },
+        {
+          "id": "w12",
+          "text": "validates",
+          "start": 5.839,
+          "end": 6.299
+        },
+        {
+          "id": "w13",
+          "text": "exact",
+          "start": 6.399,
+          "end": 6.839
+        },
+        {
+          "id": "w14",
+          "text": "coverage",
+          "start": 6.899,
+          "end": 7.259
+        },
+        {
+          "id": "w15",
+          "text": "and",
+          "start": 7.299,
+          "end": 7.44
+        },
+        {
+          "id": "w16",
+          "text": "formula",
+          "start": 7.48,
+          "end": 7.839
+        },
+        {
+          "id": "w17",
+          "text": "safety.",
+          "start": 7.94,
+          "end": 8.34
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "path": "assets/voice/04.wav",
+      "duration_s": 7.393,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Only",
+          "start": 0.159,
+          "end": 0.539
+        },
+        {
+          "id": "w1",
+          "text": "then",
+          "start": 0.599,
+          "end": 0.979
+        },
+        {
+          "id": "w2",
+          "text": "does",
+          "start": 1.019,
+          "end": 1.159
+        },
+        {
+          "id": "w3",
+          "text": "it",
+          "start": 1.199,
+          "end": 1.319
+        },
+        {
+          "id": "w4",
+          "text": "write",
+          "start": 1.36,
+          "end": 1.539
+        },
+        {
+          "id": "w5",
+          "text": "atomically",
+          "start": 1.559,
+          "end": 2.259
+        },
+        {
+          "id": "w6",
+          "text": ",",
+          "start": 2.259,
+          "end": 2.259
+        },
+        {
+          "id": "w7",
+          "text": "or",
+          "start": 2.7,
+          "end": 2.899
+        },
+        {
+          "id": "w8",
+          "text": "fail",
+          "start": 2.96,
+          "end": 3.24
+        },
+        {
+          "id": "w9",
+          "text": "closed",
+          "start": 3.299,
+          "end": 3.779
+        },
+        {
+          "id": "w10",
+          "text": ",",
+          "start": 3.779,
+          "end": 3.779
+        },
+        {
+          "id": "w11",
+          "text": "before",
+          "start": 3.819,
+          "end": 4.159
+        },
+        {
+          "id": "w12",
+          "text": "the",
+          "start": 4.179,
+          "end": 4.279
+        },
+        {
+          "id": "w13",
+          "text": "organiser-supplied",
+          "start": 4.38,
+          "end": 5.319
+        },
+        {
+          "id": "w14",
+          "text": "evaluator",
+          "start": 5.44,
+          "end": 6.039
+        },
+        {
+          "id": "w15",
+          "text": "scores",
+          "start": 6.159,
+          "end": 6.519
+        },
+        {
+          "id": "w16",
+          "text": "the",
+          "start": 6.539,
+          "end": 6.639
+        },
+        {
+          "id": "w17",
+          "text": "workbook.",
+          "start": 6.679,
+          "end": 7.179
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "path": "assets/voice/05.wav",
+      "duration_s": 12.722,
+      "words": [
+        {
+          "id": "w0",
+          "text": "In",
+          "start": 0.179,
+          "end": 0.259
+        },
+        {
+          "id": "w1",
+          "text": "our",
+          "start": 0.299,
+          "end": 0.419
+        },
+        {
+          "id": "w2",
+          "text": "public",
+          "start": 0.479,
+          "end": 0.819
+        },
+        {
+          "id": "w3",
+          "text": "self-evaluation",
+          "start": 0.959,
+          "end": 2.039
+        },
+        {
+          "id": "w4",
+          "text": "of",
+          "start": 2.079,
+          "end": 2.259
+        },
+        {
+          "id": "w5",
+          "text": "four",
+          "start": 2.299,
+          "end": 2.519
+        },
+        {
+          "id": "w6",
+          "text": "hundred",
+          "start": 2.579,
+          "end": 2.759
+        },
+        {
+          "id": "w7",
+          "text": "benchmark",
+          "start": 2.879,
+          "end": 3.379
+        },
+        {
+          "id": "w8",
+          "text": "tasks,",
+          "start": 3.5,
+          "end": 4
+        },
+        {
+          "id": "w9",
+          "text": "one",
+          "start": 4.46,
+          "end": 4.579
+        },
+        {
+          "id": "w10",
+          "text": "hundred",
+          "start": 4.679,
+          "end": 5.019
+        },
+        {
+          "id": "w11",
+          "text": "thirty-three",
+          "start": 5.059,
+          "end": 5.559
+        },
+        {
+          "id": "w12",
+          "text": "passed:",
+          "start": 5.639,
+          "end": 6.079
+        },
+        {
+          "id": "w13",
+          "text": "a",
+          "start": 6.46,
+          "end": 6.559
+        },
+        {
+          "id": "w14",
+          "text": "thirty-three",
+          "start": 6.619,
+          "end": 7.059
+        },
+        {
+          "id": "w15",
+          "text": "point",
+          "start": 7.219,
+          "end": 7.539
+        },
+        {
+          "id": "w16",
+          "text": "two",
+          "start": 7.579,
+          "end": 7.679
+        },
+        {
+          "id": "w17",
+          "text": "five",
+          "start": 7.859,
+          "end": 7.98
+        },
+        {
+          "id": "w18",
+          "text": "percent",
+          "start": 8.119,
+          "end": 8.439
+        },
+        {
+          "id": "w19",
+          "text": "pass",
+          "start": 8.519,
+          "end": 8.8
+        },
+        {
+          "id": "w20",
+          "text": "rate,",
+          "start": 8.88,
+          "end": 9.42
+        },
+        {
+          "id": "w21",
+          "text": "with",
+          "start": 9.46,
+          "end": 9.659
+        },
+        {
+          "id": "w22",
+          "text": "forty",
+          "start": 9.699,
+          "end": 10.059
+        },
+        {
+          "id": "w23",
+          "text": "point",
+          "start": 10.099,
+          "end": 10.399
+        },
+        {
+          "id": "w24",
+          "text": "five",
+          "start": 10.439,
+          "end": 10.579
+        },
+        {
+          "id": "w25",
+          "text": "six",
+          "start": 10.779,
+          "end": 10.94
+        },
+        {
+          "id": "w26",
+          "text": "percent",
+          "start": 11.039,
+          "end": 11.42
+        },
+        {
+          "id": "w27",
+          "text": "cell",
+          "start": 11.479,
+          "end": 11.699
+        },
+        {
+          "id": "w28",
+          "text": "accuracy.",
+          "start": 11.8,
+          "end": 12.42
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "path": "assets/voice/06.wav",
+      "duration_s": 13.531,
+      "words": [
+        {
+          "id": "w0",
+          "text": "There",
+          "start": 0.219,
+          "end": 0.359
+        },
+        {
+          "id": "w1",
+          "text": "were",
+          "start": 0.399,
+          "end": 0.5
+        },
+        {
+          "id": "w2",
+          "text": "zero",
+          "start": 0.68,
+          "end": 1.019
+        },
+        {
+          "id": "w3",
+          "text": "missing",
+          "start": 1.1,
+          "end": 1.439
+        },
+        {
+          "id": "w4",
+          "text": "predictions",
+          "start": 1.48,
+          "end": 2.059
+        },
+        {
+          "id": "w5",
+          "text": "and",
+          "start": 2.139,
+          "end": 2.24
+        },
+        {
+          "id": "w6",
+          "text": "zero",
+          "start": 2.379,
+          "end": 2.7
+        },
+        {
+          "id": "w7",
+          "text": "evaluator",
+          "start": 2.799,
+          "end": 3.46
+        },
+        {
+          "id": "w8",
+          "text": "errors.",
+          "start": 3.519,
+          "end": 4.019
+        },
+        {
+          "id": "w9",
+          "text": "But",
+          "start": 4.559,
+          "end": 4.699
+        },
+        {
+          "id": "w10",
+          "text": "ninety-four",
+          "start": 4.739,
+          "end": 5.319
+        },
+        {
+          "id": "w11",
+          "text": "point",
+          "start": 5.559,
+          "end": 5.819
+        },
+        {
+          "id": "w12",
+          "text": "eight",
+          "start": 5.879,
+          "end": 5.96
+        },
+        {
+          "id": "w13",
+          "text": "four",
+          "start": 6.159,
+          "end": 6.259
+        },
+        {
+          "id": "w14",
+          "text": "percent",
+          "start": 6.42,
+          "end": 6.759
+        },
+        {
+          "id": "w15",
+          "text": "of",
+          "start": 6.799,
+          "end": 6.879
+        },
+        {
+          "id": "w16",
+          "text": "wrong",
+          "start": 6.96,
+          "end": 7.199
+        },
+        {
+          "id": "w17",
+          "text": "cells",
+          "start": 7.319,
+          "end": 7.679
+        },
+        {
+          "id": "w18",
+          "text": "sat",
+          "start": 8,
+          "end": 8.239
+        },
+        {
+          "id": "w19",
+          "text": "inside",
+          "start": 8.319,
+          "end": 8.8
+        },
+        {
+          "id": "w20",
+          "text": "contract-valid",
+          "start": 8.939,
+          "end": 9.819
+        },
+        {
+          "id": "w21",
+          "text": "workbooks.",
+          "start": 9.92,
+          "end": 10.539
+        },
+        {
+          "id": "w22",
+          "text": "Running",
+          "start": 11.479,
+          "end": 11.84
+        },
+        {
+          "id": "w23",
+          "text": "is",
+          "start": 11.88,
+          "end": 12
+        },
+        {
+          "id": "w24",
+          "text": "not",
+          "start": 12.099,
+          "end": 12.259
+        },
+        {
+          "id": "w25",
+          "text": "the",
+          "start": 12.319,
+          "end": 12.439
+        },
+        {
+          "id": "w26",
+          "text": "same",
+          "start": 12.5,
+          "end": 12.679
+        },
+        {
+          "id": "w27",
+          "text": "as",
+          "start": 12.719,
+          "end": 12.839
+        },
+        {
+          "id": "w28",
+          "text": "right.",
+          "start": 12.939,
+          "end": 13.259
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "path": "assets/voice/07.wav",
+      "duration_s": 7.68,
+      "words": [
+        {
+          "id": "w0",
+          "text": "After",
+          "start": 0.159,
+          "end": 0.419
+        },
+        {
+          "id": "w1",
+          "text": "scoring,",
+          "start": 0.519,
+          "end": 0.959
+        },
+        {
+          "id": "w2",
+          "text": "Tinker",
+          "start": 1.259,
+          "end": 1.519
+        },
+        {
+          "id": "w3",
+          "text": "lifted",
+          "start": 1.639,
+          "end": 1.919
+        },
+        {
+          "id": "w4",
+          "text": "development",
+          "start": 1.959,
+          "end": 2.48
+        },
+        {
+          "id": "w5",
+          "text": "passes",
+          "start": 2.539,
+          "end": 2.919
+        },
+        {
+          "id": "w6",
+          "text": "from",
+          "start": 3,
+          "end": 3.099
+        },
+        {
+          "id": "w7",
+          "text": "seven",
+          "start": 3.259,
+          "end": 3.48
+        },
+        {
+          "id": "w8",
+          "text": "to",
+          "start": 3.639,
+          "end": 3.779
+        },
+        {
+          "id": "w9",
+          "text": "nine.",
+          "start": 3.799,
+          "end": 4.139
+        },
+        {
+          "id": "w10",
+          "text": "This",
+          "start": 4.639,
+          "end": 4.779
+        },
+        {
+          "id": "w11",
+          "text": "is",
+          "start": 4.819,
+          "end": 4.9
+        },
+        {
+          "id": "w12",
+          "text": "checkpoint",
+          "start": 5.019,
+          "end": 5.48
+        },
+        {
+          "id": "w13",
+          "text": "selection,",
+          "start": 5.519,
+          "end": 6.019
+        },
+        {
+          "id": "w14",
+          "text": "not",
+          "start": 6.299,
+          "end": 6.559
+        },
+        {
+          "id": "w15",
+          "text": "held-out",
+          "start": 6.599,
+          "end": 6.98
+        },
+        {
+          "id": "w16",
+          "text": "proof.",
+          "start": 7.039,
+          "end": 7.379
+        }
+      ]
+    },
+    {
+      "id": "08",
+      "path": "assets/voice/08.wav",
+      "duration_s": 13.584,
+      "spoken_duration_s": 9.35,
+      "words": [
+        {
+          "id": "w0",
+          "text": "The",
+          "start": 0.179,
+          "end": 0.299
+        },
+        {
+          "id": "w1",
+          "text": "next",
+          "start": 0.34,
+          "end": 0.539
+        },
+        {
+          "id": "w2",
+          "text": "step",
+          "start": 0.599,
+          "end": 0.819
+        },
+        {
+          "id": "w3",
+          "text": "is",
+          "start": 0.859,
+          "end": 0.979
+        },
+        {
+          "id": "w4",
+          "text": "targeted:",
+          "start": 1.019,
+          "end": 1.519
+        },
+        {
+          "id": "w5",
+          "text": "deterministic",
+          "start": 1.879,
+          "end": 2.619
+        },
+        {
+          "id": "w6",
+          "text": "transformations",
+          "start": 2.679,
+          "end": 3.519
+        },
+        {
+          "id": "w7",
+          "text": "where",
+          "start": 3.579,
+          "end": 3.699
+        },
+        {
+          "id": "w8",
+          "text": "rules",
+          "start": 3.819,
+          "end": 4.119
+        },
+        {
+          "id": "w9",
+          "text": "are",
+          "start": 4.179,
+          "end": 4.259
+        },
+        {
+          "id": "w10",
+          "text": "reliable,",
+          "start": 4.339,
+          "end": 4.94
+        },
+        {
+          "id": "w11",
+          "text": "plus",
+          "start": 5.359,
+          "end": 5.639
+        },
+        {
+          "id": "w12",
+          "text": "formula-execution",
+          "start": 5.799,
+          "end": 6.839
+        },
+        {
+          "id": "w13",
+          "text": "checks",
+          "start": 6.96,
+          "end": 7.259
+        },
+        {
+          "id": "w14",
+          "text": "where",
+          "start": 7.299,
+          "end": 7.399
+        },
+        {
+          "id": "w15",
+          "text": "semantics",
+          "start": 7.48,
+          "end": 7.98
+        },
+        {
+          "id": "w16",
+          "text": "decide",
+          "start": 8.039,
+          "end": 8.38
+        },
+        {
+          "id": "w17",
+          "text": "the",
+          "start": 8.42,
+          "end": 8.5
+        },
+        {
+          "id": "w18",
+          "text": "answer.",
+          "start": 8.599,
+          "end": 9
+        }
+      ]
+    }
+  ],
+  "sfx": [],
+  "total_duration_s": 75.05
+}

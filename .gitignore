@@ -8,6 +8,18 @@
 **/__pycache__/
 **/*.py[cod]
 
+# Local presentation work and authenticated screenshots are never published.
+.tmp-presentation/
+
+# Keep the reproducible HyperFrames source, but exclude generated caches and renders.
+videos/**/node_modules/
+videos/**/.hyperframes/
+videos/**/.thumbnails/
+videos/**/.waveform-cache/
+videos/**/capture/
+videos/**/renders/
+videos/**/snapshots/
+
 data/spreadsheetbench_verified_400/
 training/generated/
 training/runs/

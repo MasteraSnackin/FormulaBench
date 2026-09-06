@@ -1,0 +1,104 @@
+[
+  {
+    "id": "w0",
+    "text": "After",
+    "start": 0.159,
+    "end": 0.419
+  },
+  {
+    "id": "w1",
+    "text": "scoring,",
+    "start": 0.519,
+    "end": 0.959
+  },
+  {
+    "id": "w2",
+    "text": "Tinker",
+    "start": 1.259,
+    "end": 1.519
+  },
+  {
+    "id": "w3",
+    "text": "lifted",
+    "start": 1.639,
+    "end": 1.919
+  },
+  {
+    "id": "w4",
+    "text": "development",
+    "start": 1.959,
+    "end": 2.48
+  },
+  {
+    "id": "w5",
+    "text": "passes",
+    "start": 2.539,
+    "end": 2.919
+  },
+  {
+    "id": "w6",
+    "text": "from",
+    "start": 3,
+    "end": 3.099
+  },
+  {
+    "id": "w7",
+    "text": "seven",
+    "start": 3.259,
+    "end": 3.48
+  },
+  {
+    "id": "w8",
+    "text": "to",
+    "start": 3.639,
+    "end": 3.779
+  },
+  {
+    "id": "w9",
+    "text": "nine.",
+    "start": 3.799,
+    "end": 4.139
+  },
+  {
+    "id": "w10",
+    "text": "This",
+    "start": 4.639,
+    "end": 4.779
+  },
+  {
+    "id": "w11",
+    "text": "is",
+    "start": 4.819,
+    "end": 4.9
+  },
+  {
+    "id": "w12",
+    "text": "checkpoint",
+    "start": 5.019,
+    "end": 5.48
+  },
+  {
+    "id": "w13",
+    "text": "selection,",
+    "start": 5.519,
+    "end": 6.019
+  },
+  {
+    "id": "w14",
+    "text": "not",
+    "start": 6.299,
+    "end": 6.559
+  },
+  {
+    "id": "w15",
+    "text": "held-out",
+    "start": 6.599,
+    "end": 6.98
+  },
+  {
+    "id": "w16",
+    "text": "proof.",
+    "start": 7.039,
+    "end": 7.379
+  }
+]

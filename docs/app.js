@@ -59,10 +59,9 @@ document.querySelectorAll("[data-view]").forEach((button) => {
   button.addEventListener("click", () => setView(button.dataset.view));
 });
 
-const demoVideo = document.querySelector("#demo-video");
-if (demoVideo) {
-  demoVideo.addEventListener("error", () => {
-    const message = document.querySelector("#video-status");
+document.querySelectorAll("video[data-status-target]").forEach((video) => {
+  video.addEventListener("error", () => {
+    const message = document.getElementById(video.dataset.statusTarget);
     if (message) message.hidden = false;
   }, true);
-}
+});

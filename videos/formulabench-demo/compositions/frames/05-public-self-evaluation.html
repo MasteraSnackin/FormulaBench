@@ -1,0 +1,71 @@
+<template>
+  <style>
+    @font-face { font-family: "EB Garamond"; src: url("assets/fonts/EBGaramond-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "EB Garamond"; src: url("assets/fonts/EBGaramond-700.woff2") format("woff2"); font-weight: 700; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-700.woff2") format("woff2"); font-weight: 700; }
+    @font-face { font-family: "JetBrains Mono"; src: url("assets/fonts/JetBrainsMono-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "JetBrains Mono"; src: url("assets/fonts/JetBrainsMono-700.woff2") format("woff2"); font-weight: 700; }
+    * { box-sizing: border-box; }
+    #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; container-type: size; color: #0B1623; }
+    .f05-ground { position: absolute; inset: 0; background: #F4F0E6; }
+    .f05-kicker { position: absolute; left: 80px; top: 66px; font: 500 25px/1 "JetBrains Mono"; letter-spacing: .14em; color: rgba(11,22,35,.62); }
+    .f05-kicker-mark { color: #E45F5F; margin-right: 12px; }
+    .f05-ring-wrap { position: absolute; left: 105px; top: 174px; width: 620px; height: 620px; }
+    .f05-ring { width: 100%; height: 100%; overflow: visible; }
+    .f05-ring-base { fill: none; stroke: rgba(11,22,35,.12); stroke-width: 24; }
+    .f05-ring-live { fill: none; stroke: #2CCB8C; stroke-width: 24; stroke-linecap: butt; stroke-dasharray: 1194; transform-origin: 310px 310px; transform: rotate(-90deg); }
+    .f05-count-group { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 4px; }
+    .f05-count { font: 400 148px/.88 "EB Garamond"; letter-spacing: -.025em; }
+    .f05-denom { margin-top: 15px; font: 500 29px/1 "JetBrains Mono"; color: rgba(11,22,35,.58); }
+    .f05-status { margin-top: 22px; font: 500 18px/1 "JetBrains Mono"; letter-spacing: .12em; }
+    .f05-summary { position: absolute; left: 820px; top: 210px; width: 980px; }
+    .f05-label { font: 500 24px/1 "JetBrains Mono"; letter-spacing: .12em; color: rgba(11,22,35,.58); }
+    .f05-rate { margin-top: 70px; font: 400 162px/.9 "EB Garamond"; letter-spacing: -.028em; }
+    .f05-rate-unit { display: block; margin-top: 20px; font: 700 31px/1 "JetBrains Mono"; letter-spacing: .08em; }
+    .f05-rule { margin-top: 50px; width: 100%; height: 1px; background: rgba(11,22,35,.18); }
+    .f05-bar-shell { position: relative; margin-top: 32px; width: 100%; height: 26px; border: 1px solid rgba(11,22,35,.16); background: rgba(11,22,35,.04); overflow: hidden; }
+    .f05-bar { position: absolute; inset: 0; background: #2CCB8C; transform-origin: left center; }
+    .f05-bar-ends { margin-top: 13px; display: flex; justify-content: space-between; font: 500 18px/1 "JetBrains Mono"; color: #596168; }
+    .f05-cell-accuracy { margin-top: 34px; display: flex; align-items: baseline; justify-content: space-between; padding-top: 24px; border-top: 1px solid rgba(11,22,35,.18); }
+    .f05-cell-number { font: 400 84px/.9 "EB Garamond"; letter-spacing: -.02em; }
+    .f05-cell-unit { font: 700 24px/1 "JetBrains Mono"; letter-spacing: .08em; }
+    .f05-lockup { position: absolute; left: 80px; top: 824px; width: 1760px; display: flex; align-items: center; justify-content: space-between; font: 500 20px/1 "JetBrains Mono"; letter-spacing: .08em; color: rgba(11,22,35,.62); }
+    .f05-lockup-strong { color: #0B1623; font-weight: 700; }
+  </style>
+  <div data-hf-id="hf-6d87" id="root" data-composition-id="05-public-self-evaluation" data-width="1920" data-height="1080" data-duration="13.122">
+    <div data-hf-id="hf-fga9" id="f05-ground" class="clip f05-ground" data-start="0" data-duration="13.122" data-track-index="0">
+      <div data-hf-id="hf-q9h4" id="f05-kicker" class="f05-kicker"><span data-hf-id="hf-szsr" class="f05-kicker-mark">✱</span>PUBLIC SELF-EVALUATION / 400 BENCHMARK TASKS</div>
+      <section data-hf-id="hf-pbk8" id="f05-ring-wrap" class="f05-ring-wrap">
+        <svg data-hf-id="hf-lqd6" class="f05-ring" viewBox="0 0 620 620" aria-label="33.25 percent pass rate"><circle data-hf-id="hf-u3ah" class="f05-ring-base" cx="310" cy="310" r="190" /><circle data-hf-id="hf-enl1" id="f05-ring-live" class="f05-ring-live" cx="310" cy="310" r="190" /></svg>
+        <div data-hf-id="hf-2qqw" id="f05-count-group" class="f05-count-group"><span data-hf-id="hf-kq9b" id="f05-count" class="f05-count">0</span><span data-hf-id="hf-fhax" class="f05-denom">/ 400 TASKS</span><span data-hf-id="hf-u8dn" class="f05-status">PASSED</span></div>
+      </section>
+      <section data-hf-id="hf-93gy" id="f05-summary" class="f05-summary">
+        <div data-hf-id="hf-r5ke" class="f05-label">TASK PASS RATE</div>
+        <div data-hf-id="hf-8bqe" id="f05-rate" class="f05-rate">33.25%<span data-hf-id="hf-5u07" class="f05-rate-unit">PASS RATE</span></div>
+        <div data-hf-id="hf-cs9y" class="f05-rule"></div>
+        <div data-hf-id="hf-tsaa" class="f05-bar-shell"><div data-hf-id="hf-t7tw" id="f05-bar" class="f05-bar"></div></div>
+        <div data-hf-id="hf-iqpe" class="f05-bar-ends"><span data-hf-id="hf-tzpu">0%</span><span data-hf-id="hf-naf9">33.25%</span><span data-hf-id="hf-k7an">100%</span></div>
+        <div data-hf-id="hf-y7b6" id="f05-cell-accuracy" class="f05-cell-accuracy"><span data-hf-id="hf-c85t" class="f05-cell-number">40.56%</span><span data-hf-id="hf-bspl" class="f05-cell-unit">CELL ACCURACY</span></div>
+      </section>
+      <div data-hf-id="hf-g01u" id="f05-lockup" class="f05-lockup"><span data-hf-id="hf-dcf1" class="f05-lockup-strong">133 / 400 PASSED</span><span data-hf-id="hf-8s2r">ORGANISER-SUPPLIED EVALUATOR · SELF-RUN · 0 MISSING · 0 ERRORS</span></div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    const countNode = document.getElementById("f05-count");
+    const counter = { value: 0 };
+    tl.fromTo("#f05-kicker", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: .48, ease: "power3.out" }, .06);
+    tl.fromTo("#f05-ring-wrap", { opacity: 0, scale: .90 }, { opacity: 1, scale: 1, duration: .72, ease: "power3.out" }, .10);
+    tl.fromTo("#f05-ring-live", { strokeDashoffset: 1194 }, { strokeDashoffset: 797, duration: 1.70, ease: "power2.out" }, 4.10);
+    tl.fromTo(counter, { value: 0 }, { value: 133, duration: 1.65, ease: "power2.out", onUpdate: () => { countNode.textContent = String(Math.round(counter.value)); } }, 4.10);
+    tl.fromTo("#f05-summary", { opacity: 0, x: 42 }, { opacity: 1, x: 0, duration: .72, ease: "power3.out" }, 5.80);
+    tl.fromTo("#f05-rate", { opacity: 0, scale: .82, transformOrigin: "left center" }, { opacity: 1, scale: 1, duration: .86, ease: "power3.out" }, 6.35);
+    tl.fromTo("#f05-bar", { scaleX: 0 }, { scaleX: .3325, duration: 1.35, ease: "power2.out", transformOrigin: "left center" }, 7.30);
+    tl.fromTo("#f05-cell-accuracy", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: .65, ease: "power3.out" }, 10.75);
+    tl.fromTo("#f05-lockup", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .54, ease: "power2.out" }, 11.55);
+    window.__timelines["05-public-self-evaluation"] = tl;
+  </script>
+</template>

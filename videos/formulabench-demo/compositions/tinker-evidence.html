@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FormulaBench — Tinker development evidence</title>
+  <style>
+    @font-face { font-family: "EB Garamond"; src: url("assets/fonts/EBGaramond-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-700.woff2") format("woff2"); font-weight: 700; }
+    @font-face { font-family: "JetBrains Mono"; src: url("assets/fonts/JetBrainsMono-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "JetBrains Mono"; src: url("assets/fonts/JetBrainsMono-700.woff2") format("woff2"); font-weight: 700; }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; background: #F4F0E6; }
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      container-type: size;
+      color: #0B1623;
+      background: #F4F0E6;
+    }
+    .te-scene {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #F4F0E6;
+    }
+    .te-disclosure {
+      position: absolute;
+      left: 80px;
+      top: 48px;
+      font: 700 20px/1 "JetBrains Mono";
+      letter-spacing: .13em;
+      color: rgba(11,22,35,.70);
+    }
+    .te-disclosure-mark { margin-right: 13px; color: #E45F5F; }
+    .te-title {
+      position: absolute;
+      left: 80px;
+      top: 88px;
+      max-width: 1040px;
+      margin: 0;
+      font: 400 70px/.98 "EB Garamond";
+      letter-spacing: -.022em;
+    }
+    .te-caveat-box {
+      position: absolute;
+      right: 80px;
+      top: 52px;
+      width: 620px;
+      min-height: 116px;
+      padding: 22px 26px 20px 30px;
+      border: 1px solid rgba(11,22,35,.15);
+      border-left: 6px solid #2CCB8C;
+      border-radius: 8px;
+      background: #F8D5D5;
+    }
+    .te-caveat-title {
+      font: 700 17px/1.2 "JetBrains Mono";
+      letter-spacing: .075em;
+    }
+    .te-caveat-copy {
+      margin-top: 12px;
+      color: rgba(11,22,35,.67);
+      font: 400 21px/1.25 "Inter";
+    }
+    .te-capture-shell {
+      position: absolute;
+      left: 80px;
+      top: 210px;
+      width: 1230px;
+      height: 560px;
+      overflow: hidden;
+      border: 1px solid rgba(11,22,35,.16);
+      border-radius: 12px;
+      background: #F8D5D5;
+      box-shadow: 0 1px 3px rgba(11,22,35,.08), 0 4px 16px rgba(11,22,35,.04);
+    }
+    .te-capture-head {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      border-bottom: 1px solid rgba(11,22,35,.13);
+      background: #F4F0E6;
+      font: 500 17px/1 "JetBrains Mono";
+      letter-spacing: .06em;
+      color: rgba(11,22,35,.66);
+    }
+    .te-summary-label { opacity: 0; }
+    .te-camera {
+      position: absolute;
+      left: 60px;
+      right: 60px;
+      top: 82px;
+      bottom: 36px;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+    .te-image-layer {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .te-summary-layer { opacity: 0; }
+    .te-image-fit { position: relative; flex: none; overflow: hidden; background: #F4F0E6; }
+    .te-training-fit { width: 1070px; height: 438px; }
+    .te-summary-fit { width: 896px; height: 438px; background: #F4F0E6; }
+    .te-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .te-id-mask {
+      position: absolute;
+      left: 12px;
+      top: 66px;
+      width: 282px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      padding-left: 12px;
+      border: 1px solid rgba(11,22,35,.08);
+      background: #F4F0E6;
+      color: #596168;
+      font: 500 14px/1 "JetBrains Mono";
+      letter-spacing: .045em;
+      z-index: 2;
+    }
+    .te-side {
+      position: absolute;
+      right: 80px;
+      top: 210px;
+      width: 490px;
+      height: 560px;
+      overflow: hidden;
+      border: 1px solid rgba(244,240,230,.14);
+      border-radius: 12px;
+      background: #151817;
+      color: #F4F0E6;
+      box-shadow: 0 4px 16px rgba(11,22,35,.08);
+    }
+    .te-panel {
+      position: absolute;
+      inset: 0;
+      padding: 31px 32px 28px;
+    }
+    .te-ab-panel { opacity: 0; }
+    .te-panel-kicker {
+      color: rgba(244,240,230,.64);
+      font: 500 16px/1 "JetBrains Mono";
+      letter-spacing: .11em;
+    }
+    .te-panel-title {
+      margin-top: 22px;
+      font: 400 50px/.98 "EB Garamond";
+      letter-spacing: -.018em;
+    }
+    .te-facts {
+      margin-top: 26px;
+      border-top: 1px solid rgba(244,240,230,.16);
+    }
+    .te-fact {
+      min-height: 66px;
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(244,240,230,.13);
+    }
+    .te-fact-label {
+      color: rgba(244,240,230,.58);
+      font: 500 13px/1.2 "JetBrains Mono";
+      letter-spacing: .07em;
+    }
+    .te-fact-value {
+      font: 500 18px/1.24 "Inter";
+    }
+    .te-ab-hero {
+      margin-top: 22px;
+      padding: 16px 0 22px;
+      border-bottom: 1px solid rgba(244,240,230,.16);
+      font: 400 62px/.9 "EB Garamond";
+      letter-spacing: -.02em;
+    }
+    .te-ab-hero span {
+      display: block;
+      margin-top: 12px;
+      color: rgba(244,240,230,.61);
+      font: 500 14px/1.2 "JetBrains Mono";
+      letter-spacing: .08em;
+    }
+    .te-metric {
+      padding: 17px 0 16px;
+      border-bottom: 1px solid rgba(244,240,230,.13);
+    }
+    .te-metric-label {
+      color: rgba(244,240,230,.60);
+      font: 500 13px/1 "JetBrains Mono";
+      letter-spacing: .08em;
+    }
+    .te-metric-value {
+      margin-top: 9px;
+      font: 700 20px/1.15 "Inter";
+      font-variant-numeric: tabular-nums;
+    }
+    .te-foot {
+      position: absolute;
+      left: 80px;
+      right: 80px;
+      top: 810px;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(11,22,35,.17);
+      border-bottom: 1px solid rgba(11,22,35,.17);
+      color: rgba(11,22,35,.65);
+      font: 500 18px/1 "JetBrains Mono";
+      letter-spacing: .055em;
+    }
+    .te-foot strong { color: #0B1623; font-weight: 700; }
+    .te-final {
+      position: absolute;
+      left: 80px;
+      right: 80px;
+      top: 210px;
+      height: 670px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 70px 120px;
+      border: 1px solid rgba(11,22,35,.16);
+      border-radius: 12px;
+      background: #F8D5D5;
+      text-align: center;
+      opacity: 0;
+    }
+    .te-final-label {
+      font: 700 18px/1 "JetBrains Mono";
+      letter-spacing: .13em;
+      color: rgba(11,22,35,.62);
+    }
+    .te-final-title {
+      max-width: 1300px;
+      margin-top: 38px;
+      font: 400 110px/.94 "EB Garamond";
+      letter-spacing: -.026em;
+    }
+    .te-final-caveat {
+      margin-top: 42px;
+      padding-top: 26px;
+      width: 1150px;
+      border-top: 1px solid rgba(11,22,35,.18);
+      font: 700 24px/1.2 "JetBrains Mono";
+      letter-spacing: .075em;
+    }
+  </style>
+</head>
+<body>
+  <div data-hf-id="hf-te01" id="root" data-composition-id="tinker-evidence" data-width="1920" data-height="1080" data-duration="30.25">
+    <section data-hf-id="hf-te02" id="te-scene" class="clip te-scene" data-start="0" data-duration="30.25" data-track-index="0">
+      <div data-hf-id="hf-te03" id="te-disclosure" class="te-disclosure"><span data-hf-id="hf-te04" class="te-disclosure-mark">✱</span>FORMULABENCH / TINKER EVIDENCE</div>
+      <h1 data-hf-id="hf-te05" id="te-title" class="te-title">What changed after training?</h1>
+      <aside data-hf-id="hf-te06" id="te-caveat-box" class="te-caveat-box">
+        <div data-hf-id="hf-te07" class="te-caveat-title">DEVELOPMENT CHECKPOINT-SELECTION EVIDENCE</div>
+        <div data-hf-id="hf-te08" class="te-caveat-copy">Not a held-out generalisation result</div>
+      </aside>
+
+      <section data-hf-id="hf-te09" id="te-capture-shell" class="te-capture-shell">
+        <div data-hf-id="hf-te10" id="te-provider-label" class="te-capture-head" data-layout-allow-overlap>Provider capture 6 September 2026</div>
+        <div data-hf-id="hf-te11" id="te-summary-label" class="te-capture-head te-summary-label" data-layout-allow-overlap>FormulaBench-created A/B summary</div>
+        <div data-hf-id="hf-te12" id="te-camera" class="te-camera" data-layout-allow-overflow="">
+          <div data-hf-id="hf-te13" id="te-training-layer" class="te-image-layer">
+            <div data-hf-id="hf-te14" class="te-image-fit te-training-fit">
+              <img data-hf-id="hf-te15" class="te-image" src="assets/evidence/tinker-training-session.jpg" alt="Tinker training run and session activity charts" />
+              <div data-hf-id="hf-te16" class="te-id-mask" data-layout-allow-occlusion="">SESSION IDENTIFIER REDACTED</div>
+            </div>
+          </div>
+          <div data-hf-id="hf-te17" id="te-summary-layer" class="te-image-layer te-summary-layer">
+            <div data-hf-id="hf-te18" class="te-image-fit te-summary-fit">
+              <img data-hf-id="hf-te19" class="te-image" src="assets/evidence/tinker-development-ab.jpg" alt="FormulaBench development comparison showing improved task and cell results" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside data-hf-id="hf-te20" id="te-side" class="te-side">
+        <section data-hf-id="hf-te21" id="te-training-panel" class="te-panel">
+          <div data-hf-id="hf-te22" class="te-panel-kicker">TRAINING RECEIPT</div>
+          <div data-hf-id="hf-te23" class="te-panel-title">The controlled run</div>
+          <div data-hf-id="hf-te24" class="te-facts">
+            <div data-hf-id="hf-te25" class="te-fact"><span data-hf-id="hf-te26" class="te-fact-label">BASE MODEL</span><strong data-hf-id="hf-te27" class="te-fact-value">Qwen/Qwen3.8-27B</strong></div>
+            <div data-hf-id="hf-te28" class="te-fact"><span data-hf-id="hf-te29" class="te-fact-label">ADAPTER</span><strong data-hf-id="hf-te30" class="te-fact-value">rank-32 LoRA</strong></div>
+            <div data-hf-id="hf-te31" class="te-fact"><span data-hf-id="hf-te32" class="te-fact-label">DATA</span><strong data-hf-id="hf-te33" class="te-fact-value">59 development-training examples</strong></div>
+            <div data-hf-id="hf-te34" class="te-fact"><span data-hf-id="hf-te35" class="te-fact-label">OPTIMISER</span><strong data-hf-id="hf-te36" class="te-fact-value">15/15 optimiser steps</strong></div>
+            <div data-hf-id="hf-te37" class="te-fact"><span data-hf-id="hf-te38" class="te-fact-label">ACTIVITY</span><strong data-hf-id="hf-te39" class="te-fact-value">Non-zero training activity</strong></div>
+          </div>
+        </section>
+
+        <section data-hf-id="hf-te40" id="te-ab-panel" class="te-panel te-ab-panel" data-layout-allow-overflow="">
+          <div data-hf-id="hf-te41" class="te-panel-kicker">CONTROLLED DEVELOPMENT A/B</div>
+          <div data-hf-id="hf-te42" id="te-ab-hero" class="te-ab-hero">7 / 15 → 9 / 15<span data-hf-id="hf-te43">TASKS PASSED</span></div>
+          <div data-hf-id="hf-te44" class="te-metric"><div data-hf-id="hf-te45" class="te-metric-label">TASK PASS RATE</div><div data-hf-id="hf-te46" class="te-metric-value">46.67% → 60.00%</div></div>
+          <div data-hf-id="hf-te47" class="te-metric"><div data-hf-id="hf-te48" class="te-metric-label">CORRECT CELLS</div><div data-hf-id="hf-te49" class="te-metric-value">432/582 → 449/582</div></div>
+          <div data-hf-id="hf-te50" class="te-metric"><div data-hf-id="hf-te51" class="te-metric-label">CELL ACCURACY</div><div data-hf-id="hf-te52" class="te-metric-value">74.23% → 77.15%</div></div>
+        </section>
+      </aside>
+
+      <div data-hf-id="hf-te53" id="te-foot" class="te-foot"><strong data-hf-id="hf-te54">SAME 15 DEVELOPMENT TASKS</strong><span data-hf-id="hf-te55">CHECKPOINT SELECTION · NOT PUBLIC BENCHMARK REPLACEMENT</span></div>
+
+      <section data-hf-id="hf-te56" id="te-final" class="te-final">
+        <div data-hf-id="hf-te57" class="te-final-label">WHAT THIS RESULT SUPPORTS</div>
+        <div data-hf-id="hf-te58" class="te-final-title">Development checkpoint-selection evidence</div>
+        <div data-hf-id="hf-te59" class="te-final-caveat">NOT A HELD-OUT GENERALISATION RESULT</div>
+      </section>
+    </section>
+
+    <audio data-hf-id="hf-te60" id="te-narration" src="assets/voice/tinker-evidence.wav" data-start="0" data-duration="29.65" data-track-index="12" data-volume="1"></audio>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    const camera = document.getElementById("te-camera");
+    const cameraState = { scale: 1.05, x: 0, y: 0 };
+    function applyCamera() {
+      camera.style.transform = `translate(${cameraState.x}px, ${cameraState.y}px) scale(${cameraState.scale})`;
+    }
+    applyCamera();
+
+    tl.fromTo("#te-disclosure", { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: .44, ease: "power3.out" }, .04);
+    tl.fromTo("#te-title", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: .56, ease: "power3.out" }, .12);
+    tl.fromTo("#te-caveat-box", { opacity: 0, x: 22 }, { opacity: 1, x: 0, duration: .56, ease: "power3.out" }, .18);
+    tl.fromTo("#te-capture-shell", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .66, ease: "power3.out" }, .56);
+    tl.fromTo("#te-side", { x: 28 }, { x: 0, duration: .66, ease: "power3.out" }, .74);
+    tl.fromTo("#te-foot", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .48, ease: "power2.out" }, 1.10);
+    tl.to(cameraState, { scale: 1.10, x: -15, y: -5, duration: 11.60, ease: "power1.inOut", onUpdate: applyCamera }, .72);
+
+    tl.to("#te-training-layer", { opacity: 0, duration: .66, ease: "power1.inOut" }, 12.28);
+    tl.fromTo("#te-summary-layer", { opacity: 0 }, { opacity: 1, duration: .66, ease: "power1.inOut" }, 12.28);
+    tl.to("#te-provider-label", { opacity: 0, y: -7, duration: .34, ease: "power2.in" }, 12.18);
+    tl.fromTo("#te-summary-label", { opacity: 0, y: 7 }, { opacity: 1, y: 0, duration: .44, ease: "power2.out" }, 12.48);
+    tl.to("#te-training-panel", { opacity: 0, x: -18, duration: .50, ease: "power2.inOut" }, 12.20);
+    tl.fromTo("#te-ab-panel", { opacity: 0, x: 18 }, { opacity: 1, x: 0, duration: .58, ease: "power2.out" }, 12.48);
+    tl.to(cameraState, { scale: 1.06, x: 10, y: 4, duration: 6.70, ease: "power1.inOut", onUpdate: applyCamera }, 12.36);
+    tl.fromTo("#te-ab-hero", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .56, ease: "power3.out" }, 13.14);
+    tl.fromTo(".te-metric", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .44, stagger: .24, ease: "power2.out" }, 13.68);
+    tl.to(cameraState, { scale: 1.10, x: -9, y: -4, duration: 7.31, ease: "power1.inOut", onUpdate: applyCamera }, 19.06);
+
+    tl.to("#te-capture-shell", { autoAlpha: 0, duration: .36, ease: "power2.in" }, 26.50);
+    tl.to("#te-side", { autoAlpha: 0, duration: .36, ease: "power2.in" }, 26.50);
+    tl.to("#te-foot", { autoAlpha: 0, duration: .36, ease: "power2.in" }, 26.50);
+    tl.set("#te-final", { opacity: 1 }, 26.90);
+    tl.fromTo("#te-final", { y: 18 }, { y: 0, duration: .70, ease: "power3.out" }, 26.90);
+    window.__timelines["tinker-evidence"] = tl;
+  </script>
+</body>
+</html>

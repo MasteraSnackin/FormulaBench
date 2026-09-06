@@ -1,0 +1,16 @@
+{
+  "duration": 7.68,
+  "maxStaticSec": 2.5,
+  "assertions": [
+    { "kind": "appearsBy", "selector": "#f07-disclosure", "bySec": 0.8 },
+    { "kind": "appearsBy", "selector": "#f07-provider-label", "bySec": 1.5 },
+    { "kind": "appearsBy", "selector": "#f07-camera", "bySec": 1.0 },
+    { "kind": "before", "a": "#f07-provider-label", "b": "#f07-summary-label" },
+    { "kind": "appearsBy", "selector": "#f07-result", "bySec": 5.0 },
+    { "kind": "appearsBy", "selector": "#f07-caveat", "bySec": 5.1 },
+    { "kind": "staysInFrame", "selector": "#f07-title" },
+    { "kind": "staysInFrame", "selector": "#f07-camera" },
+    { "kind": "staysInFrame", "selector": "#f07-result" },
+    { "kind": "keepsMoving", "withinSelector": "#f07-scene", "maxStaticSec": 2.5 }
+  ]
+}

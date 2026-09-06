@@ -1,0 +1,20 @@
+{
+  "duration": 30.25,
+  "maxStaticSec": 3.4,
+  "assertions": [
+    { "kind": "appearsBy", "selector": "#te-disclosure", "bySec": 0.8 },
+    { "kind": "appearsBy", "selector": "#te-caveat-box", "bySec": 0.9 },
+    { "kind": "appearsBy", "selector": "#te-provider-label", "bySec": 1.5 },
+    { "kind": "appearsBy", "selector": "#te-training-panel", "bySec": 1.8 },
+    { "kind": "before", "a": "#te-provider-label", "b": "#te-summary-label" },
+    { "kind": "before", "a": "#te-training-panel", "b": "#te-ab-panel" },
+    { "kind": "appearsBy", "selector": "#te-ab-panel", "bySec": 13.4 },
+    { "kind": "appearsBy", "selector": "#te-final", "bySec": 27.7 },
+    { "kind": "staysInFrame", "selector": "#te-title" },
+    { "kind": "staysInFrame", "selector": "#te-caveat-box" },
+    { "kind": "staysInFrame", "selector": "#te-camera" },
+    { "kind": "staysInFrame", "selector": "#te-side" },
+    { "kind": "staysInFrame", "selector": "#te-final" },
+    { "kind": "keepsMoving", "withinSelector": "#te-scene", "maxStaticSec": 3.0 }
+  ]
+}

@@ -1,0 +1,386 @@
+[
+  {
+    "id": "w0",
+    "text": "This",
+    "start": 0.14,
+    "end": 0.34
+  },
+  {
+    "id": "w1",
+    "text": "provider-side",
+    "start": 0.399,
+    "end": 1.159
+  },
+  {
+    "id": "w2",
+    "text": "Tinker",
+    "start": 1.22,
+    "end": 1.5
+  },
+  {
+    "id": "w3",
+    "text": "capture",
+    "start": 1.599,
+    "end": 2.099
+  },
+  {
+    "id": "w4",
+    "text": "records",
+    "start": 2.359,
+    "end": 2.74
+  },
+  {
+    "id": "w5",
+    "text": "a",
+    "start": 2.779,
+    "end": 2.819
+  },
+  {
+    "id": "w6",
+    "text": "rank-thirty-two",
+    "start": 2.879,
+    "end": 3.639
+  },
+  {
+    "id": "w7",
+    "text": "LoRA",
+    "start": 3.799,
+    "end": 4.039
+  },
+  {
+    "id": "w8",
+    "text": "run",
+    "start": 4.119,
+    "end": 4.36
+  },
+  {
+    "id": "w9",
+    "text": "for",
+    "start": 4.46,
+    "end": 4.579
+  },
+  {
+    "id": "w10",
+    "text": "Qwen",
+    "start": 4.639,
+    "end": 4.979
+  },
+  {
+    "id": "w11",
+    "text": "three",
+    "start": 5.039,
+    "end": 5.179
+  },
+  {
+    "id": "w12",
+    "text": "point",
+    "start": 5.319,
+    "end": 5.599
+  },
+  {
+    "id": "w13",
+    "text": "eight,",
+    "start": 5.659,
+    "end": 5.779
+  },
+  {
+    "id": "w14",
+    "text": "twenty-seven",
+    "start": 6.299,
+    "end": 6.799
+  },
+  {
+    "id": "w15",
+    "text": "B,",
+    "start": 7,
+    "end": 7.079
+  },
+  {
+    "id": "w16",
+    "text": "on",
+    "start": 7.639,
+    "end": 7.719
+  },
+  {
+    "id": "w17",
+    "text": "the",
+    "start": 7.759,
+    "end": 7.799
+  },
+  {
+    "id": "w18",
+    "text": "development-training",
+    "start": 7.859,
+    "end": 8.699
+  },
+  {
+    "id": "w19",
+    "text": "partition,",
+    "start": 8.819,
+    "end": 9.36
+  },
+  {
+    "id": "w20",
+    "text": "with",
+    "start": 9.739,
+    "end": 9.84
+  },
+  {
+    "id": "w21",
+    "text": "non-zero",
+    "start": 9.979,
+    "end": 10.519
+  },
+  {
+    "id": "w22",
+    "text": "training",
+    "start": 10.639,
+    "end": 10.92
+  },
+  {
+    "id": "w23",
+    "text": "activity.",
+    "start": 10.979,
+    "end": 11.519
+  },
+  {
+    "id": "w24",
+    "text": "In",
+    "start": 11.899,
+    "end": 11.98
+  },
+  {
+    "id": "w25",
+    "text": "the",
+    "start": 12.019,
+    "end": 12.119
+  },
+  {
+    "id": "w26",
+    "text": "same",
+    "start": 12.179,
+    "end": 12.399
+  },
+  {
+    "id": "w27",
+    "text": "fifteen-task",
+    "start": 12.539,
+    "end": 13.399
+  },
+  {
+    "id": "w28",
+    "text": "development",
+    "start": 13.439,
+    "end": 13.9
+  },
+  {
+    "id": "w29",
+    "text": "comparison,",
+    "start": 13.979,
+    "end": 14.64
+  },
+  {
+    "id": "w30",
+    "text": "the",
+    "start": 15.199,
+    "end": 15.239
+  },
+  {
+    "id": "w31",
+    "text": "checkpoint",
+    "start": 15.339,
+    "end": 15.859
+  },
+  {
+    "id": "w32",
+    "text": "passed",
+    "start": 15.939,
+    "end": 16.379
+  },
+  {
+    "id": "w33",
+    "text": "nine",
+    "start": 16.44,
+    "end": 16.759
+  },
+  {
+    "id": "w34",
+    "text": "tasks",
+    "start": 16.819,
+    "end": 17.299
+  },
+  {
+    "id": "w35",
+    "text": "against",
+    "start": 17.359,
+    "end": 17.739
+  },
+  {
+    "id": "w36",
+    "text": "seven",
+    "start": 17.879,
+    "end": 18.279
+  },
+  {
+    "id": "w37",
+    "text": "for",
+    "start": 18.319,
+    "end": 18.399
+  },
+  {
+    "id": "w38",
+    "text": "the",
+    "start": 18.44,
+    "end": 18.5
+  },
+  {
+    "id": "w39",
+    "text": "base",
+    "start": 18.539,
+    "end": 18.779
+  },
+  {
+    "id": "w40",
+    "text": "model,",
+    "start": 18.859,
+    "end": 19.159
+  },
+  {
+    "id": "w41",
+    "text": "while",
+    "start": 19.539,
+    "end": 19.739
+  },
+  {
+    "id": "w42",
+    "text": "cell",
+    "start": 19.879,
+    "end": 20.079
+  },
+  {
+    "id": "w43",
+    "text": "accuracy",
+    "start": 20.159,
+    "end": 20.719
+  },
+  {
+    "id": "w44",
+    "text": "rose",
+    "start": 20.779,
+    "end": 21
+  },
+  {
+    "id": "w45",
+    "text": "from",
+    "start": 21.059,
+    "end": 21.18
+  },
+  {
+    "id": "w46",
+    "text": "seventy-four",
+    "start": 21.299,
+    "end": 21.84
+  },
+  {
+    "id": "w47",
+    "text": "point",
+    "start": 22.02,
+    "end": 22.239
+  },
+  {
+    "id": "w48",
+    "text": "two",
+    "start": 22.26,
+    "end": 22.459
+  },
+  {
+    "id": "w49",
+    "text": "three",
+    "start": 22.5,
+    "end": 22.659
+  },
+  {
+    "id": "w50",
+    "text": "to",
+    "start": 22.819,
+    "end": 23
+  },
+  {
+    "id": "w51",
+    "text": "seventy-seven",
+    "start": 23.059,
+    "end": 23.639
+  },
+  {
+    "id": "w52",
+    "text": "point",
+    "start": 23.819,
+    "end": 23.94
+  },
+  {
+    "id": "w53",
+    "text": "one",
+    "start": 24.079,
+    "end": 24.12
+  },
+  {
+    "id": "w54",
+    "text": "five",
+    "start": 24.319,
+    "end": 24.459
+  },
+  {
+    "id": "w55",
+    "text": "per",
+    "start": 24.639,
+    "end": 24.779
+  },
+  {
+    "id": "w56",
+    "text": "cent.",
+    "start": 24.799,
+    "end": 25.899
+  },
+  {
+    "id": "w57",
+    "text": "This",
+    "start": 25.939,
+    "end": 26.079
+  },
+  {
+    "id": "w58",
+    "text": "is",
+    "start": 26.119,
+    "end": 26.219
+  },
+  {
+    "id": "w59",
+    "text": "checkpoint-selection",
+    "start": 26.379,
+    "end": 27.42
+  },
+  {
+    "id": "w60",
+    "text": "evidence,",
+    "start": 27.479,
+    "end": 28.119
+  },
+  {
+    "id": "w61",
+    "text": "not",
+    "start": 28.239,
+    "end": 28.459
+  },
+  {
+    "id": "w62",
+    "text": "held-out",
+    "start": 28.519,
+    "end": 28.899
+  },
+  {
+    "id": "w63",
+    "text": "proof.",
+    "start": 28.959,
+    "end": 29.359
+  }
+]

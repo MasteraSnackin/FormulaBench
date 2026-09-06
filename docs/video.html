@@ -21,16 +21,16 @@
       <section class="media-hero">
         <p class="eyebrow">Demo video · The audit trail</p>
         <h1>A result you can inspect, including the failure.</h1>
-        <p>This 67-second demo follows one formula from plausible syntax through exact validation and into our public self-evaluation with the organiser-supplied evaluator. Every figure comes from evidence retained in the repository.</p>
+        <p>This 75-second demo follows one formula from plausible syntax through exact validation and the frozen public score, then labels the later Tinker experiment as development checkpoint selection. Every figure comes from evidence retained in the repository.</p>
       </section>
       <section class="media-stage" aria-label="Demo video and transcript">
         <div class="video-shell">
-          <video id="demo-video" controls preload="metadata" playsinline poster="assets/FormulaBench-Demo-poster.png">
+          <video id="demo-video" data-status-target="video-status" controls preload="metadata" playsinline poster="assets/FormulaBench-Demo-poster.png">
             <source src="assets/FormulaBench-Demo.mp4" type="video/mp4">
             <track kind="captions" srclang="en-GB" label="English" src="assets/FormulaBench-Demo.vtt">
             Your browser cannot play this MP4. <a href="assets/FormulaBench-Demo.mp4">Download the video</a>.
           </video>
-          <p class="asset-message"><a href="assets/FormulaBench-Demo.mp4" download>Download MP4</a> · English narration, burned-in captions and WebVTT · 67.4 seconds</p>
+          <p class="asset-message"><a href="assets/FormulaBench-Demo.mp4" download>Download MP4</a> · English narration, burned-in captions and WebVTT · 75.1 seconds</p>
           <p class="asset-message" id="video-status" hidden>The embedded file did not load. Use the download link above or view the <a href="https://github.com/MasteraSnackin/FormulaBench">repository copy</a>.</p>
         </div>
         <div class="transcript">
@@ -42,8 +42,32 @@
             <li>It writes atomically, or fails closed, before the organiser-supplied evaluator scores the workbook.</li>
             <li>In our public self-evaluation of 400 benchmark tasks, 133 passed: a 33.25% pass rate, with 40.56% cell accuracy.</li>
             <li>There were zero missing predictions and zero evaluator errors. But 94.84% of wrong cells sat inside contract-valid workbooks. Running is not the same as right.</li>
+            <li>After scoring, Tinker lifted development passes from seven to nine. This is checkpoint selection, not held-out proof.</li>
             <li>The next step is targeted: deterministic transformations where rules are reliable, plus formula-execution checks where semantics decide the answer.</li>
           </ol>
+        </div>
+      </section>
+      <section class="media-stage media-stage-secondary" id="tinker-evidence-video" aria-label="Tinker training evidence video and qualification">
+        <div class="media-hero media-hero-inline">
+          <p class="eyebrow">Tinker evidence clip · Development experiment</p>
+          <h2>Show the training run without exposing the account.</h2>
+          <p>This 30-second clip uses a privacy-cropped provider capture and the FormulaBench-authored A/B summary. It is not a live recording of the authenticated browser session, and it does not claim numerical throughput or utilisation averages that the dashboard did not export.</p>
+        </div>
+        <div class="video-shell">
+          <video id="tinker-video" data-status-target="tinker-video-status" controls preload="metadata" playsinline poster="assets/FormulaBench-Tinker-Evidence-poster.png">
+            <source src="assets/FormulaBench-Tinker-Evidence.mp4" type="video/mp4">
+            <track kind="captions" srclang="en-GB" label="English" src="assets/FormulaBench-Tinker-Evidence.vtt" default>
+            Your browser cannot play this MP4. <a href="assets/FormulaBench-Tinker-Evidence.mp4">Download the evidence clip</a>.
+          </video>
+          <p class="asset-message"><a href="assets/FormulaBench-Tinker-Evidence.mp4" download>Download Tinker evidence MP4</a> · English narration and WebVTT · 30.3 seconds</p>
+          <p class="asset-message" id="tinker-video-status" hidden>The evidence clip did not load. Use the download link above or inspect the retained screenshots on the <a href="index.html#tinker">Tinker evidence section</a>.</p>
+        </div>
+        <div class="transcript">
+          <div><p class="eyebrow">Qualification</p><h2>What the clip establishes</h2></div>
+          <div>
+            <p>The provider capture establishes the Qwen3.8-27B model, rank-32 LoRA configuration, development-training partition and non-zero training activity. The controlled FormulaBench comparison supplies the 7/15 to 9/15 task result and the 74.23% to 77.15% cell-accuracy result.</p>
+            <p class="qualification"><strong>Limit:</strong> this is development checkpoint-selection evidence, not a held-out generalisation result and not a replacement for the frozen 400-task public score.</p>
+          </div>
         </div>
       </section>
     </main>

@@ -1,0 +1,42 @@
+{
+  "provider": "heygen",
+  "speed": 1,
+  "lines": [
+    {
+      "id": "01",
+      "text": "A formula can look right, reference real cells, and still return the wrong answer."
+    },
+    {
+      "id": "02",
+      "text": "That’s why FormulaBench doesn’t stop at valid syntax. It asks whether every target cell is actually correct."
+    },
+    {
+      "id": "03",
+      "text": "The harness inspects the workbook, builds sheet-aware context, samples Qwen once, then validates exact coverage and formula safety."
+    },
+    {
+      "id": "04",
+      "text": "Only then does it write atomically, or fail closed, before the organiser-supplied evaluator scores the workbook."
+    },
+    {
+      "id": "05",
+      "text": "In our public self-evaluation of four hundred benchmark tasks, one hundred thirty-three passed: a thirty-three point two five percent pass rate, with forty point five six percent cell accuracy."
+    },
+    {
+      "id": "06",
+      "text": "There were zero missing predictions and zero evaluator errors. But ninety-four point eight four percent of wrong cells sat inside contract-valid workbooks. Running is not the same as right."
+    },
+    {
+      "id": "07",
+      "text": "After scoring, Tinker lifted development passes from seven to nine. This is checkpoint selection, not held-out proof."
+    },
+    {
+      "id": "08",
+      "text": "The next step is targeted: deterministic transformations where rules are reliable, plus formula-execution checks where semantics decide the answer."
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  },
+  "voice": "05f19352e8f74b0392a8f411eba40de1"
+}

@@ -1,5 +1,7 @@
 # FormulaBench
 
+![FormulaBench — auditable Excel formula generation](assets/formulabench-cover.png)
+
 A reproducible, fail-closed pipeline for generating and validating Excel formulas.
 
 [![Checks](https://github.com/MasteraSnackin/FormulaBench/actions/workflows/ci.yml/badge.svg)](https://github.com/MasteraSnackin/FormulaBench/actions/workflows/ci.yml)
@@ -429,7 +431,11 @@ final 33.25% task pass rate. The replay made no additional provider calls.
 ### Demo and presentation
 
 - [Open the live research overview](https://masterasnackin.github.io/FormulaBench/).
-- [Watch the 67.4-second demo video](https://masterasnackin.github.io/FormulaBench/video.html).
+- [Watch the 75.1-second demo video](https://masterasnackin.github.io/FormulaBench/video.html),
+  which keeps the frozen public score separate from the later development checkpoint experiment.
+- [Watch the 30.3-second privacy-safe Tinker evidence clip](https://masterasnackin.github.io/FormulaBench/video.html#tinker-evidence-video),
+  built from the sanitised provider capture and the controlled A/B summary rather than a recording
+  of the authenticated browser session.
 - [View the eleven-slide presentation](https://masterasnackin.github.io/FormulaBench/presentation.html),
   [open the PDF](presentation/FormulaBench-Hackathon-Deck.pdf), or
   [download the PowerPoint source](presentation/FormulaBench-Hackathon-Deck.pptx).

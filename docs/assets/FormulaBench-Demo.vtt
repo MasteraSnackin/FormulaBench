@@ -41,5 +41,13 @@ But ninety-four point eight four percent of wrong cells sat inside contract-vali
 Running is not the same as right.
 
 11
-00:00:53.965 --> 00:01:02.906
+00:00:53.945 --> 00:00:57.925
+After scoring, Tinker lifted development passes from seven to nine.
+
+12
+00:00:58.425 --> 00:01:01.165
+This is checkpoint selection, not held-out proof.
+
+13
+00:01:01.645 --> 00:01:10.466
 The next step is targeted: deterministic transformations where rules are reliable, plus formula-execution checks where semantics decide the answer.

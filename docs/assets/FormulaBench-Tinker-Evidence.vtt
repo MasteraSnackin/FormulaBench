@@ -1,0 +1,17 @@
+WEBVTT
+
+1
+00:00:00.140 --> 00:00:11.519
+This provider-side Tinker capture records a rank-thirty-two LoRA run for Qwen three point eight, twenty-seven B, on the development-training partition, with non-zero training activity.
+
+2
+00:00:11.899 --> 00:00:19.159
+In the same fifteen-task development comparison, the checkpoint passed nine tasks against seven for the base model,
+
+3
+00:00:19.539 --> 00:00:25.899
+while cell accuracy rose from seventy-four point two three to seventy-seven point one five per cent.
+
+4
+00:00:25.939 --> 00:00:29.359
+This is checkpoint-selection evidence, not held-out proof.
