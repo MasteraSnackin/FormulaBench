@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import hashlib
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -11,7 +12,12 @@ import pytest
 
 import formulabench.capture as capture
 import formulabench.cli as cli
-from formulabench.artifacts import SUPERVISOR_LOCK_FD_ENV, ArtifactError, DatasetTask
+from formulabench.artifacts import (
+    SUPERVISOR_LOCK_FD_ENV,
+    ArtifactError,
+    DatasetTask,
+    ResumeStateError,
+)
 from formulabench.capture import CaptureResult
 from formulabench.cli import _ensure_output_outside_dataset, _select_tasks, parse_args
 from formulabench.constants import MODEL_ID
@@ -111,6 +117,40 @@ def test_replay_write_failures_requires_resume_and_excludes_paid_retry() -> None
     assert capture.parse_args(resumed).replay_write_failures is True
 
 
+def test_allow_all_failed_requires_an_explicit_partial_selection() -> None:
+    base = ["--dataset-dir=/data", "--out-dir=/out"]
+
+    with pytest.raises(SystemExit):
+        parse_args([*base, "--allow-all-failed"])
+
+    assert parse_args([*base, "--ids=task-1", "--allow-all-failed"]).allow_all_failed is True
+
+
+def test_sampler_checkpoint_is_strict_opt_in_for_fresh_direct_runs() -> None:
+    base = ["--dataset-dir=/data", "--out-dir=/out"]
+    checkpoint = "tinker://01234567-89ab-cdef-0123-456789abcdef:train:0/sampler_weights/final"
+
+    assert parse_args(base).sampler_checkpoint is None
+    assert (
+        parse_args([*base, f"--sampler-checkpoint={checkpoint}"]).sampler_checkpoint == checkpoint
+    )
+
+    for invalid in (
+        "https://example.invalid/checkpoint",
+        "tinker://run-id",
+        "tinker://run-id/weights/final",
+        "tinker://run-id/checkpoint?token=secret",
+        "tinker://run-id/../checkpoint",
+        "tinker://" + "a" * 513,
+    ):
+        with pytest.raises(SystemExit):
+            parse_args([*base, f"--sampler-checkpoint={invalid}"])
+
+    for incompatible in ("--resume", "--retry-failures", "--replay-write-failures"):
+        with pytest.raises(SystemExit):
+            parse_args([*base, f"--sampler-checkpoint={checkpoint}", incompatible])
+
+
 def test_preflight_describes_pinned_native_transport(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
@@ -186,6 +226,106 @@ def test_fresh_direct_cli_creates_and_holds_its_own_output_lock(
 
     assert asyncio.run(cli._run(args)) == 0
     assert (out / "run.log").is_file()
+
+
+def test_fresh_direct_cli_wires_checkpoint_without_persisting_its_uri(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    dataset = _two_task_dataset(tmp_path)
+    out = tmp_path / "checkpoint-out"
+    checkpoint = "tinker://01234567-89ab-cdef-0123-456789abcdef:train:0/sampler_weights/final"
+    expected_provenance = (
+        "sampler_checkpoint_sha256:" + hashlib.sha256(checkpoint.encode("utf-8")).hexdigest()
+    )
+    observed: list[str] = []
+
+    class CheckpointProvider:
+        model_provenance = expected_provenance
+
+        def __init__(self, *, sampler_checkpoint: str) -> None:
+            observed.append(sampler_checkpoint)
+
+        async def complete(self, *, system_prompt: str, user_prompt: str) -> Completion:
+            del system_prompt, user_prompt
+            return Completion(
+                text='{"cells":[{"sheet":"Inputs","cell":"B1","value":"=A1"}]}',
+                input_tokens=10,
+                output_tokens=5,
+                model=MODEL_ID,
+                renderer="fake-test-renderer",
+                model_provenance=self.model_provenance,
+            )
+
+        async def close(self) -> None:
+            return None
+
+    monkeypatch.setattr(cli, "require_provider_key", lambda: None)
+    monkeypatch.setattr(cli, "TinkerProvider", CheckpointProvider)
+    args = parse_args(
+        [
+            f"--dataset-dir={dataset}",
+            f"--out-dir={out}",
+            "--ids=task-1",
+            f"--sampler-checkpoint={checkpoint}",
+        ]
+    )
+
+    assert asyncio.run(cli._run(args)) == 0
+    assert observed == [checkpoint]
+    trace_text = (out / "traces" / "task-1.jsonl").read_text(encoding="utf-8")
+    trace = json.loads(trace_text)
+    assert checkpoint not in trace_text
+    assert trace["model"] == MODEL_ID
+    assert trace["model_provenance"] == expected_provenance
+    assert trace["request"]["model_provenance"] == expected_provenance
+
+    def base_provider_must_not_be_used() -> object:
+        raise AssertionError("a base run must not resume checkpoint-generated artefacts")
+
+    monkeypatch.setattr(cli, "require_provider_key", base_provider_must_not_be_used)
+    monkeypatch.setattr(cli, "TinkerProvider", base_provider_must_not_be_used)
+    base_resume = parse_args(
+        [
+            f"--dataset-dir={dataset}",
+            f"--out-dir={out}",
+            "--ids=task-1",
+            "--resume",
+        ]
+    )
+    with pytest.raises(ResumeStateError, match="trace_model_provenance"):
+        asyncio.run(cli._run(base_resume))
+
+
+def test_complete_partial_all_failure_can_be_accepted_for_evaluation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    dataset = _two_task_dataset(tmp_path)
+    out = tmp_path / "all-failed-out"
+
+    class AlwaysFailProvider:
+        async def complete(self, *, system_prompt: str, user_prompt: str) -> object:
+            del system_prompt, user_prompt
+            raise RuntimeError("private provider details")
+
+        async def close(self) -> None:
+            return None
+
+    monkeypatch.setattr(cli, "require_provider_key", lambda: None)
+    monkeypatch.setattr(cli, "TinkerProvider", AlwaysFailProvider)
+    args = parse_args(
+        [
+            f"--dataset-dir={dataset}",
+            f"--out-dir={out}",
+            "--ids=task-1",
+            "--allow-all-failed",
+        ]
+    )
+
+    assert asyncio.run(cli._run(args)) == 0
+    prediction = json.loads((out / "predictions.jsonl").read_text(encoding="utf-8"))
+    assert prediction["id"] == "task-1"
+    assert prediction["status"] == "error:model_call_failed"
+    assert (out / prediction["output"]).is_file()
 
 
 def test_plain_resume_skips_failure_and_explicit_retry_can_replace_it(

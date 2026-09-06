@@ -34,6 +34,13 @@ from .constants import (
 
 _FATAL_HTTP_STATUSES = frozenset({400, 401, 403, 404, 422})
 _SAFE_CLASS_NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_]{0,79}\Z")
+_SAFE_TINKER_CHECKPOINT = re.compile(
+    r"tinker://[A-Za-z0-9][A-Za-z0-9._-]{0,127}"
+    r"(?::train:[0-9]{1,10})?/sampler_weights/"
+    r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}\Z"
+)
+_MAX_TINKER_CHECKPOINT_LENGTH = 512
+_CHECKPOINT_PROVENANCE_PREFIX = "sampler_checkpoint_sha256:"
 
 
 class ProviderConfigurationError(RuntimeError):
@@ -114,6 +121,7 @@ class Completion:
 
 class CompletionProvider(Protocol):
     model: str
+    model_provenance: str
     renderer_name: str
 
     async def complete(self, *, system_prompt: str, user_prompt: str) -> Completion: ...
@@ -432,6 +440,50 @@ def _shared_sampling_client() -> object:
         return _SHARED_SAMPLING_CLIENT
 
 
+def validate_sampler_checkpoint(checkpoint: str) -> str:
+    """Return a bounded canonical Tinker path without reflecting invalid input."""
+
+    if (
+        not isinstance(checkpoint, str)
+        or len(checkpoint) > _MAX_TINKER_CHECKPOINT_LENGTH
+        or _SAFE_TINKER_CHECKPOINT.fullmatch(checkpoint) is None
+    ):
+        raise ProviderConfigurationError("sampler checkpoint must be a safe tinker:// path")
+    return checkpoint
+
+
+def sampler_checkpoint_provenance(checkpoint: str) -> str:
+    """Return a hash-only trace identifier for one valid checkpoint path."""
+
+    validated = validate_sampler_checkpoint(checkpoint)
+    digest = hashlib.sha256(validated.encode("utf-8")).hexdigest()
+    return f"{_CHECKPOINT_PROVENANCE_PREFIX}{digest}"
+
+
+def _checkpoint_service_client() -> object:
+    """Create the service boundary owned by one checkpoint provider."""
+
+    os.environ[TINKER_TELEMETRY_ENV_VAR] = TINKER_TELEMETRY_VALUE
+    import tinker
+
+    return tinker.ServiceClient(
+        api_key=os.environ[KEY_ENV_VAR],
+        max_retries=PROVIDER_MAX_RETRIES,
+    )
+
+
+def _checkpoint_sampling_client(service: object, checkpoint: str) -> object:
+    """Create a non-shared native sampler on one owned service."""
+
+    from tinker.lib.retry_handler import RetryConfig
+
+    return service.create_sampling_client(
+        base_model=MODEL_ID,
+        model_path=checkpoint,
+        retry_config=RetryConfig(enable_retry_logic=False),
+    )
+
+
 async def _drain_tinker_futures_poller(sampler: object) -> None:
     """Cancel and await Tinker 0.27.1's sampler poller without closing shared clients."""
 
@@ -467,6 +519,30 @@ async def _drain_tinker_futures_poller(sampler: object) -> None:
     if callable(result):
         # AwaitableConcurrentFuture.result() blocks, so keep it off the CLI's
         # asyncio loop while the Tinker loop drains the cancelled task.
+        await asyncio.to_thread(result)
+    else:
+        await thread_future
+
+
+async def _drain_tinker_service_client(service: object) -> None:
+    """Await pinned SDK background-task cleanup for a run-local service holder."""
+
+    if version("tinker") != "0.27.1":
+        return
+    holder = getattr(service, "_session_holder", None)
+    cleanup_method = getattr(holder, "_async_cleanup", None)
+    schedule = getattr(holder, "run_coroutine_threadsafe", None)
+    if holder is None or not callable(cleanup_method) or not callable(schedule):
+        return
+
+    cleanup = cleanup_method()
+    try:
+        thread_future = schedule(cleanup)
+    except BaseException:
+        cleanup.close()
+        raise
+    result = getattr(thread_future, "result", None)
+    if callable(result):
         await asyncio.to_thread(result)
     else:
         await thread_future
@@ -526,6 +602,7 @@ class TinkerProvider:
         self,
         *,
         max_output_tokens: int = DEFAULT_MAX_OUTPUT_TOKENS,
+        sampler_checkpoint: str | None = None,
         sampling_client: object | None = None,
         tokenizer: object | None = None,
     ) -> None:
@@ -534,8 +611,17 @@ class TinkerProvider:
         if max_output_tokens < 1:
             raise ValueError("max_output_tokens must be positive")
         self.renderer_name = RENDERER_ID
+        self.model_provenance = (
+            MODEL_PROVENANCE
+            if sampler_checkpoint is None
+            else sampler_checkpoint_provenance(sampler_checkpoint)
+        )
+        self._sampler_checkpoint = sampler_checkpoint
         self._sampling_client = sampling_client
-        self._uses_shared_sampling_client = sampling_client is None
+        self._service_client: object | None = None
+        self._uses_shared_sampling_client = sampling_client is None and sampler_checkpoint is None
+        self._drains_native_sampling_client = sampling_client is None
+        self._client_creation_lock = asyncio.Lock()
         self._tokenizer = tokenizer if tokenizer is not None else _load_tokenizer()
         self._max_output_tokens = max_output_tokens
         self._fatal_lock = threading.Lock()
@@ -560,8 +646,27 @@ class TinkerProvider:
 
             sampler = self._sampling_client
             if sampler is None:
-                sampler = await asyncio.to_thread(_shared_sampling_client)
-                self._sampling_client = sampler
+                async with self._client_creation_lock:
+                    sampler = self._sampling_client
+                    if sampler is None:
+                        if self._sampler_checkpoint is None:
+                            sampler = await asyncio.to_thread(_shared_sampling_client)
+                        else:
+                            service = await asyncio.to_thread(_checkpoint_service_client)
+                            self._service_client = service
+                            try:
+                                sampler = await asyncio.to_thread(
+                                    _checkpoint_sampling_client,
+                                    service,
+                                    self._sampler_checkpoint,
+                                )
+                            except BaseException:
+                                try:
+                                    await _drain_tinker_service_client(service)
+                                finally:
+                                    self._service_client = None
+                                raise
+                        self._sampling_client = sampler
             response = await sampler.sample_async(
                 prompt=tinker.ModelInput.from_ints(prompt_tokens),
                 num_samples=NUM_SAMPLES,
@@ -661,12 +766,22 @@ class TinkerProvider:
             stop_reason="stop",
             parse_termination="stop_sequence",
             response_format=response_format,
-            model_provenance=MODEL_PROVENANCE,
+            model_provenance=self.model_provenance,
         )
 
     async def close(self) -> None:
-        # Native clients remain process-scoped for same-process reuse. Only the
-        # SDK's idle futures poller is per-run background work that must drain.
-        if not self._uses_shared_sampling_client or self._sampling_client is None:
+        # Externally injected clients remain caller-owned. The process-scoped
+        # base sampler is retained for reuse; checkpoint services are run-local.
+        if not self._drains_native_sampling_client or self._sampling_client is None:
             return
-        await _drain_tinker_futures_poller(self._sampling_client)
+        try:
+            await _drain_tinker_futures_poller(self._sampling_client)
+        finally:
+            if not self._uses_shared_sampling_client:
+                service = self._service_client
+                try:
+                    if service is not None:
+                        await _drain_tinker_service_client(service)
+                finally:
+                    self._sampling_client = None
+                    self._service_client = None

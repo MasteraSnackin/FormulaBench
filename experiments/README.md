@@ -191,7 +191,16 @@ and native sampling client. It defaults to the renderer recommended for the base
 an explicit `--renderer` for xhigh, medium, low or thinking-disabled ablations. It provides a
 controlled comparison if the Anthropic-compatible transport remains unreliable, and it can sample
 a `tinker://...` LoRA checkpoint. Keep this dependency in the optional `native-tinker` environment
-rather than the production image.
+rather than the production image. This remains a values-only baseline; it is not the correct
+evaluation wire format for a checkpoint trained on FormulaBench's formula-and-tool-call responses.
+
+The implemented SFT path is documented in [`training/README.md`](../training/README.md). Its
+current reproducible preflight contains 59 training examples and 15 development-validation
+examples, with six explicit over-500-cell exclusions, 468,690 total train tokens and 15 planned
+optimiser steps. The preflight also verifies that Cookbook and production prompt tokens are
+identical and makes zero provider calls. These are corpus and execution-plan measurements, not a
+checkpoint result or a correctness improvement. `scripts/evaluate_checkpoint.sh` performs the
+like-for-like comparison through FormulaBench's production prompt, parser, writer and evaluator.
 
 Only the frozen development bucket may supply task-specific prompt examples, supervised examples,
 reward examples or checkpoint-selection cases. A spreadsheet-specific training example should

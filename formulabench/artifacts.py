@@ -24,6 +24,8 @@ from typing import Any
 
 import openpyxl
 
+from .constants import MODEL_PROVENANCE
+
 try:  # POSIX in Docker; kept optional so the helpers remain importable elsewhere.
     import fcntl
 except ImportError:  # pragma: no cover - exercised only on non-POSIX platforms.
@@ -745,6 +747,7 @@ def _validate_resume_trace(
     *,
     task_id: str,
     expected_model: str,
+    expected_model_provenance: str | None = None,
     require_successful_call: bool,
 ) -> None:
     records = _read_resume_jsonl(path, code="trace", task_id=task_id)
@@ -759,6 +762,23 @@ def _validate_resume_trace(
             raise ResumeStateError("trace_step_order", task_id=task_id)
         if record.get("model") != expected_model:
             raise ResumeStateError("trace_model", task_id=task_id)
+        if expected_model_provenance is not None:
+            recorded_provenance = record.get("model_provenance")
+            if recorded_provenance is None and expected_model_provenance == MODEL_PROVENANCE:
+                # Base-model traces created before provenance binding remain
+                # resumable. Checkpoint traces never use this legacy default.
+                recorded_provenance = MODEL_PROVENANCE
+            request = record.get("request")
+            request_provenance = (
+                request.get("model_provenance") if isinstance(request, dict) else None
+            )
+            if request_provenance is None and expected_model_provenance == MODEL_PROVENANCE:
+                request_provenance = MODEL_PROVENANCE
+            if (
+                recorded_provenance != expected_model_provenance
+                or request_provenance != expected_model_provenance
+            ):
+                raise ResumeStateError("trace_model_provenance", task_id=task_id)
         for field in ("prompt", "response", "error"):
             if record.get(field) is not None and not isinstance(record.get(field), str):
                 raise ResumeStateError("trace_field_type", task_id=task_id)
@@ -954,6 +974,7 @@ def _validate_retry_payloads(
     old_prediction: Mapping[str, Any],
     new_prediction: Mapping[str, Any],
     expected_model: str,
+    expected_model_provenance: str | None = None,
 ) -> dict[str, str]:
     task_by_id = {task.id: task}
     old_id, validated_old = _validate_resume_prediction(old_prediction, task_by_id=task_by_id)
@@ -996,12 +1017,14 @@ def _validate_retry_payloads(
         paths["old_trace"],
         task_id=workspace.task_id,
         expected_model=expected_model,
+        expected_model_provenance=expected_model_provenance,
         require_successful_call=False,
     )
     _validate_resume_trace(
         paths["new_trace"],
         task_id=workspace.task_id,
         expected_model=expected_model,
+        expected_model_provenance=expected_model_provenance,
         require_successful_call=validated_new["status"] == "ok",
     )
     return hashes
@@ -1014,6 +1037,7 @@ def prepare_retry_transaction(
     old_prediction: Mapping[str, Any],
     new_prediction: Mapping[str, Any],
     expected_model: str,
+    expected_model_provenance: str | None = None,
 ) -> None:
     """Durably mark a complete replacement as recoverable before publication."""
 
@@ -1027,6 +1051,7 @@ def prepare_retry_transaction(
         old_prediction=old_prediction,
         new_prediction=new_prediction,
         expected_model=expected_model,
+        expected_model_provenance=expected_model_provenance,
     )
     meta = {
         "version": _RETRY_FORMAT_VERSION,
@@ -1043,6 +1068,7 @@ def _load_retry_transaction(
     *,
     task: DatasetTask,
     expected_model: str,
+    expected_model_provenance: str | None = None,
 ) -> _RetryTransaction:
     entries = _retry_directory_entries(workspace.directory)
     if "meta.json" not in entries:
@@ -1096,6 +1122,7 @@ def _load_retry_transaction(
         old_prediction=meta["old_prediction"],
         new_prediction=meta["new_prediction"],
         expected_model=expected_model,
+        expected_model_provenance=expected_model_provenance,
     )
     if computed_hashes != raw_hashes:
         raise ResumeStateError("retry_payload_hash", task_id=workspace.task_id)
@@ -1141,6 +1168,7 @@ def commit_retry_transaction(
     *,
     task_id: str,
     expected_model: str,
+    expected_model_provenance: str | None = None,
 ) -> dict[str, Any]:
     """Idempotently publish one prepared retry and remove its journal."""
 
@@ -1158,6 +1186,7 @@ def commit_retry_transaction(
         workspace,
         task=task,
         expected_model=expected_model,
+        expected_model_provenance=expected_model_provenance,
     )
     records, predictions = _validated_prediction_records(layout.predictions, tasks)
     current = predictions.get(task_id)
@@ -1222,6 +1251,7 @@ def recover_retry_transactions(
     tasks: list[DatasetTask],
     *,
     expected_model: str,
+    expected_model_provenance: str | None = None,
 ) -> None:
     """Finish durable local retry commits before validating an ordinary resume."""
 
@@ -1268,6 +1298,7 @@ def recover_retry_transactions(
             tasks,
             task_id=task.id,
             expected_model=expected_model,
+            expected_model_provenance=expected_model_provenance,
         )
     _remove_retry_root_if_empty(layout)
 
@@ -1290,6 +1321,7 @@ def load_resume_state(
     tasks: list[DatasetTask],
     *,
     expected_model: str,
+    expected_model_provenance: str | None = None,
 ) -> ResumeState:
     """Validate and return the task records that may safely be skipped.
 
@@ -1303,6 +1335,10 @@ def load_resume_state(
         raise ResumeStateError("no_selected_tasks")
     if not isinstance(expected_model, str) or not expected_model:
         raise ValueError("expected_model must be a non-empty string")
+    if expected_model_provenance is not None and (
+        not isinstance(expected_model_provenance, str) or not expected_model_provenance
+    ):
+        raise ValueError("expected_model_provenance must be a non-empty string or None")
     require_resume_directory(layout.root)
     for path, code in (
         (layout.predictions, "predictions_missing"),
@@ -1370,6 +1406,7 @@ def load_resume_state(
             trace_entries[f"{task.id}.jsonl"],
             task_id=task.id,
             expected_model=expected_model,
+            expected_model_provenance=expected_model_provenance,
             require_successful_call=status == "ok",
         )
 

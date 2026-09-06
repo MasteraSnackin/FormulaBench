@@ -63,12 +63,14 @@ class TaskRun:
     success: bool
 
 
-def _request_trace_metadata() -> dict[str, object]:
+def _request_trace_metadata(
+    model_provenance: str = MODEL_PROVENANCE,
+) -> dict[str, object]:
     """Describe the fixed request separately from provider-returned evidence."""
 
     return {
         "model": MODEL_ID,
-        "model_provenance": MODEL_PROVENANCE,
+        "model_provenance": model_provenance,
         "max_output_tokens": DEFAULT_MAX_OUTPUT_TOKENS,
         "max_retries": PROVIDER_MAX_RETRIES,
         "num_samples": NUM_SAMPLES,
@@ -84,6 +86,15 @@ def _request_trace_metadata() -> dict[str, object]:
         "tokenizer_revision": TOKENIZER_REVISION,
         "transport": TRANSPORT_ID,
     }
+
+
+def _effective_model_provenance(
+    value: object,
+    fallback: str = MODEL_PROVENANCE,
+) -> str:
+    """Keep traces usable when a provider does not expose provenance metadata."""
+
+    return value if isinstance(value, str) and value else fallback
 
 
 def _safe_error(code: FailureCode, error: BaseException | None = None) -> str:
@@ -155,6 +166,9 @@ async def run_task(
     prompt: str | None = None
     context: ContextDocument | None = None
     completion = None
+    provider_provenance = _effective_model_provenance(
+        getattr(provider, "model_provenance", MODEL_PROVENANCE)
+    )
     call_started = False
     started = time.perf_counter()
 
@@ -200,8 +214,12 @@ async def run_task(
         trace["parse_termination"] = completion.parse_termination
         trace["response_format"] = completion.response_format
         trace["response_rejection"] = None
-        trace["model_provenance"] = completion.model_provenance
-        trace["request"] = _request_trace_metadata()
+        completion_provenance = _effective_model_provenance(
+            completion.model_provenance,
+            provider_provenance,
+        )
+        trace["model_provenance"] = completion_provenance
+        trace["request"] = _request_trace_metadata(completion_provenance)
         trace["context"] = {
             "characters": context.used_chars,
             "included_cells": context.included_cells,
@@ -248,8 +266,8 @@ async def run_task(
             trace["response_rejection"] = (
                 None if completion is not None else getattr(exc, "response_rejection", None)
             )
-            trace["model_provenance"] = MODEL_PROVENANCE
-            trace["request"] = _request_trace_metadata()
+            trace["model_provenance"] = provider_provenance
+            trace["request"] = _request_trace_metadata(provider_provenance)
             atomic_write_jsonl(trace_path, [trace])
         else:
             atomic_write_jsonl(trace_path, [])
@@ -283,6 +301,9 @@ async def run_tasks(
 
     existing_predictions = existing_predictions or {}
     retry_task_ids = retry_task_ids or frozenset()
+    provider_provenance = _effective_model_provenance(
+        getattr(provider, "model_provenance", MODEL_PROVENANCE)
+    )
     if unknown := set(existing_predictions).difference(task_ids):
         del unknown
         raise ValueError("existing prediction id is not in the selected tasks")
@@ -359,12 +380,14 @@ async def run_tasks(
                 old_prediction=results_by_id[result.task_id].prediction,
                 new_prediction=result.prediction,
                 expected_model=MODEL_ID,
+                expected_model_provenance=provider_provenance,
             )
             committed = commit_retry_transaction(
                 layout,
                 tasks,
                 task_id=result.task_id,
                 expected_model=MODEL_ID,
+                expected_model_provenance=provider_provenance,
             )
             if committed != result.prediction:
                 raise RuntimeError("retry commit returned an unexpected prediction")

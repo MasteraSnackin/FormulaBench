@@ -55,10 +55,13 @@ PY
 
 FROM build AS contract-test
 
+COPY .dockerignore ./
 COPY sb.py ./
 COPY formulabench/ ./formulabench/
 COPY experiments/ ./experiments/
+COPY scripts/ ./scripts/
 COPY tests/ ./tests/
+COPY training/ ./training/
 RUN uv sync --locked --no-install-project
 RUN .venv/bin/python -m pytest
 

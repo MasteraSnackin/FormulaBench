@@ -5,32 +5,33 @@
 - Team name: FormulaBench
 - Member: [`MasteraSnackin`](https://github.com/MasteraSnackin)
 - Repository: https://github.com/MasteraSnackin/FormulaBench
-- Declared track: Research: Excel Formula Generation (SpreadsheetBench)
+- Declared track: Research Track: Excel Formula Generation (SpreadsheetBench)
 
 ## What we built and why
 
 Spreadsheet formula generation often fails while looking plausible: a model can miss the relevant
 range, confuse worksheets, omit template cells or return text that never becomes a valid Excel
 value. FormulaBench is a deterministic inspect–generate–validate pipeline for the fixed
-`Qwen/Qwen3.8-27B` model. It uses no fine-tuning or training data. Each task makes one
-temperature-zero native Tinker sample with thinking disabled, a pinned Qwen3.8 chat template and
-one schema-bound answer tool; the model receives no shell, Python runtime or unrestricted file
-tool. FormulaBench reads only the initial workbook in formula and cached-value modes, builds a
-sheet-aware evidence map under a 20,000-character prompt budget, and packs answer ranges before
-source data. Every output cell carries an exact worksheet and A1 address. Finite targets must be
-covered completely, including unchanged cells and blanks, through explicit cells, compact fills
-or finite preservation ranges. Typed date objects avoid locale-dependent strings. Before writing,
-the contract rejects missing, duplicate and out-of-range cells, explicit external references, DDE
-and high-risk executable or external-data functions. Accepted answers are applied to a fresh
-workbook copy, reopened for semantic verification and published atomically; failures produce a
-pristine input fallback. Atomic traces and checkpoints make interruptions and explicit retries
-auditable without silently repeating paid calls. A separate replay path can revalidate retained
-write-failure responses after a contract repair without credentials or another model call. On the
-complete public benchmark, the organiser's evaluator graded all 400 tasks with no missing items or
-errors. FormulaBench passed 133 tasks: 33.25% pass rate and 40.56% cell accuracy. That is below the
-reported approximately 59% organiser baseline. The configurations differ materially—recommended
-xhigh reasoning implied by the published runner and final values there, disabled thinking and
-live-formula-first strict coverage here—so we report the gap directly rather than claim an
+`Qwen/Qwen3.8-27B` model. The frozen 400-task result uses no fine-tuning or training data. Each task
+makes one temperature-zero native Tinker sample with thinking disabled, a pinned Qwen3.8 chat
+template and one schema-bound answer tool; the model receives no shell, Python runtime or
+unrestricted file tool. FormulaBench reads only the initial workbook in formula and cached-value
+modes, builds a sheet-aware evidence map under a 20,000-character prompt budget, and packs answer
+ranges before source data. Every output cell carries an exact worksheet and A1 address. Finite
+targets must be covered completely, including unchanged cells and blanks, through explicit cells,
+compact fills or finite preservation ranges. Typed date objects avoid locale-dependent strings.
+Before writing, the contract rejects missing, duplicate and out-of-range cells, explicit external
+references, DDE and high-risk executable or external-data functions. Accepted answers are applied
+to a fresh workbook copy, reopened for structural and assigned-value round-trip verification, then
+published atomically; failures produce a pristine input fallback. Atomic traces and checkpoints make
+interruptions and explicit retries auditable without silently repeating paid calls. A separate
+replay path can revalidate retained write-failure responses after a contract repair without
+credentials or another model call. On the complete public benchmark, the organiser's evaluator
+graded all 400 tasks with no missing items or errors. FormulaBench passed 133 tasks: 33.25% pass
+rate and 40.56% cell accuracy. That is below the reported approximately 59% organiser baseline.
+The configurations differ materially—recommended xhigh reasoning implied by the published runner
+and final values there, disabled thinking and live-formula-first strict coverage here—so we report
+the gap directly rather than claim an
 improvement or a controlled causal result.
 
 ## Models
@@ -46,8 +47,29 @@ improvement or a controlled causal result.
 - Samples per task attempt: `1`
 - Configured retries: HTTP client `0`; sampling retry wrapper disabled
 - Tinker SDK telemetry: forced off before client construction and in the runtime environment
-- Fine-tuned checkpoint: none in the current version
-- Fine-tuning data: none in the current version
+- Fine-tuned checkpoint used for the frozen 400-task result: none
+- Fine-tuning data used for the frozen 400-task result: none
+
+### Reproducible training extension
+
+The repository includes an optional post-score research experiment under `training/`. It verifies
+the frozen split before opening any golden workbook, permits task-specific goldens only for the 80
+development IDs, explicitly excludes six development tasks over 500 target cells, and
+deterministically partitions the remaining 74 tasks into 59 training and 15 validation examples.
+The generated corpus is bound to the dataset, split, initial workbooks, development goldens,
+prompts, answers and rows by SHA-256. The trainer uses the same disabled-thinking Qwen3.8 tool-call
+wire format as production, refuses truncation, defaults to zero-call preflight, and requires an
+explicit paid-run flag, writable project ID, fresh run directory and privately supplied key.
+Its checkpoint comparison uses the same production prompt, tool-call parser, workbook writer and
+organiser evaluator for both the base and LoRA arms, then records hash-bound task-aligned deltas.
+
+No fine-tuned checkpoint or checkpoint-derived benchmark score is claimed in this submission. A
+future claim must compare the base model and checkpoint under identical sampling settings, use only
+the 15 development-validation tasks for checkpoint selection, then freeze the configuration before
+comparisons on the historically named 80-task `held_out` and 240-task `final_only` reporting
+buckets. Those names define training and checkpoint-selection boundaries, not statistically
+untouched data: the repository already reports an aggregate golden audit and a complete 400-task
+base-model evaluation. See [`training/README.md`](training/README.md) for the exact protocol.
 
 ## Verified evaluation
 
@@ -56,7 +78,7 @@ and 100% cell accuracy under the supplied evaluator with LibreOffice recalculati
 development canary, not the 400-task submission score. The model wrote `=C8*(1-E8)`, whose exact
 value is 15.7455 and whose existing number format displays 15.75; the golden formula rounds to
 15.75 internally, and the supplied evaluator compares both at two-decimal precision. The canary
-also exposed a non-fatal Tinker background-poller shutdown warning after its artifacts were
+also exposed a non-fatal Tinker background-poller shutdown warning after its artefacts were
 committed. The harder `13-1` run subsequently verified the lifecycle repair with no pending-poller
 warning. That initial `13-1` scaffold returned 72 of 120 required cells, so exact validation
 rejected every proposed edit for `missing_cells` and published the pristine input. The fallback

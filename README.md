@@ -4,7 +4,7 @@ A reproducible, fail-closed pipeline for generating and validating Excel formula
 
 [![Checks](https://github.com/MasteraSnackin/FormulaBench/actions/workflows/ci.yml/badge.svg)](https://github.com/MasteraSnackin/FormulaBench/actions/workflows/ci.yml)
 ![Submitted Python runtime](https://img.shields.io/badge/Python-3.11%20runtime-3776AB?logo=python&logoColor=white)
-[![Research: Excel Formula Generation](https://img.shields.io/badge/Research-Excel%20Formula%20Generation-1F6FEB)](SUBMISSION.md)
+[![Research Track: Excel Formula Generation](https://img.shields.io/badge/Research%20Track-Excel%20Formula%20Generation-1F6FEB)](SUBMISSION.md)
 
 ## Description
 
@@ -21,8 +21,10 @@ checkpoint manifest. A model attempt adds the prompt, any available parsed respo
 latency and failure state to that trace.
 
 This repository is the **Research Track: Excel Formula Generation (SpreadsheetBench)** entry for
-the Encode x Ylookup Rebuild Private Markets Hackathon. It uses prompt engineering and deterministic
-validation rather than fine-tuning.
+the Encode x Ylookup Rebuild Private Markets Hackathon. The frozen 400-task result uses prompt
+engineering and deterministic validation rather than fine-tuning. The repository now also contains
+a separate, development-only Tinker LoRA experiment; no result from that experiment is included in
+the score below.
 
 ### Public self-evaluation result
 
@@ -88,6 +90,8 @@ comparable.
   shared checkpoint manifest.
   A failure before a model call can leave the required trace file empty.
 - Read-only output validation with optional scanning for an explicitly configured secret value.
+- A deterministic development-only SFT corpus, dry-run-first LoRA trainer and checkpoint evaluation
+  path with split, workbook, prompt, answer and row hashes.
 - A static GitHub Pages viewer for the retained result, demo video and presentation.
 
 ## Tech Stack
@@ -98,6 +102,7 @@ comparable.
 | Workbook processing | `openpyxl==3.1.5` |
 | Validation | Pydantic 2 |
 | Inference | Tinker SDK `0.27.1` with `Qwen/Qwen3.8-27B` |
+| Optional training | Tinker Cookbook `0.5.7`, LoRA SFT and held-back development validation |
 | Prompt rendering | Transformers chat template and Tokenizers |
 | Dependency management | `uv` with a committed lockfile |
 | Evaluation | Organiser evaluator and LibreOffice Calc |
@@ -171,6 +176,24 @@ uv sync --locked --extra baseline
 # Native Tinker Cookbook and checkpoint experiments
 uv sync --locked --extra native-tinker
 ```
+
+### Reproduce the safe Tinker training preflight
+
+The training script rebuilds the frozen development-only corpus, verifies it independently,
+tokenises all 74 eligible examples and prints the bounded plan. Its default mode makes zero Tinker
+provider calls:
+
+```sh
+./scripts/run_training.sh
+```
+
+Paid training is a separate, explicit action requiring `--execute`, a writable Tinker project, a
+local run directory and a key supplied privately through the environment. See the complete
+[training protocol](training/README.md), including leakage boundaries, measured token counts,
+validation NLL and production-parity checkpoint evaluation. The separate evaluation script runs
+the same 15 development-validation tasks through the base and LoRA weights, scores both with the
+organiser evaluator and emits a hash-bound comparison. The generated corpus and run metadata are
+ignored by Git and do not alter the retained 400-task submission evidence.
 
 ## Usage
 
@@ -386,8 +409,8 @@ Run the credential-free local checks:
 
 ```sh
 uv run pytest
-uv run ruff check formulabench tests experiments baseline/tinker_predict.py
-uv run ruff format --check formulabench tests experiments baseline/tinker_predict.py
+uv run ruff check formulabench tests experiments training baseline/tinker_predict.py
+uv run ruff format --check formulabench tests experiments training baseline/tinker_predict.py
 uv run python evaluate.py --oracle
 ```
 
@@ -414,8 +437,8 @@ These are proposed improvements, not claims about the frozen 400-task result:
 - Add formula compatibility normalisation and output invariants.
 - Generate and verify the hosted evidence metrics from the hashed evaluation result during
   deployment.
-- Compare the organiser-style values-only xhigh baseline through controlled development-set
-  ablations before considering fine-tuning.
+- Compare the base model and development-only LoRA checkpoint through controlled validation, then
+  make a post-freeze comparison on the historically named `held_out` reporting bucket.
 
 See [`experiments/README.md`](experiments/README.md) for the failure analysis behind the retrieval,
 task-routing, deterministic-operation and controlled-comparison priorities.

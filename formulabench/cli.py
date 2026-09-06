@@ -19,13 +19,22 @@ from .artifacts import (
     load_resume_state,
     recover_retry_transactions,
 )
-from .constants import KEY_ENV_VAR, MODEL_ID, RENDERER_ID, THINKING_MODE, TRANSPORT_ID
+from .constants import (
+    KEY_ENV_VAR,
+    MODEL_ID,
+    MODEL_PROVENANCE,
+    RENDERER_ID,
+    THINKING_MODE,
+    TRANSPORT_ID,
+)
 from .provider import (
     ANSWER_TOOL_NAME,
     ProviderConfigurationError,
     TinkerProvider,
     require_provider_key,
+    sampler_checkpoint_provenance,
     validate_native_runtime,
+    validate_sampler_checkpoint,
 )
 from .replay import replay_stored_responses
 from .runner import TaskRun, run_tasks
@@ -42,6 +51,13 @@ def _positive_concurrency(value: str) -> int:
     return parsed
 
 
+def _sampler_checkpoint(value: str) -> str:
+    try:
+        return validate_sampler_checkpoint(value)
+    except ProviderConfigurationError as exc:
+        raise argparse.ArgumentTypeError(str(exc)) from None
+
+
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run the fixed FormulaBench inference pipeline.")
     parser.add_argument("--dataset-dir", required=True)
@@ -49,6 +65,16 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--ids", help="comma-separated task ids for a local partial run")
     parser.add_argument("--concurrency", type=_positive_concurrency, default=4)
     parser.add_argument("--preflight-only", action="store_true")
+    parser.add_argument(
+        "--allow-all-failed",
+        action="store_true",
+        help="return success for a complete partial run even if every task failed closed",
+    )
+    parser.add_argument(
+        "--sampler-checkpoint",
+        type=_sampler_checkpoint,
+        help="use one validated tinker:// sampler checkpoint in a fresh direct-CLI run",
+    )
     parser.add_argument(
         "--resume",
         action="store_true",
@@ -65,10 +91,19 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         help="with --resume, rematerialise stored workbook-write responses without a model call",
     )
     args = parser.parse_args(argv)
+    if args.sampler_checkpoint is not None and (
+        args.resume or args.retry_failures or args.replay_write_failures
+    ):
+        parser.error(
+            "--sampler-checkpoint cannot be used with --resume, --retry-failures "
+            "or --replay-write-failures"
+        )
     if args.retry_failures and not args.resume:
         parser.error("--retry-failures requires --resume")
     if args.replay_write_failures and not args.resume:
         parser.error("--replay-write-failures requires --resume")
+    if args.allow_all_failed and not args.ids:
+        parser.error("--allow-all-failed requires an explicit --ids selection")
     if args.retry_failures and args.replay_write_failures:
         parser.error("--retry-failures and --replay-write-failures are mutually exclusive")
     return args
@@ -135,10 +170,25 @@ async def _run_owned(
 ) -> int:
     """Run while the caller holds exclusive ownership of the output root."""
 
+    expected_model_provenance = (
+        MODEL_PROVENANCE
+        if args.sampler_checkpoint is None
+        else sampler_checkpoint_provenance(args.sampler_checkpoint)
+    )
     retry_task_ids: frozenset[str] = frozenset()
     if args.resume:
-        recover_retry_transactions(layout, selected, expected_model=MODEL_ID)
-        resume_state = load_resume_state(layout, selected, expected_model=MODEL_ID)
+        recover_retry_transactions(
+            layout,
+            selected,
+            expected_model=MODEL_ID,
+            expected_model_provenance=expected_model_provenance,
+        )
+        resume_state = load_resume_state(
+            layout,
+            selected,
+            expected_model=MODEL_ID,
+            expected_model_provenance=expected_model_provenance,
+        )
         if args.replay_write_failures:
             if len(resume_state.completed_ids) != len(selected):
                 raise ResumeStateError("replay_requires_complete_run")
@@ -154,7 +204,12 @@ async def _run_owned(
                 f"additional_model_calls={replay.model_calls}",
                 flush=True,
             )
-            resume_state = load_resume_state(layout, selected, expected_model=MODEL_ID)
+            resume_state = load_resume_state(
+                layout,
+                selected,
+                expected_model=MODEL_ID,
+                expected_model_provenance=expected_model_provenance,
+            )
         existing_predictions = resume_state.predictions
         if args.retry_failures:
             retry_task_ids = resume_state.completed_ids.difference(resume_state.successful_ids)
@@ -170,7 +225,11 @@ async def _run_owned(
     pending_count = len(selected) - len(existing_predictions) + len(retry_task_ids)
     if pending_count:
         require_provider_key()
-        provider = TinkerProvider()
+        provider = (
+            TinkerProvider()
+            if args.sampler_checkpoint is None
+            else TinkerProvider(sampler_checkpoint=args.sampler_checkpoint)
+        )
         try:
             print(
                 f"FormulaBench  model={MODEL_ID}  tasks={len(selected)}  "
@@ -201,7 +260,12 @@ async def _run_owned(
             for task in selected
         ]
 
-    completed_state = load_resume_state(layout, selected, expected_model=MODEL_ID)
+    completed_state = load_resume_state(
+        layout,
+        selected,
+        expected_model=MODEL_ID,
+        expected_model_provenance=expected_model_provenance,
+    )
     if len(completed_state.completed_ids) != len(selected):
         raise ResumeStateError("run_incomplete")
     successes = sum(result.success for result in results)
@@ -209,6 +273,9 @@ async def _run_owned(
 
     if len(selected) != len(tasks):
         print("partial run: full output validation deferred", flush=True)
+        if successes == 0 and args.allow_all_failed:
+            print("partial run complete: all tasks failed closed", flush=True)
+            return 0
         return 1 if successes == 0 else 0
 
     secret = os.environ.get(KEY_ENV_VAR, "")

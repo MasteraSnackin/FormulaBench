@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import os
 import sys
 import threading
@@ -31,6 +32,7 @@ from formulabench.provider import (
     TinkerProvider,
     parse_native_answer,
     require_provider_key,
+    validate_sampler_checkpoint,
 )
 
 
@@ -67,6 +69,7 @@ class FakeTinkerLoopHolder:
         self.loop: asyncio.AbstractEventLoop | None = None
         self.scheduled = 0
         self.close_calls = 0
+        self.cleanup_calls = 0
         self.thread = threading.Thread(target=self._run, daemon=True)
         self.thread.start()
         assert self.ready.wait(timeout=2)
@@ -86,6 +89,10 @@ class FakeTinkerLoopHolder:
 
     def close(self) -> None:
         self.close_calls += 1
+
+    async def _async_cleanup(self) -> None:
+        assert asyncio.get_running_loop() is self.loop
+        self.cleanup_calls += 1
 
     def stop(self) -> None:
         assert self.loop is not None
@@ -155,6 +162,52 @@ def test_provider_key_boundary() -> None:
         require_provider_key({})
     assert "secret-value" not in str(exc.value)
     assert require_provider_key({KEY_ENV_VAR: "secret-value"}) is None
+
+
+@pytest.mark.parametrize(
+    "checkpoint",
+    [
+        "https://example.invalid/checkpoint",
+        "tinker://",
+        "tinker://run-id",
+        "tinker://run-id/",
+        "tinker://run-id/../checkpoint",
+        "tinker://run-id/weights/final",
+        "tinker://run-id/not_sampler/final",
+        "tinker://run-id/checkpoint?token=secret",
+        "tinker://run-id/checkpoint#fragment",
+        "tinker://user@run-id/checkpoint",
+        "tinker://run id/checkpoint",
+        "tinker://run-id/chéckpoint",
+        "tinker://" + "a" * 513,
+    ],
+)
+def test_sampler_checkpoint_rejects_unbounded_or_unsafe_paths(checkpoint: str) -> None:
+    with pytest.raises(ProviderConfigurationError) as caught:
+        validate_sampler_checkpoint(checkpoint)
+
+    assert str(caught.value) == "sampler checkpoint must be a safe tinker:// path"
+
+
+def test_sampler_checkpoint_accepts_bounded_tinker_paths() -> None:
+    for checkpoint in (
+        "tinker://run-id/sampler_weights/final",
+        "tinker://01234567-89ab-cdef-0123-456789abcdef:train:0/sampler_weights/checkpoint-001",
+    ):
+        assert validate_sampler_checkpoint(checkpoint) == checkpoint
+
+
+def test_provider_refuses_an_unsafe_checkpoint_before_native_client_creation(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv(KEY_ENV_VAR, "secret-value")
+
+    with pytest.raises(ProviderConfigurationError, match="safe tinker"):
+        TinkerProvider(
+            sampler_checkpoint="tinker://run-id/checkpoint?token=secret",
+            sampling_client=object(),
+            tokenizer=FakeTokenizer('{"cells":[]}'),
+        )
 
 
 def test_provider_forces_tinker_telemetry_off_before_any_client_use(
@@ -419,6 +472,88 @@ def test_native_service_and_sampler_are_process_scoped_with_retries_disabled(
     assert sampler_kwargs[0]["retry_config"].enable_retry_logic is False
 
 
+def test_checkpoint_sampler_is_run_local_with_hashed_provenance_and_no_retries(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import tinker
+
+    checkpoint = "tinker://01234567-89ab-cdef-0123-456789abcdef:train:0/sampler_weights/final"
+    answer = (
+        "<tool_call><function=submit_spreadsheet_answer>"
+        "<parameter=cells>[]</parameter></function></tool_call>"
+    )
+    sampler = FakeSampler(decoded_tokens=[201, STOP_TOKEN_ID])
+    service_kwargs: list[dict[str, object]] = []
+    sampler_kwargs: list[dict[str, object]] = []
+    services: list[object] = []
+
+    class FakeServiceClient:
+        def __init__(self, **kwargs: object) -> None:
+            service_kwargs.append(kwargs)
+            services.append(self)
+
+        def create_sampling_client(self, **kwargs: object) -> object:
+            sampler_kwargs.append(kwargs)
+            return sampler
+
+    monkeypatch.setenv(KEY_ENV_VAR, "secret-value")
+    monkeypatch.setenv("TINKER_TELEMETRY", "1")
+    monkeypatch.setattr(tinker, "ServiceClient", FakeServiceClient)
+    provider = TinkerProvider(
+        sampler_checkpoint=checkpoint,
+        tokenizer=FakeTokenizer(answer),
+    )
+
+    completion = asyncio.run(provider.complete(system_prompt="system", user_prompt="user"))
+
+    expected_provenance = (
+        "sampler_checkpoint_sha256:" + hashlib.sha256(checkpoint.encode("utf-8")).hexdigest()
+    )
+    assert completion.model == MODEL_ID
+    assert completion.model_provenance == expected_provenance
+    assert provider.model_provenance == expected_provenance
+    assert checkpoint not in completion.model_provenance
+    assert provider._uses_shared_sampling_client is False
+    assert provider._service_client is services[0]
+    assert os.environ["TINKER_TELEMETRY"] == "0"
+    assert service_kwargs == [{"api_key": "secret-value", "max_retries": 0}]
+    assert len(sampler_kwargs) == 1
+    assert sampler_kwargs[0]["base_model"] == MODEL_ID
+    assert sampler_kwargs[0]["model_path"] == checkpoint
+    assert sampler_kwargs[0]["retry_config"].enable_retry_logic is False
+
+
+def test_checkpoint_mode_preserves_injected_sampler_behavior(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import tinker
+
+    checkpoint = "tinker://01234567-89ab-cdef-0123-456789abcdef:train:0/sampler_weights/final"
+    answer = (
+        "<tool_call><function=submit_spreadsheet_answer>"
+        "<parameter=cells>[]</parameter></function></tool_call>"
+    )
+    sampler = FakeSampler(decoded_tokens=[201, STOP_TOKEN_ID])
+
+    def native_client_must_not_be_created(**kwargs: object) -> object:
+        del kwargs
+        raise AssertionError("injected sampling clients must remain authoritative")
+
+    monkeypatch.setenv(KEY_ENV_VAR, "secret-value")
+    monkeypatch.setattr(tinker, "ServiceClient", native_client_must_not_be_created)
+    provider = TinkerProvider(
+        sampler_checkpoint=checkpoint,
+        sampling_client=sampler,
+        tokenizer=FakeTokenizer(answer),
+    )
+
+    completion = asyncio.run(provider.complete(system_prompt="system", user_prompt="user"))
+    asyncio.run(provider.close())
+
+    assert len(sampler.calls) == 1
+    assert completion.model_provenance.startswith("sampler_checkpoint_sha256:")
+
+
 def test_provider_close_drains_only_shared_sampler_poller_and_preserves_reuse(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -466,6 +601,111 @@ def test_provider_close_drains_only_shared_sampler_poller_and_preserves_reuse(
     assert provider_module._SHARED_SAMPLING_CLIENT is sampler
     assert sampler.close_calls == 0
     assert holder.close_calls == 0
+
+
+def test_provider_close_drains_run_local_checkpoint_sampler_poller(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import tinker
+
+    monkeypatch.setenv(KEY_ENV_VAR, "secret-value")
+    monkeypatch.setattr(provider_module, "version", lambda package: "0.27.1")
+    holder = FakeTinkerLoopHolder()
+    sampler = FakeSharedNativeSampler(holder)
+    services: list[object] = []
+
+    class FakeServiceClient:
+        def __init__(self, **kwargs: object) -> None:
+            del kwargs
+            self._session_holder = holder
+            services.append(self)
+
+        def create_sampling_client(self, **kwargs: object) -> object:
+            del kwargs
+            return sampler
+
+    monkeypatch.setattr(tinker, "ServiceClient", FakeServiceClient)
+    provider = TinkerProvider(
+        sampler_checkpoint=(
+            "tinker://01234567-89ab-cdef-0123-456789abcdef:train:0/sampler_weights/final"
+        ),
+        tokenizer=FakeTokenizer('{"cells":[]}'),
+    )
+
+    async def exercise() -> None:
+        await provider.complete(system_prompt="system", user_prompt="user")
+        first_poller_task = sampler._futures_poller._task
+        assert first_poller_task is not None
+
+        await provider.close()
+
+        assert sampler._futures_poller.drained.is_set()
+        assert first_poller_task.done()
+        assert sampler._futures_poller.closed_tasks == [first_poller_task]
+        assert holder.cleanup_calls == 1
+        assert provider._sampling_client is None
+        assert provider._service_client is None
+
+        # Closing releases the run-local client. Reusing the provider creates
+        # a new service rather than reviving a closed checkpoint session.
+        await provider.complete(system_prompt="system", user_prompt="user")
+        second_poller_task = sampler._futures_poller._task
+        assert second_poller_task is not None
+        assert second_poller_task is not first_poller_task
+        await provider.close()
+        assert second_poller_task.done()
+        assert sampler._futures_poller.closed_tasks == [
+            first_poller_task,
+            second_poller_task,
+        ]
+        assert holder.cleanup_calls == 2
+
+    try:
+        asyncio.run(exercise())
+    finally:
+        holder.stop()
+
+    assert sampler.close_calls == 0
+    assert holder.close_calls == 0
+    assert len(services) == 2
+    assert len(sampler.calls) == 2
+
+
+def test_checkpoint_sampler_creation_failure_cleans_owned_service(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import tinker
+
+    monkeypatch.setenv(KEY_ENV_VAR, "secret-value")
+    monkeypatch.setattr(provider_module, "version", lambda package: "0.27.1")
+    holder = FakeTinkerLoopHolder()
+
+    class FakeServiceClient:
+        def __init__(self, **kwargs: object) -> None:
+            del kwargs
+            self._session_holder = holder
+
+        def create_sampling_client(self, **kwargs: object) -> object:
+            del kwargs
+            raise RuntimeError("sampler creation failed")
+
+    monkeypatch.setattr(tinker, "ServiceClient", FakeServiceClient)
+    provider = TinkerProvider(
+        sampler_checkpoint=(
+            "tinker://01234567-89ab-cdef-0123-456789abcdef:train:0/sampler_weights/final"
+        ),
+        tokenizer=FakeTokenizer('{"cells":[]}'),
+    )
+
+    try:
+        with pytest.raises(RuntimeError, match="sampler creation failed"):
+            asyncio.run(provider.complete(system_prompt="system", user_prompt="user"))
+    finally:
+        holder.stop()
+
+    assert holder.cleanup_calls == 1
+    assert provider._sampling_client is None
+    assert provider._service_client is None
 
 
 def test_provider_close_is_noop_before_native_creation_without_poller_or_when_injected(

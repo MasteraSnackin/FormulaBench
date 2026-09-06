@@ -30,8 +30,9 @@ jobs:
 
       - name: Check code quality
         run: |
-          uv run ruff check formulabench tests experiments baseline/tinker_predict.py
-          uv run ruff format --check formulabench tests experiments baseline/tinker_predict.py
+          uv run ruff check formulabench tests experiments training baseline/tinker_predict.py
+          uv run ruff format --check formulabench tests experiments training baseline/tinker_predict.py
+          bash -n scripts/run_training.sh scripts/evaluate_checkpoint.sh
 
       - name: Build wheel
         run: uv build --wheel
@@ -76,3 +77,4 @@ jobs:
           tests/test_dataset_contract.py
           tests/test_public_split.py
           tests/test_public_benchmark_audit.py
+          tests/test_training_corpus.py

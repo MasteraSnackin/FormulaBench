@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 from pathlib import Path
 
@@ -27,6 +28,7 @@ from formulabench.validate_out import validate_output
 
 class FakeProvider:
     model = MODEL_ID
+    model_provenance = MODEL_PROVENANCE
     renderer_name = "fake-test-renderer"
 
     def __init__(self, response: str) -> None:
@@ -44,7 +46,7 @@ class FakeProvider:
             stop_reason="stop",
             parse_termination="stop_sequence",
             response_format="strict_json_fallback",
-            model_provenance=MODEL_PROVENANCE,
+            model_provenance=self.model_provenance,
         )
 
 
@@ -190,6 +192,95 @@ def test_runner_writes_validated_workbook_and_submission_records(tmp_path: Path)
     }
     report = validate_output(dataset, layout.root, expected_model=MODEL_ID)
     assert report.ok, report.as_dict()
+
+
+def test_runner_records_checkpoint_provenance_without_checkpoint_uri(tmp_path: Path) -> None:
+    dataset, _ = _dataset(tmp_path)
+    tasks = load_dataset_manifest(dataset)
+    layout = ArtifactLayout.initialise(tmp_path / "out")
+    atomic_write_text(layout.run_log, "test run\n")
+    checkpoint = "tinker://01234567-89ab-cdef-0123-456789abcdef:train:0/sampler_weights/final"
+    provenance = (
+        "sampler_checkpoint_sha256:" + hashlib.sha256(checkpoint.encode("utf-8")).hexdigest()
+    )
+    provider = FakeProvider('{"cells":[{"sheet":"Inputs","cell":"B2","value":"=SUM(A1:A2)"}]}')
+    provider.model_provenance = provenance
+
+    results = asyncio.run(run_tasks(tasks=tasks, provider=provider, layout=layout, concurrency=1))
+
+    assert results[0].success is True
+    trace_text = (layout.traces / "task-1.jsonl").read_text(encoding="utf-8")
+    trace = json.loads(trace_text)
+    assert checkpoint not in trace_text
+    assert trace["model"] == MODEL_ID
+    assert trace["model_provenance"] == provenance
+    assert trace["request"]["model_provenance"] == provenance
+    checkpoint_state = load_resume_state(
+        layout,
+        tasks,
+        expected_model=MODEL_ID,
+        expected_model_provenance=provenance,
+    )
+    assert checkpoint_state.completed_ids == frozenset({"task-1"})
+    with pytest.raises(ResumeStateError, match="trace_model_provenance"):
+        load_resume_state(
+            layout,
+            tasks,
+            expected_model=MODEL_ID,
+            expected_model_provenance=MODEL_PROVENANCE,
+        )
+
+
+def test_base_resume_provenance_accepts_legacy_base_trace(tmp_path: Path) -> None:
+    dataset, _ = _dataset(tmp_path)
+    tasks = load_dataset_manifest(dataset)
+    layout = ArtifactLayout.initialise(tmp_path / "out")
+    atomic_write_text(layout.run_log, "test run\n")
+    provider = FakeProvider('{"cells":[{"sheet":"Inputs","cell":"B2","value":"=SUM(A1:A2)"}]}')
+    asyncio.run(run_tasks(tasks=tasks, provider=provider, layout=layout, concurrency=1))
+    trace_path = layout.traces / "task-1.jsonl"
+    trace = json.loads(trace_path.read_text(encoding="utf-8"))
+    del trace["model_provenance"]
+    del trace["request"]["model_provenance"]
+    atomic_write_jsonl(trace_path, [trace])
+
+    state = load_resume_state(
+        layout,
+        tasks,
+        expected_model=MODEL_ID,
+        expected_model_provenance=MODEL_PROVENANCE,
+    )
+
+    assert state.completed_ids == frozenset({"task-1"})
+
+
+def test_runner_uses_provider_provenance_when_checkpoint_call_fails(tmp_path: Path) -> None:
+    dataset, _ = _dataset(tmp_path)
+    tasks = load_dataset_manifest(dataset)
+    layout = ArtifactLayout.initialise(tmp_path / "out")
+    atomic_write_text(layout.run_log, "test run\n")
+    checkpoint = "tinker://01234567-89ab-cdef-0123-456789abcdef:train:0/sampler_weights/final"
+    provenance = (
+        "sampler_checkpoint_sha256:" + hashlib.sha256(checkpoint.encode("utf-8")).hexdigest()
+    )
+
+    class CheckpointFailureProvider(FailingProvider):
+        model_provenance = provenance
+
+    results = asyncio.run(
+        run_tasks(
+            tasks=tasks,
+            provider=CheckpointFailureProvider(),
+            layout=layout,
+            concurrency=1,
+        )
+    )
+
+    assert results[0].success is False
+    trace = json.loads((layout.traces / "task-1.jsonl").read_text(encoding="utf-8"))
+    assert trace["model"] == MODEL_ID
+    assert trace["model_provenance"] == provenance
+    assert trace["request"]["model_provenance"] == provenance
 
 
 def test_runner_records_only_safe_provider_configuration_diagnostics(tmp_path: Path) -> None:

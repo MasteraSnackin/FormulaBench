@@ -9,6 +9,8 @@
 **/*.py[cod]
 
 data/spreadsheetbench_verified_400/
+training/generated/
+training/runs/
 submissions/*/
 !submissions/.gitkeep
 !submissions/formulabench/
