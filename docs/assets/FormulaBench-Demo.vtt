@@ -1,53 +1,49 @@
 WEBVTT
 
 1
-00:00:00.280 --> 00:00:04.460
-A formula can look right, reference real cells, and still return the wrong answer.
+00:00:00.000 --> 00:00:08.150
+A spreadsheet formula can run, point to the wrong cells, and quietly return the wrong answer. FormulaBench is built for that risk.
 
 2
-00:00:04.801 --> 00:00:07.861
-That’s why FormulaBench doesn’t stop at valid syntax.
+00:00:08.150 --> 00:00:15.517
+Qwen proposes the spreadsheet answer. FormulaBench controls what it sees, what it may change, and how correctness is judged.
 
 3
-00:00:08.202 --> 00:00:11.361
-It asks whether every target cell is actually correct.
+00:00:15.517 --> 00:00:22.257
+It begins with a plain-English request and the original workbook, plus the exact sheets and cells that need answers.
 
 4
-00:00:11.645 --> 00:00:19.886
-The harness inspects the workbook, builds sheet-aware context, samples Qwen once, then validates exact coverage and formula safety.
+00:00:22.257 --> 00:00:29.676
+FormulaBench reads formula text and cached values, then turns relevant sheets, ranges and nearby cells into a compact evidence pack.
 
 5
-00:00:20.299 --> 00:00:27.319
-Only then does it write atomically, or fail closed, before the organiser-supplied evaluator scores the workbook.
+00:00:29.676 --> 00:00:41.013
+That evidence goes to Qwen three point eight, twenty-seven B, through Tinker: one logical sample, temperature zero, thinking disabled, and no model-level repair loop.
 
 6
-00:00:27.712 --> 00:00:33.612
-In our public self-evaluation of four hundred benchmark tasks, one hundred thirty-three passed:
+00:00:41.013 --> 00:00:48.223
+Qwen interprets the request and proposes formulas or values for exact worksheet addresses. It does not freely operate Excel.
 
 7
-00:00:33.993 --> 00:00:39.953
-a thirty-three point two five percent pass rate, with forty point five six percent cell accuracy.
+00:00:48.223 --> 00:00:59.299
+Deterministic checks require complete coverage, permitted addresses and valid data types. A narrow static screen blocks explicit external references and defined executable functions.
 
 8
-00:00:40.474 --> 00:00:44.274
-There were zero missing predictions and zero evaluator errors.
+00:00:59.299 --> 00:01:09.748
+A valid response is written into a fresh workbook, then reopened to verify structure and assigned cells. A failure returns the original workbook unchanged, never partly edited.
 
 9
-00:00:44.814 --> 00:00:50.794
-But ninety-four point eight four percent of wrong cells sat inside contract-valid workbooks.
+00:01:09.748 --> 00:01:21.790
+The production inference path never opens gold. After generation, LibreOffice recalculates the file, then a separate evaluator compares every target value with the golden answer.
 
 10
-00:00:51.734 --> 00:00:53.514
-Running is not the same as right.
+00:01:21.790 --> 00:01:31.769
+The frozen four-hundred-task result used untuned Qwen. It passed one hundred thirty-three tasks: thirty-three point two five per cent, with forty point five six per cent cell accuracy.
 
 11
-00:00:53.945 --> 00:00:57.925
-After scoring, Tinker lifted development passes from seven to nine.
+00:01:31.769 --> 00:01:43.080
+Later, FormulaBench trained a rank-thirty-two LoRA on fifty-nine development examples for fifteen steps. It adds a compact correction, not a full retraining of twenty-seven billion parameters.
 
 12
-00:00:58.425 --> 00:01:01.165
-This is checkpoint selection, not held-out proof.
-
-13
-00:01:01.645 --> 00:01:10.466
-The next step is targeted: deterministic transformations where rules are reliable, plus formula-execution checks where semantics decide the answer.
+00:01:43.080 --> 00:01:55.488
+On fifteen development-validation tasks, base Qwen passed seven and Qwen plus LoRA passed nine. That is real but limited: not a new four-hundred-task score, and not private-benchmark proof.

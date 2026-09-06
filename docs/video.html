@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="FormulaBench research-track demo video and transcript.">
+    <meta name="description" content="Two-minute FormulaBench explainer: how Qwen3.8-27B proposes spreadsheet answers, how the pipeline validates them, and what the development-only LoRA changed.">
     <meta name="theme-color" content="#10262b">
-    <title>FormulaBench | Demo video</title>
+    <title>FormulaBench | How Qwen and LoRA work</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css">
     <script defer src="app.js"></script>
@@ -19,9 +19,9 @@
     </header>
     <main class="media-main" id="main">
       <section class="media-hero">
-        <p class="eyebrow">Demo video · The audit trail</p>
-        <h1>A result you can inspect, including the failure.</h1>
-        <p>This 75-second demo follows one formula from plausible syntax through exact validation and the frozen public score, then labels the later Tinker experiment as development checkpoint selection. Every figure comes from evidence retained in the repository.</p>
+        <p class="eyebrow">Two-minute explainer · Qwen, controls and evaluation</p>
+        <h1>How Qwen proposes answers — and FormulaBench tests them.</h1>
+        <p>This two-minute explainer follows a request from workbook evidence through controlled Qwen inference, deterministic validation, recalculation and scoring. It keeps the frozen 400-task base result separate from the later LoRA development comparison.</p>
       </section>
       <section class="media-stage" aria-label="Demo video and transcript">
         <div class="video-shell">
@@ -30,20 +30,24 @@
             <track kind="captions" srclang="en-GB" label="English" src="assets/FormulaBench-Demo.vtt">
             Your browser cannot play this MP4. <a href="assets/FormulaBench-Demo.mp4">Download the video</a>.
           </video>
-          <p class="asset-message"><a href="assets/FormulaBench-Demo.mp4" download>Download MP4</a> · English narration, burned-in captions and WebVTT · 75.1 seconds</p>
+          <p class="asset-message"><a href="assets/FormulaBench-Demo.mp4" download>Download MP4</a> · English narration, burned-in captions and WebVTT · 2 minutes</p>
           <p class="asset-message" id="video-status" hidden>The embedded file did not load. Use the download link above or view the <a href="https://github.com/MasteraSnackin/FormulaBench">repository copy</a>.</p>
         </div>
         <div class="transcript">
           <div><p class="eyebrow">Transcript</p><h2>What the video says</h2></div>
           <ol>
-            <li>A formula can look right, reference real cells, and still return the wrong answer.</li>
-            <li>That’s why FormulaBench doesn’t stop at valid syntax. It asks whether every target cell is actually correct.</li>
-            <li>The harness inspects the workbook, builds sheet-aware context, samples Qwen once, then validates exact coverage and formula safety.</li>
-            <li>It writes atomically, or fails closed, before the organiser-supplied evaluator scores the workbook.</li>
-            <li>In our public self-evaluation of 400 benchmark tasks, 133 passed: a 33.25% pass rate, with 40.56% cell accuracy.</li>
-            <li>There were zero missing predictions and zero evaluator errors. But 94.84% of wrong cells sat inside contract-valid workbooks. Running is not the same as right.</li>
-            <li>After scoring, Tinker lifted development passes from seven to nine. This is checkpoint selection, not held-out proof.</li>
-            <li>The next step is targeted: deterministic transformations where rules are reliable, plus formula-execution checks where semantics decide the answer.</li>
+            <li>A spreadsheet formula can run, point to the wrong cells, and quietly return the wrong answer. FormulaBench is built for that risk.</li>
+            <li>Qwen proposes the spreadsheet answer. FormulaBench controls what it sees, what it may change, and how correctness is judged.</li>
+            <li>It begins with a plain-English request and the original workbook, plus the exact sheets and cells that need answers.</li>
+            <li>FormulaBench reads formula text and cached values, then turns relevant sheets, ranges and nearby cells into a compact evidence pack.</li>
+            <li>That evidence goes to Qwen three point eight, twenty-seven B, through Tinker: one logical sample, temperature zero, thinking disabled, and no model-level repair loop.</li>
+            <li>Qwen interprets the request and proposes formulas or values for exact worksheet addresses. It does not freely operate Excel.</li>
+            <li>Deterministic checks require complete coverage, permitted addresses and valid data types. A narrow static screen blocks explicit external references and defined executable functions.</li>
+            <li>A valid response is written into a fresh workbook, then reopened to verify structure and assigned cells. A failure returns the original workbook unchanged, never partly edited.</li>
+            <li>The production inference path never opens gold. After generation, LibreOffice recalculates the file, then a separate evaluator compares every target value with the golden answer.</li>
+            <li>The frozen four-hundred-task result used untuned Qwen. It passed one hundred thirty-three tasks: thirty-three point two five per cent, with forty point five six per cent cell accuracy.</li>
+            <li>Later, FormulaBench trained a rank-thirty-two LoRA on fifty-nine development examples for fifteen steps. It adds a compact correction, not a full retraining of twenty-seven billion parameters.</li>
+            <li>On fifteen development-validation tasks, base Qwen passed seven and Qwen plus LoRA passed nine. That is real but limited: not a new four-hundred-task score, and not private-benchmark proof.</li>
           </ol>
         </div>
       </section>

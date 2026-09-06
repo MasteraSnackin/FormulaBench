@@ -431,7 +431,7 @@ final 33.25% task pass rate. The replay made no additional provider calls.
 ### Demo and presentation
 
 - [Open the live research overview](https://masterasnackin.github.io/FormulaBench/).
-- [Watch the 75.1-second demo video](https://masterasnackin.github.io/FormulaBench/video.html),
+- [Watch the two-minute Qwen and LoRA explainer](https://masterasnackin.github.io/FormulaBench/video.html),
   which keeps the frozen public score separate from the later development checkpoint experiment.
 - [Watch the 30.3-second privacy-safe Tinker evidence clip](https://masterasnackin.github.io/FormulaBench/video.html#tinker-evidence-video),
   built from the sanitised provider capture and the controlled A/B summary rather than a recording
