@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Two-minute FormulaBench explainer: how Qwen3.8-27B proposes spreadsheet answers, how the pipeline validates them, and what the development-only LoRA changed.">
+    <meta name="description" content="A 75-second FormulaBench v2 explainer covering bounded workbook context, controlled execution, target-cell evaluation and migration evidence.">
     <meta name="theme-color" content="#10262b">
-    <title>FormulaBench | How Qwen and LoRA work</title>
+    <title>FormulaBench | V2 method and evidence</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css">
     <script defer src="app.js"></script>
@@ -19,9 +19,9 @@
     </header>
     <main class="media-main" id="main">
       <section class="media-hero">
-        <p class="eyebrow">Two-minute explainer · Qwen, controls and evaluation</p>
-        <h1>How Qwen proposes answers — and FormulaBench tests them.</h1>
-        <p>This two-minute explainer follows a request from workbook evidence through controlled Qwen inference, deterministic validation, recalculation and scoring. It keeps the frozen 400-task base result separate from the later LoRA development comparison.</p>
+        <p class="eyebrow">75-second v2 explainer · Bounded generation and evaluation</p>
+        <h1>How FormulaBench v2 constrains a model before it touches a workbook.</h1>
+        <p>The film follows bounded workbook context through typed planning, two controlled execution routes, pristine fallback and target-cell evaluation. Its migration receipt is kept separate from both historical scores and any future FormulaBench v2 result.</p>
       </section>
       <section class="media-stage" aria-label="Demo video and transcript">
         <div class="video-shell">
@@ -30,24 +30,20 @@
             <track kind="captions" srclang="en-GB" label="English" src="assets/FormulaBench-Demo.vtt">
             Your browser cannot play this MP4. <a href="assets/FormulaBench-Demo.mp4">Download the video</a>.
           </video>
-          <p class="asset-message"><a href="assets/FormulaBench-Demo.mp4" download>Download MP4</a> · English narration, burned-in captions and WebVTT · 2 minutes</p>
+          <p class="asset-message"><a href="assets/FormulaBench-Demo.mp4" download>Download MP4</a> · English narration, burned-in captions and WebVTT · 75 seconds</p>
           <p class="asset-message" id="video-status" hidden>The embedded file did not load. Use the download link above or view the <a href="https://github.com/MasteraSnackin/FormulaBench">repository copy</a>.</p>
         </div>
         <div class="transcript">
           <div><p class="eyebrow">Transcript</p><h2>What the video says</h2></div>
           <ol>
-            <li>A spreadsheet formula can run, point to the wrong cells, and quietly return the wrong answer. FormulaBench is built for that risk.</li>
-            <li>Qwen proposes the spreadsheet answer. FormulaBench controls what it sees, what it may change, and how correctness is judged.</li>
-            <li>It begins with a plain-English request and the original workbook, plus the exact sheets and cells that need answers.</li>
-            <li>FormulaBench reads formula text and cached values, then turns relevant sheets, ranges and nearby cells into a compact evidence pack.</li>
-            <li>That evidence goes to Qwen three point eight, twenty-seven B, through Tinker: one logical sample, temperature zero, thinking disabled, and no model-level repair loop.</li>
-            <li>Qwen interprets the request and proposes formulas or values for exact worksheet addresses. It does not freely operate Excel.</li>
-            <li>Deterministic checks require complete coverage, permitted addresses and valid data types. A narrow static screen blocks explicit external references and defined executable functions.</li>
-            <li>A valid response is written into a fresh workbook, then reopened to verify structure and assigned cells. A failure returns the original workbook unchanged, never partly edited.</li>
-            <li>The production inference path never opens gold. After generation, LibreOffice recalculates the file, then a separate evaluator compares every target value with the golden answer.</li>
-            <li>The frozen four-hundred-task result used untuned Qwen. It passed one hundred thirty-three tasks: thirty-three point two five per cent, with forty point five six per cent cell accuracy.</li>
-            <li>Later, FormulaBench trained a rank-thirty-two LoRA on fifty-nine development examples for fifteen steps. It adds a compact correction, not a full retraining of twenty-seven billion parameters.</li>
-            <li>On fifteen development-validation tasks, base Qwen passed seven and Qwen plus LoRA passed nine. That is real but limited: not a new four-hundred-task score, and not private-benchmark proof.</li>
+            <li>A workbook can open cleanly and still return the wrong investment answer.</li>
+            <li>FormulaBench v2 reads bounded workbook context, then asks Qwen3.8-27B for a typed plan.</li>
+            <li>Target cells use fixed workbook operations. Larger sheet changes may use screened Python with limited imports and resources.</li>
+            <li>Rejected plans never touch the submission. V2 preserves the pristine workbook and records the fallback.</li>
+            <li>Each task gets one model call, plus at most one bounded repair, before save and reopen checks.</li>
+            <li>The organiser evaluator recalculates in LibreOffice and compares every target cell. Executable can still mean wrong.</li>
+            <li>A credential-free migration replay checked 400 outcomes: 369 accepted plans, 31 pristine fallbacks and zero wrapper mismatches.</li>
+            <li>That receipt establishes migration parity, not benchmark accuracy. FormulaBench v1 passed 133/400, the historical ExactSource source run passed 302/400, and no FormulaBench v2 score is claimed in this film.</li>
           </ol>
         </div>
       </section>

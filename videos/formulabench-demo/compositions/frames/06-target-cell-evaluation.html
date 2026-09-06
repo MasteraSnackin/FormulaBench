@@ -1,0 +1,625 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "EB Garamond";
+      src: url("assets/fonts/EBGaramond-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Inter";
+      src: url("assets/fonts/Inter-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Inter";
+      src: url("assets/fonts/Inter-700.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/JetBrainsMono-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/JetBrainsMono-700.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    #root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      container-type: size;
+      color: #0b1623;
+    }
+
+    #root [class~="06-target-cell-evaluation-ground"] {
+      position: absolute;
+      inset: 0;
+      background: #f4f0e6;
+    }
+
+    #root [class~="06-target-cell-evaluation-scene"] {
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100cqw;
+      height: 83cqh;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    #root [class~="06-target-cell-evaluation-receipt"] {
+      position: absolute;
+      z-index: 5;
+      top: 4.2cqh;
+      left: 4.2cqw;
+      width: 31.5cqw;
+      height: 18.2cqh;
+      overflow: hidden;
+      box-sizing: border-box;
+      border: 1px solid rgba(244, 240, 230, 0.14);
+      border-radius: 8px;
+      background: #151817;
+      color: #f4f0e6;
+    }
+
+    #root [class~="06-target-cell-evaluation-receipt-head"] {
+      height: 4.65cqh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 0 1.25cqw;
+      background: #202523;
+      font-family: "JetBrains Mono";
+      font-size: 1.35cqw;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    #root [class~="06-target-cell-evaluation-receipt-index"] {
+      color: rgba(244, 240, 230, 0.58);
+    }
+
+    #root [class~="06-target-cell-evaluation-receipt-states"] {
+      height: 7.2cqh;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: center;
+      box-sizing: border-box;
+      padding: 0 1.2cqw;
+      border-bottom: 1px solid rgba(244, 240, 230, 0.14);
+    }
+
+    #root [class~="06-target-cell-evaluation-receipt-state"] {
+      display: flex;
+      align-items: center;
+      gap: 0.48cqw;
+      min-width: 0;
+      font-family: "JetBrains Mono";
+      font-size: 1.4cqw;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    #root [class~="06-target-cell-evaluation-state-dot"] {
+      width: 0.55cqw;
+      height: 0.55cqw;
+      flex: 0 0 auto;
+      box-sizing: border-box;
+      border: 1px solid rgba(244, 240, 230, 0.62);
+      border-radius: 9999px;
+      background: transparent;
+    }
+
+    #root [class~="06-target-cell-evaluation-version"] {
+      height: 6.35cqh;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 0 1.25cqw;
+      font-family: "JetBrains Mono";
+      font-size: 1.38cqw;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    #root [class~="06-target-cell-evaluation-heading"] {
+      position: absolute;
+      z-index: 5;
+      top: 3.7cqh;
+      left: 39cqw;
+      width: 56.8cqw;
+      height: 20cqh;
+      display: grid;
+      grid-template-rows: 3.4cqh 11.1cqh 3.6cqh;
+      row-gap: 0.95cqh;
+      align-content: start;
+    }
+
+    #root [class~="06-target-cell-evaluation-kicker"] {
+      height: 3.4cqh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      font-family: "JetBrains Mono";
+      font-size: 1.35cqw;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    #root [class~="06-target-cell-evaluation-spike"] {
+      color: rgb(34, 157, 108);
+    }
+
+    #root [class~="06-target-cell-evaluation-title"] {
+      height: 11.1cqh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      font-family: "EB Garamond";
+      font-size: 5.45cqw;
+      font-weight: 400;
+      letter-spacing: -0.022em;
+      line-height: 0.9;
+    }
+
+    #root [class~="06-target-cell-evaluation-heading-state"] {
+      height: 3.6cqh;
+      min-width: 38cqw;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      font-family: "JetBrains Mono";
+      font-size: 1.42cqw;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    #root [class~="06-target-cell-evaluation-sheet"] {
+      position: absolute;
+      z-index: 3;
+      top: 26cqh;
+      left: 4.2cqw;
+      width: 91.6cqw;
+      height: 49.5cqh;
+      overflow: hidden;
+      box-sizing: border-box;
+      border: 1px solid rgba(11, 22, 35, 0.12);
+      border-radius: 12px;
+      background: #f8d5d5;
+      box-shadow: 0 1px 3px rgba(11, 22, 35, 0.08), 0 4px 16px rgba(11, 22, 35, 0.04);
+    }
+
+    #root [class~="06-target-cell-evaluation-sheet-head"] {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5cqh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 0 1.45cqw;
+      border-bottom: 1px solid rgba(11, 22, 35, 0.12);
+      background: rgba(244, 240, 230, 0.6);
+      font-family: "JetBrains Mono";
+      font-size: 1.35cqw;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    #root [class~="06-target-cell-evaluation-sheet-mode"] {
+      color: rgba(11, 22, 35, 0.56);
+    }
+
+    #root [class~="06-target-cell-evaluation-burst-wrap"] {
+      position: absolute;
+      z-index: 1;
+      top: 5cqh;
+      left: 0;
+      width: 100%;
+      height: 44.5cqh;
+      overflow: hidden;
+    }
+
+    #root [class~="06-target-cell-evaluation-cell"] {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 26.2cqw;
+      height: 13cqh;
+      overflow: hidden;
+      box-sizing: border-box;
+      border: 1px solid rgba(11, 22, 35, 0.16);
+      border-radius: 8px;
+      background: #f4f0e6;
+      will-change: transform, opacity;
+    }
+
+    #root [class~="06-target-cell-evaluation-cell-head"] {
+      height: 3.2cqh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 0 0.85cqw;
+      border-bottom: 1px solid rgba(11, 22, 35, 0.1);
+      font-family: "JetBrains Mono";
+      font-size: 1.35cqw;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    #root [class~="06-target-cell-evaluation-result"] {
+      color: rgba(11, 22, 35, 0.5);
+    }
+
+    #root [class~="06-target-cell-evaluation-pair"] {
+      height: 9.8cqh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    #root [class~="06-target-cell-evaluation-value"] {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.15cqh;
+      box-sizing: border-box;
+      padding: 0 0.9cqw;
+    }
+
+    #root [class~="06-target-cell-evaluation-value"] + [class~="06-target-cell-evaluation-value"] {
+      border-left: 1px solid rgba(11, 22, 35, 0.1);
+    }
+
+    #root [class~="06-target-cell-evaluation-value-label"] {
+      font-family: "Inter";
+      font-size: 1.4cqw;
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1;
+    }
+
+    #root [class~="06-target-cell-evaluation-value-bar"] {
+      width: 100%;
+      height: 0.9cqh;
+      border-radius: 6px;
+      background: rgba(11, 22, 35, 0.72);
+      transform-origin: left center;
+    }
+
+    #root [class~="06-target-cell-evaluation-bar-medium"] {
+      width: 78%;
+    }
+
+    #root [class~="06-target-cell-evaluation-bar-short"] {
+      width: 62%;
+    }
+  </style>
+
+  <div data-hf-id="hf-nth5" id="root" data-composition-id="06-target-cell-evaluation" data-width="1920" data-height="1080" data-duration="8.4">
+    <div data-hf-id="hf-606t" class="clip 06-target-cell-evaluation-ground" data-start="0" data-duration="8.4" data-track-index="0" aria-hidden="true"></div>
+
+    <section data-hf-id="hf-px9b" class="clip 06-target-cell-evaluation-scene" data-start="0" data-duration="8.4" data-track-index="1" aria-label="Evaluation at the target cells">
+      <aside data-hf-id="hf-d8qj" id="06-target-cell-evaluation-receipt" class="06-target-cell-evaluation-receipt">
+        <div data-hf-id="hf-g67e" class="06-target-cell-evaluation-receipt-head">
+          <span data-hf-id="hf-i1it">Workbook receipt</span>
+          <span data-hf-id="hf-qadl" class="06-target-cell-evaluation-receipt-index">06</span>
+        </div>
+        <div data-hf-id="hf-mahm" class="06-target-cell-evaluation-receipt-states">
+          <div data-hf-id="hf-605o" id="06-target-cell-evaluation-state-open" class="06-target-cell-evaluation-receipt-state">
+            <span data-hf-id="hf-v7ll" id="06-target-cell-evaluation-dot-open" class="06-target-cell-evaluation-state-dot" aria-hidden="true"></span>
+            <span data-hf-id="hf-sxv1">Open</span>
+          </div>
+          <div data-hf-id="hf-5jfx" id="06-target-cell-evaluation-state-recalculate" class="06-target-cell-evaluation-receipt-state">
+            <span data-hf-id="hf-21bm" id="06-target-cell-evaluation-dot-recalculate" class="06-target-cell-evaluation-state-dot" aria-hidden="true"></span>
+            <span data-hf-id="hf-n8fc">Recalculate</span>
+          </div>
+          <div data-hf-id="hf-1rib" id="06-target-cell-evaluation-state-save" class="06-target-cell-evaluation-receipt-state">
+            <span data-hf-id="hf-uxcm" id="06-target-cell-evaluation-dot-save" class="06-target-cell-evaluation-state-dot" aria-hidden="true"></span>
+            <span data-hf-id="hf-9dlg">Save</span>
+          </div>
+        </div>
+        <div data-hf-id="hf-zrs5" id="06-target-cell-evaluation-version" class="06-target-cell-evaluation-version">LibreOffice 26.8.0.3</div>
+      </aside>
+
+      <header data-hf-id="hf-1kr5" class="06-target-cell-evaluation-heading">
+        <p data-hf-id="hf-xey8" id="06-target-cell-evaluation-kicker" class="06-target-cell-evaluation-kicker">
+          <span data-hf-id="hf-tu71" class="06-target-cell-evaluation-spike">✱</span> Evaluation / 06
+        </p>
+        <h1 data-hf-id="hf-loxe" id="06-target-cell-evaluation-title" class="06-target-cell-evaluation-title">Target cells</h1>
+        <p data-hf-id="hf-gye6" id="06-target-cell-evaluation-heading-state" class="06-target-cell-evaluation-heading-state">Target-cell comparison</p>
+      </header>
+
+      <div data-hf-id="hf-hod6" id="06-target-cell-evaluation-sheet" class="06-target-cell-evaluation-sheet">
+        <div data-hf-id="hf-xx1t" class="06-target-cell-evaluation-sheet-head">
+          <span data-hf-id="hf-gv9u">Recalculated targets</span>
+          <span data-hf-id="hf-hx6u" class="06-target-cell-evaluation-sheet-mode">Expected / produced</span>
+        </div>
+
+        <div data-hf-id="hf-8bl6" class="06-target-cell-evaluation-burst-wrap">
+          <article data-hf-id="hf-qivf" id="06-target-cell-evaluation-cell-a" class="06-target-cell-evaluation-cell" data-target-x="-550" data-target-y="-98">
+            <div data-hf-id="hf-5b1o" class="06-target-cell-evaluation-cell-head">
+              <span data-hf-id="hf-mgy8">Target cell</span>
+              <span data-hf-id="hf-i64k" id="06-target-cell-evaluation-result-a" class="06-target-cell-evaluation-result">Compare</span>
+            </div>
+            <div data-hf-id="hf-xv51" class="06-target-cell-evaluation-pair">
+              <div data-hf-id="hf-bvgc" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-assu" class="06-target-cell-evaluation-value-label">Expected</span>
+                <span data-hf-id="hf-bo21" class="06-target-cell-evaluation-value-bar 06-target-cell-evaluation-bar-medium"></span>
+              </div>
+              <div data-hf-id="hf-25bo" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-g09i" class="06-target-cell-evaluation-value-label">Produced</span>
+                <span data-hf-id="hf-xcvx" class="06-target-cell-evaluation-value-bar 06-target-cell-evaluation-bar-medium"></span>
+              </div>
+            </div>
+          </article>
+
+          <article data-hf-id="hf-xs31" id="06-target-cell-evaluation-cell-b" class="06-target-cell-evaluation-cell" data-target-x="0" data-target-y="-98">
+            <div data-hf-id="hf-33k4" class="06-target-cell-evaluation-cell-head">
+              <span data-hf-id="hf-fnl4">Target cell</span>
+              <span data-hf-id="hf-xk9p" id="06-target-cell-evaluation-result-b" class="06-target-cell-evaluation-result">Compare</span>
+            </div>
+            <div data-hf-id="hf-gmk9" class="06-target-cell-evaluation-pair">
+              <div data-hf-id="hf-0yel" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-xz6a" class="06-target-cell-evaluation-value-label">Expected</span>
+                <span data-hf-id="hf-nwrr" class="06-target-cell-evaluation-value-bar"></span>
+              </div>
+              <div data-hf-id="hf-1cpm" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-a8fu" class="06-target-cell-evaluation-value-label">Produced</span>
+                <span data-hf-id="hf-7knb" class="06-target-cell-evaluation-value-bar"></span>
+              </div>
+            </div>
+          </article>
+
+          <article data-hf-id="hf-bioe" id="06-target-cell-evaluation-cell-c" class="06-target-cell-evaluation-cell" data-target-x="550" data-target-y="-98">
+            <div data-hf-id="hf-1wn1" class="06-target-cell-evaluation-cell-head">
+              <span data-hf-id="hf-ego1">Target cell</span>
+              <span data-hf-id="hf-40ti" id="06-target-cell-evaluation-result-c" class="06-target-cell-evaluation-result">Compare</span>
+            </div>
+            <div data-hf-id="hf-hthc" class="06-target-cell-evaluation-pair">
+              <div data-hf-id="hf-3c8r" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-ydhb" class="06-target-cell-evaluation-value-label">Expected</span>
+                <span data-hf-id="hf-6i8q" class="06-target-cell-evaluation-value-bar 06-target-cell-evaluation-bar-short"></span>
+              </div>
+              <div data-hf-id="hf-3qjs" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-amqv" class="06-target-cell-evaluation-value-label">Produced</span>
+                <span data-hf-id="hf-on3y" class="06-target-cell-evaluation-value-bar 06-target-cell-evaluation-bar-short"></span>
+              </div>
+            </div>
+          </article>
+
+          <article data-hf-id="hf-euqr" id="06-target-cell-evaluation-cell-d" class="06-target-cell-evaluation-cell" data-target-x="-550" data-target-y="98">
+            <div data-hf-id="hf-2ay2" class="06-target-cell-evaluation-cell-head">
+              <span data-hf-id="hf-euz2">Target cell</span>
+              <span data-hf-id="hf-sdpj" id="06-target-cell-evaluation-result-d" class="06-target-cell-evaluation-result">Compare</span>
+            </div>
+            <div data-hf-id="hf-hf6b" class="06-target-cell-evaluation-pair">
+              <div data-hf-id="hf-2jmp" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-yrsc" class="06-target-cell-evaluation-value-label">Expected</span>
+                <span data-hf-id="hf-76ca" class="06-target-cell-evaluation-value-bar"></span>
+              </div>
+              <div data-hf-id="hf-2xxq" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-b11w" class="06-target-cell-evaluation-value-label">Produced</span>
+                <span data-hf-id="hf-6s19" class="06-target-cell-evaluation-value-bar"></span>
+              </div>
+            </div>
+          </article>
+
+          <article data-hf-id="hf-cdnt" id="06-target-cell-evaluation-cell-e" class="06-target-cell-evaluation-cell" data-target-x="0" data-target-y="98">
+            <div data-hf-id="hf-4ah7" class="06-target-cell-evaluation-cell-head">
+              <span data-hf-id="hf-do1z">Target cell</span>
+              <span data-hf-id="hf-zk68" id="06-target-cell-evaluation-result-e" class="06-target-cell-evaluation-result">Compare</span>
+            </div>
+            <div data-hf-id="hf-ffn6" class="06-target-cell-evaluation-pair">
+              <div data-hf-id="hf-4xgv" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-z63d" class="06-target-cell-evaluation-value-label">Expected</span>
+                <span data-hf-id="hf-yjt0" class="06-target-cell-evaluation-value-bar 06-target-cell-evaluation-bar-medium"></span>
+              </div>
+              <div data-hf-id="hf-5brw" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-bfcx" class="06-target-cell-evaluation-value-label">Produced</span>
+                <span data-hf-id="hf-y5hz" class="06-target-cell-evaluation-value-bar 06-target-cell-evaluation-bar-medium"></span>
+              </div>
+            </div>
+          </article>
+
+          <article data-hf-id="hf-b2ts" id="06-target-cell-evaluation-cell-f" class="06-target-cell-evaluation-cell" data-target-x="550" data-target-y="98">
+            <div data-hf-id="hf-4os8" class="06-target-cell-evaluation-cell-head">
+              <span data-hf-id="hf-e2d0">Target cell</span>
+              <span data-hf-id="hf-nnmh" id="06-target-cell-evaluation-result-f" class="06-target-cell-evaluation-result">Compare</span>
+            </div>
+            <div data-hf-id="hf-f1c5" class="06-target-cell-evaluation-pair">
+              <div data-hf-id="hf-9ogc" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-zkee" class="06-target-cell-evaluation-value-label">Expected</span>
+                <span data-hf-id="hf-9k6g" class="06-target-cell-evaluation-value-bar"></span>
+              </div>
+              <div data-hf-id="hf-9a5b" class="06-target-cell-evaluation-value">
+                <span data-hf-id="hf-btny" class="06-target-cell-evaluation-value-label">Produced</span>
+                <span data-hf-id="hf-k5v8" id="06-target-cell-evaluation-mismatch-bar" class="06-target-cell-evaluation-value-bar"></span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+    (() => {
+      const compositionId = "06-target-cell-evaluation";
+      const root = document.querySelector('[data-composition-id="06-target-cell-evaluation"]');
+      if (!root || typeof gsap === "undefined") return;
+
+      const byId = (suffix) => document.getElementById(compositionId + "-" + suffix);
+      const tl = gsap.timeline({ paused: true });
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines[compositionId] = tl;
+
+      const scene = root.querySelector('[class~="06-target-cell-evaluation-scene"]');
+      const receipt = byId("receipt");
+      const kicker = byId("kicker");
+      const title = byId("title");
+      const headingState = byId("heading-state");
+      const sheet = byId("sheet");
+      const stateIds = ["open", "recalculate", "save"];
+      const cellIds = ["a", "b", "c", "d", "e", "f"];
+      const matchIds = ["a", "b", "c", "d", "e"];
+
+      tl.fromTo(scene, { scale: 0.995 }, { scale: 1, duration: 7.95, ease: "none" }, 0);
+      tl.fromTo(receipt, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.46, ease: "power2.out" }, 0.08);
+      tl.fromTo(kicker, { autoAlpha: 0, y: 9 }, { autoAlpha: 1, y: 0, duration: 0.34, ease: "power2.out" }, 0.03);
+      tl.fromTo(title, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.52, ease: "power2.out" }, 0.1);
+      tl.fromTo(headingState, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.42);
+
+      stateIds.forEach((stateId, index) => {
+        const at = 0.45 + index * 0.52;
+        tl.fromTo(
+          byId(`state-${stateId}`),
+          { autoAlpha: 0, y: 10 },
+          { autoAlpha: 1, y: 0, duration: 0.32, ease: "power2.out" },
+          at,
+        );
+        tl.to(
+          byId(`dot-${stateId}`),
+          { backgroundColor: "#5DB872", borderColor: "#5DB872", duration: 0.2, ease: "power1.out" },
+          at + 0.22,
+        );
+      });
+      tl.fromTo(
+        byId("version"),
+        { autoAlpha: 0, x: -12 },
+        { autoAlpha: 1, x: 0, duration: 0.38, ease: "power2.out" },
+        1.72,
+      );
+
+      tl.fromTo(sheet, { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.48, ease: "power2.out" }, 2.18);
+
+      cellIds.forEach((cellId, index) => {
+        const cell = byId(`cell-${cellId}`);
+        const targetX = Number(cell.dataset.targetX);
+        const targetY = Number(cell.dataset.targetY);
+        tl.fromTo(
+          cell,
+          {
+            xPercent: -50,
+            yPercent: -50,
+            x: targetX * 0.3,
+            y: targetY * 0.3,
+            scale: 0.92,
+            autoAlpha: 0,
+          },
+          {
+            x: targetX,
+            y: targetY,
+            scale: 1,
+            autoAlpha: 1,
+            duration: 1.15,
+            ease: "power3.out",
+          },
+          2.4 + index * 0.08,
+        );
+      });
+
+      const valueBlocks = root.querySelectorAll('[class~="06-target-cell-evaluation-value"]');
+      tl.fromTo(
+        valueBlocks,
+        { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.34, stagger: 0.09, ease: "power2.out" },
+        3.72,
+      );
+
+      matchIds.forEach((cellId, index) => {
+        const at = 5.18 + index * 0.1;
+        tl.to(
+          byId(`cell-${cellId}`),
+          { borderColor: "#5DB872", duration: 0.28, ease: "power1.out" },
+          at,
+        );
+        tl.to(
+          byId(`result-${cellId}`),
+          { color: "#5DB872", duration: 0.2, ease: "power1.out" },
+          at,
+        );
+        tl.set(byId(`result-${cellId}`), { textContent: "Match" }, at);
+      });
+
+      const headingStates = [
+        { t: 0, text: "TARGET-CELL COMPARISON" },
+        { t: 0.95, text: "EXECUTABLE, STILL WRONG" },
+      ];
+      const headingAt = (time) => {
+        for (let index = headingStates.length - 1; index >= 0; index -= 1) {
+          if (time >= headingStates[index].t) return headingStates[index].text;
+        }
+        return headingStates[0].text;
+      };
+      const headingDriver = { t: 0 };
+      let lastHeading = "";
+      tl.to(
+        headingDriver,
+        {
+          t: 1.8,
+          duration: 1.8,
+          ease: "none",
+          onUpdate: () => {
+            const nextHeading = headingAt(headingDriver.t);
+            if (nextHeading !== lastHeading) {
+              headingState.textContent = nextHeading;
+              lastHeading = nextHeading;
+            }
+          },
+        },
+        5.2,
+      );
+
+      tl.to(
+        byId("mismatch-bar"),
+        { scaleX: 0.62, backgroundColor: "#C64545", duration: 0.36, ease: "power2.out" },
+        6.12,
+      );
+      tl.to(
+        byId("cell-f"),
+        { borderColor: "#C64545", backgroundColor: "#F8D5D5", duration: 0.32, ease: "power1.out" },
+        6.12,
+      );
+      tl.set(byId("result-f"), { textContent: "Mismatch" }, 6.12);
+      tl.to(byId("result-f"), { color: "#C64545", duration: 0.22, ease: "power1.out" }, 6.12);
+    })();
+  </script>
+</template>

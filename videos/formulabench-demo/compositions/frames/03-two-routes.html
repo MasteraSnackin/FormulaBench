@@ -1,0 +1,408 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "EB Garamond";
+      src: url("assets/fonts/EBGaramond-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Inter";
+      src: url("assets/fonts/Inter-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Inter";
+      src: url("assets/fonts/Inter-700.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/JetBrainsMono-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/JetBrainsMono-700.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    #root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      container-type: size;
+      color: #0b1623;
+    }
+
+    #root [class~="03-two-routes-ground"] {
+      position: absolute;
+      inset: 0;
+      background: #f4f0e6;
+    }
+
+    #root [class~="03-two-routes-scene"] {
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100cqw;
+      height: 83cqh;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    #root [class~="03-two-routes-heading"] {
+      position: absolute;
+      z-index: 5;
+      top: 4.6cqh;
+      left: 4.2cqw;
+      width: 50cqw;
+      height: 13.6cqh;
+    }
+
+    #root [class~="03-two-routes-meta"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50cqw;
+      height: 2.7cqh;
+      display: flex;
+      align-items: center;
+      margin: 0;
+      font-family: "JetBrains Mono";
+      font-size: 1.35cqw;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    #root [class~="03-two-routes-title"] {
+      position: absolute;
+      top: 4.1cqh;
+      left: 0;
+      margin: 0;
+      max-width: 48cqw;
+      font-family: "EB Garamond";
+      font-size: 4.6cqw;
+      font-weight: 400;
+      letter-spacing: -0.018em;
+      line-height: 1.02;
+    }
+
+    #root [class~="03-two-routes-plan"] {
+      position: absolute;
+      z-index: 6;
+      top: 19.8cqh;
+      left: 43.5cqw;
+      width: 13cqw;
+      height: 6.65cqh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      border: 1px solid rgba(11, 22, 35, 0.2);
+      border-radius: 8px;
+      background: #f8d5d5;
+      font-family: "JetBrains Mono";
+      font-size: 1.4cqw;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    #root [class~="03-two-routes-rail-map"] {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      width: 100cqw;
+      height: 83cqh;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    #root [class~="03-two-routes-rail"] {
+      fill: none;
+      stroke: rgba(11, 22, 35, 0.42);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    #root [class~="03-two-routes-card"] {
+      position: absolute;
+      z-index: 3;
+      top: 32.95cqh;
+      height: 31.5cqh;
+      box-sizing: border-box;
+      overflow: hidden;
+      border: 1px solid rgba(11, 22, 35, 0.12);
+      border-radius: 12px;
+      background: #f8d5d5;
+      box-shadow: 0 1px 3px rgba(11, 22, 35, 0.08), 0 4px 16px rgba(11, 22, 35, 0.04);
+    }
+
+    #root [class~="03-two-routes-card-left"] {
+      left: 4.2cqw;
+      width: 54.7cqw;
+    }
+
+    #root [class~="03-two-routes-card-right"] {
+      left: 60.5cqw;
+      width: 35.3cqw;
+    }
+
+    #root [class~="03-two-routes-card-head"] {
+      height: 7.7cqh;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 0 1.65cqw;
+      border-bottom: 1px solid rgba(11, 22, 35, 0.12);
+      background: rgba(244, 240, 230, 0.5);
+    }
+
+    #root [class~="03-two-routes-card-label"] {
+      font-family: "JetBrains Mono";
+      font-size: 1.42cqw;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    #root [class~="03-two-routes-rows"] {
+      display: grid;
+      gap: 1.1cqh;
+      box-sizing: border-box;
+      padding: 1.55cqh 1.65cqw;
+    }
+
+    #root [class~="03-two-routes-row"] {
+      min-height: 5.7cqh;
+      display: flex;
+      align-items: center;
+      gap: 0.9cqw;
+      box-sizing: border-box;
+      padding: 0 1.1cqw;
+      border: 1px solid rgba(11, 22, 35, 0.12);
+      border-radius: 6px;
+      background: #f4f0e6;
+      font-family: "Inter";
+      font-size: 1.55cqw;
+      font-weight: 400;
+      letter-spacing: -0.005em;
+      line-height: 1.15;
+    }
+
+    #root [class~="03-two-routes-row-mark"] {
+      width: 0.7cqw;
+      height: 0.7cqw;
+      flex: 0 0 auto;
+      box-sizing: border-box;
+      border: 1px solid rgba(11, 22, 35, 0.45);
+      border-radius: 2px;
+      background: transparent;
+    }
+
+    #root [class~="03-two-routes-validator"] {
+      position: absolute;
+      z-index: 7;
+      top: 70.35cqh;
+      left: 40.6cqw;
+      width: 18.8cqw;
+      height: 7.35cqh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      border: 1px solid rgba(11, 22, 35, 0.16);
+      border-radius: 8px;
+      background: #2ccb8c;
+      color: #0b1623;
+      font-family: "JetBrains Mono";
+      font-size: 1.45cqw;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+  </style>
+
+  <div data-hf-id="hf-ltlu" id="root" data-composition-id="03-two-routes" data-width="1920" data-height="1080" data-duration="8.9">
+    <div data-hf-id="hf-zddt" class="clip 03-two-routes-ground" data-start="0" data-duration="8.9" data-track-index="0" aria-hidden="true"></div>
+
+    <section data-hf-id="hf-r1nb" class="clip 03-two-routes-scene" data-start="0" data-duration="8.9" data-track-index="1" aria-label="Two execution routes">
+      <header data-hf-id="hf-lr2c" class="03-two-routes-heading">
+        <p data-hf-id="hf-xgob" id="03-two-routes-meta" class="03-two-routes-meta">Method / routing</p>
+        <h1 data-hf-id="hf-cz6u" id="03-two-routes-title" class="03-two-routes-title">Two execution routes</h1>
+      </header>
+
+      <div data-hf-id="hf-kyq5" id="03-two-routes-plan" class="03-two-routes-plan">Typed plan</div>
+
+      <svg data-hf-id="hf-vsln" class="03-two-routes-rail-map" viewBox="0 0 1920 900" preserveAspectRatio="none" aria-hidden="true">
+        <path data-hf-id="hf-8jeh" id="03-two-routes-entry-rail" class="03-two-routes-rail" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="M 80 286 H 960" />
+        <path data-hf-id="hf-y0wz" id="03-two-routes-left-branch" class="03-two-routes-rail" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="M 960 286 V 316 H 605 V 356" />
+        <path data-hf-id="hf-761z" id="03-two-routes-right-branch" class="03-two-routes-rail" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="M 960 286 V 316 H 1500 V 356" />
+        <path data-hf-id="hf-xoy6" id="03-two-routes-left-return" class="03-two-routes-rail" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="M 605 696 V 744 H 960 V 760" />
+        <path data-hf-id="hf-jl1u" id="03-two-routes-right-return" class="03-two-routes-rail" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="M 1500 696 V 744 H 960 V 760" />
+      </svg>
+
+      <article data-hf-id="hf-kfrr" id="03-two-routes-left-card" class="03-two-routes-card 03-two-routes-card-left">
+        <div data-hf-id="hf-qoef" class="03-two-routes-card-head">
+          <span data-hf-id="hf-3oy4" id="03-two-routes-left-label" class="03-two-routes-card-label">Typed workbook operations</span>
+        </div>
+        <div data-hf-id="hf-nudx" class="03-two-routes-rows">
+          <div data-hf-id="hf-63hq" id="03-two-routes-set-value" class="03-two-routes-row">
+            <span data-hf-id="hf-yy5u" class="03-two-routes-row-mark" aria-hidden="true"></span>
+            <span data-hf-id="hf-uwq2">set value</span>
+          </div>
+          <div data-hf-id="hf-7ahj" id="03-two-routes-set-formula" class="03-two-routes-row">
+            <span data-hf-id="hf-wg8m" class="03-two-routes-row-mark" aria-hidden="true"></span>
+            <span data-hf-id="hf-1ltp">set formula</span>
+          </div>
+          <div data-hf-id="hf-6j81" id="03-two-routes-copy-style" class="03-two-routes-row">
+            <span data-hf-id="hf-wujn" class="03-two-routes-row-mark" aria-hidden="true"></span>
+            <span data-hf-id="hf-czu5">copy style</span>
+          </div>
+        </div>
+      </article>
+
+      <article data-hf-id="hf-ynyf" id="03-two-routes-right-card" class="03-two-routes-card 03-two-routes-card-right">
+        <div data-hf-id="hf-54pz" class="03-two-routes-card-head">
+          <span data-hf-id="hf-fxbg" id="03-two-routes-right-label" class="03-two-routes-card-label">Screened Python</span>
+        </div>
+        <div data-hf-id="hf-8amh" class="03-two-routes-rows">
+          <div data-hf-id="hf-4jg5" id="03-two-routes-limited-imports" class="03-two-routes-row">
+            <span data-hf-id="hf-x8uo" class="03-two-routes-row-mark" aria-hidden="true"></span>
+            <span data-hf-id="hf-nofv">limited imports</span>
+          </div>
+          <div data-hf-id="hf-9cvk" id="03-two-routes-resource-caps" class="03-two-routes-row">
+            <span data-hf-id="hf-ugph" class="03-two-routes-row-mark" aria-hidden="true"></span>
+            <span data-hf-id="hf-xvce">resource caps</span>
+          </div>
+        </div>
+      </article>
+
+      <div data-hf-id="hf-eu4l" id="03-two-routes-validator" class="03-two-routes-validator">Validate output</div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+    (() => {
+      const compositionId = "03-two-routes";
+      const root = document.querySelector('[data-composition-id="03-two-routes"]');
+      if (!root || typeof gsap === "undefined") return;
+
+      const byId = (suffix) => document.getElementById(compositionId + "-" + suffix);
+      const tl = gsap.timeline({ paused: true });
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines[compositionId] = tl;
+
+      const scene = root.querySelector('[class~="03-two-routes-scene"]');
+      const title = byId("title");
+      const meta = byId("meta");
+      const plan = byId("plan");
+      const leftCard = byId("left-card");
+      const leftLabel = byId("left-label");
+      const rightCard = byId("right-card");
+      const rightLabel = byId("right-label");
+      const validator = byId("validator");
+
+      const drawRail = (suffix, start, duration) => {
+        tl.fromTo(
+          byId(suffix),
+          { strokeDashoffset: 1 },
+          { strokeDashoffset: 0, duration, ease: "power1.inOut" },
+          start,
+        );
+      };
+
+      const buildSequence = (entries, start, end) => {
+        const baseDuration = 0.68;
+        const secondsPerCharacter = 0.028;
+        const weighted = entries.map((entry, index) => ({
+          ...entry,
+          weight: baseDuration + entry.body.length * secondsPerCharacter + (index === entries.length - 1 ? 0.5 : 0.22),
+        }));
+        const totalWeight = weighted.reduce((sum, entry) => sum + entry.weight, 0);
+        let cursor = start;
+        return weighted.map((entry) => {
+          const span = ((end - start) * entry.weight) / totalWeight;
+          const timed = { ...entry, start: cursor, end: cursor + span };
+          cursor += span;
+          return timed;
+        });
+      };
+
+      const revealSequence = (entries, start, end) => {
+        buildSequence(entries, start, end).forEach((entry) => {
+          const revealDuration = Math.min(0.42, (entry.end - entry.start) * 0.5);
+          tl.fromTo(
+            byId(entry.id),
+            { autoAlpha: 0, y: 16 },
+            { autoAlpha: 1, y: 0, duration: revealDuration, ease: "power2.out" },
+            entry.start,
+          );
+        });
+      };
+
+      tl.fromTo(scene, { scale: 0.99 }, { scale: 1, duration: 8.45, ease: "none" }, 0);
+      tl.fromTo(meta, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.38, ease: "power2.out" }, 0.02);
+      tl.fromTo(title, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" }, 0.08);
+      tl.fromTo(plan, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.46, ease: "power2.out" }, 0.22);
+      drawRail("entry-rail", 0.42, 1.55);
+
+      drawRail("left-branch", 1.9, 0.82);
+      tl.fromTo(leftCard, { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.42, ease: "power2.out" }, 2.42);
+      tl.fromTo(leftLabel, { autoAlpha: 0, x: -14 }, { autoAlpha: 1, x: 0, duration: 0.35, ease: "power2.out" }, 2.68);
+      revealSequence(
+        [
+          { id: "set-value", body: "set value" },
+          { id: "set-formula", body: "set formula" },
+          { id: "copy-style", body: "copy style" },
+        ],
+        3.08,
+        5.45,
+      );
+
+      drawRail("right-branch", 5.08, 0.72);
+      tl.fromTo(rightCard, { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.42, ease: "power2.out" }, 5.38);
+      tl.fromTo(rightLabel, { autoAlpha: 0, x: -14 }, { autoAlpha: 1, x: 0, duration: 0.35, ease: "power2.out" }, 5.62);
+      revealSequence(
+        [
+          { id: "limited-imports", body: "limited imports" },
+          { id: "resource-caps", body: "resource caps" },
+        ],
+        6.02,
+        7.68,
+      );
+
+      drawRail("left-return", 7.66, 0.48);
+      drawRail("right-return", 7.66, 0.48);
+      tl.fromTo(
+        validator,
+        { autoAlpha: 0, y: 14, scale: 0.96 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.3, ease: "power2.out" },
+        7.92,
+      );
+    })();
+  </script>
+</template>

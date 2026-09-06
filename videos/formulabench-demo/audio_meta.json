@@ -5,1023 +5,956 @@
     {
       "frame": 1,
       "path": "assets/voice/01.wav",
-      "duration_s": 4.702,
+      "duration_s": 5,
       "words": [
         {
           "id": "w0",
           "text": "A",
-          "start": 0.28,
-          "end": 0.3
+          "start": 0.18,
+          "end": 0.281
         },
         {
           "id": "w1",
-          "text": "formula",
-          "start": 0.319,
-          "end": 0.719
+          "text": "workbook",
+          "start": 0.297,
+          "end": 0.802
         },
         {
           "id": "w2",
           "text": "can",
-          "start": 0.759,
-          "end": 0.939
+          "start": 0.884,
+          "end": 1.074
         },
         {
           "id": "w3",
-          "text": "look",
-          "start": 0.959,
-          "end": 1.12
+          "text": "open",
+          "start": 1.105,
+          "end": 1.357
         },
         {
           "id": "w4",
-          "text": "right,",
-          "start": 1.22,
-          "end": 1.339
+          "text": "cleanly",
+          "start": 1.398,
+          "end": 1.84
         },
         {
           "id": "w5",
-          "text": "reference",
-          "start": 1.599,
-          "end": 2.039
+          "text": "and",
+          "start": 1.912,
+          "end": 2.101
         },
         {
           "id": "w6",
-          "text": "real",
-          "start": 2.079,
-          "end": 2.339
+          "text": "still",
+          "start": 2.132,
+          "end": 2.447
         },
         {
           "id": "w7",
-          "text": "cells,",
-          "start": 2.379,
-          "end": 2.7
+          "text": "return",
+          "start": 2.499,
+          "end": 2.877
         },
         {
           "id": "w8",
-          "text": "and",
-          "start": 3.039,
-          "end": 3.199
+          "text": "the",
+          "start": 2.939,
+          "end": 3.128
         },
         {
           "id": "w9",
-          "text": "still",
-          "start": 3.259,
-          "end": 3.439
+          "text": "wrong",
+          "start": 3.159,
+          "end": 3.475
         },
         {
           "id": "w10",
-          "text": "return",
-          "start": 3.46,
-          "end": 3.759
+          "text": "investment",
+          "start": 3.526,
+          "end": 4.157
         },
         {
           "id": "w11",
-          "text": "the",
-          "start": 3.799,
-          "end": 3.859
-        },
-        {
-          "id": "w12",
-          "text": "wrong",
-          "start": 3.899,
-          "end": 4.059
-        },
-        {
-          "id": "w13",
           "text": "answer.",
-          "start": 4.159,
-          "end": 4.46
+          "start": 4.26,
+          "end": 4.638
         }
       ]
     },
     {
       "frame": 2,
       "path": "assets/voice/02.wav",
-      "duration_s": 6.844,
+      "duration_s": 8.2,
       "words": [
         {
           "id": "w0",
-          "text": "That’s",
-          "start": 0.099,
-          "end": 0.379
+          "text": "FormulaBench",
+          "start": 0.18,
+          "end": 1.026
         },
         {
           "id": "w1",
-          "text": "why",
-          "start": 0.379,
-          "end": 0.479
+          "text": "v2",
+          "start": 1.163,
+          "end": 1.304
         },
         {
           "id": "w2",
-          "text": "FormulaBench",
-          "start": 0.599,
-          "end": 1.299
+          "text": "reads",
+          "start": 1.327,
+          "end": 1.68
         },
         {
           "id": "w3",
-          "text": "doesn’t",
-          "start": 1.339,
-          "end": 1.62
+          "text": "bounded",
+          "start": 1.737,
+          "end": 2.23
         },
         {
           "id": "w4",
-          "text": "stop",
-          "start": 1.699,
-          "end": 1.899
+          "text": "workbook",
+          "start": 2.311,
+          "end": 2.875
         },
         {
           "id": "w5",
-          "text": "at",
-          "start": 1.939,
-          "end": 2.039
+          "text": "context,",
+          "start": 2.966,
+          "end": 3.46
         },
         {
           "id": "w6",
-          "text": "valid",
-          "start": 2.079,
-          "end": 2.419
+          "text": "then",
+          "start": 3.54,
+          "end": 3.822
         },
         {
           "id": "w7",
-          "text": "syntax.",
-          "start": 2.46,
-          "end": 3.039
+          "text": "asks",
+          "start": 3.868,
+          "end": 4.15
         },
         {
           "id": "w8",
-          "text": "It",
-          "start": 3.5,
-          "end": 3.579
+          "text": "Qwen",
+          "start": 4.196,
+          "end": 4.478
         },
         {
           "id": "w9",
-          "text": "asks",
-          "start": 3.659,
-          "end": 3.98
+          "text": "three",
+          "start": 4.524,
+          "end": 4.876
         },
         {
           "id": "w10",
-          "text": "whether",
-          "start": 4,
-          "end": 4.299
+          "text": "point",
+          "start": 4.933,
+          "end": 5.286
         },
         {
           "id": "w11",
-          "text": "every",
-          "start": 4.339,
-          "end": 4.659
+          "text": "eight,",
+          "start": 5.343,
+          "end": 5.695
         },
         {
           "id": "w12",
-          "text": "target",
-          "start": 4.699,
-          "end": 5.019
+          "text": "twenty-seven",
+          "start": 5.753,
+          "end": 6.528
         },
         {
           "id": "w13",
-          "text": "cell",
-          "start": 5.139,
-          "end": 5.42
+          "text": "B",
+          "start": 6.654,
+          "end": 6.767
         },
         {
           "id": "w14",
-          "text": "is",
-          "start": 5.46,
-          "end": 5.639
+          "text": "for",
+          "start": 6.785,
+          "end": 6.997
         },
         {
           "id": "w15",
-          "text": "actually",
-          "start": 5.699,
-          "end": 6.159
+          "text": "a",
+          "start": 7.031,
+          "end": 7.144
         },
         {
           "id": "w16",
-          "text": "correct.",
-          "start": 6.179,
-          "end": 6.659
+          "text": "typed",
+          "start": 7.162,
+          "end": 7.515
+        },
+        {
+          "id": "w17",
+          "text": "plan.",
+          "start": 7.572,
+          "end": 7.854
         }
       ]
     },
     {
       "frame": 3,
       "path": "assets/voice/03.wav",
-      "duration_s": 8.594,
+      "duration_s": 8.5,
       "words": [
         {
           "id": "w0",
-          "text": "The",
-          "start": 0.099,
-          "end": 0.239
+          "text": "Target",
+          "start": 0.18,
+          "end": 0.574
         },
         {
           "id": "w1",
-          "text": "harness",
-          "start": 0.28,
-          "end": 0.639
+          "text": "cells",
+          "start": 0.638,
+          "end": 0.967
         },
         {
           "id": "w2",
-          "text": "inspects",
-          "start": 0.719,
-          "end": 1.259
+          "text": "use",
+          "start": 1.02,
+          "end": 1.217
         },
         {
           "id": "w3",
-          "text": "the",
-          "start": 1.319,
-          "end": 1.359
+          "text": "fixed",
+          "start": 1.249,
+          "end": 1.578
         },
         {
           "id": "w4",
-          "text": "workbook,",
-          "start": 1.439,
-          "end": 1.899
+          "text": "workbook",
+          "start": 1.631,
+          "end": 2.157
         },
         {
           "id": "w5",
-          "text": "builds",
-          "start": 2.339,
-          "end": 2.599
+          "text": "operations.",
+          "start": 2.242,
+          "end": 2.899
         },
         {
           "id": "w6",
-          "text": "sheet-aware",
-          "start": 2.659,
-          "end": 3.159
+          "text": "Larger",
+          "start": 3.006,
+          "end": 3.4
         },
         {
           "id": "w7",
-          "text": "context,",
-          "start": 3.24,
-          "end": 3.819
+          "text": "sheet",
+          "start": 3.464,
+          "end": 3.793
         },
         {
           "id": "w8",
-          "text": "samples",
-          "start": 4.199,
-          "end": 4.559
+          "text": "changes",
+          "start": 3.846,
+          "end": 4.306
         },
         {
           "id": "w9",
-          "text": "Qwen",
-          "start": 4.639,
-          "end": 4.919
+          "text": "may",
+          "start": 4.381,
+          "end": 4.578
         },
         {
           "id": "w10",
-          "text": "once,",
-          "start": 5,
-          "end": 5.299
+          "text": "use",
+          "start": 4.61,
+          "end": 4.807
         },
         {
           "id": "w11",
-          "text": "then",
-          "start": 5.639,
-          "end": 5.759
+          "text": "screened",
+          "start": 4.839,
+          "end": 5.365
         },
         {
           "id": "w12",
-          "text": "validates",
-          "start": 5.839,
-          "end": 6.299
+          "text": "Python",
+          "start": 5.45,
+          "end": 5.844
         },
         {
           "id": "w13",
-          "text": "exact",
-          "start": 6.399,
-          "end": 6.839
+          "text": "with",
+          "start": 5.909,
+          "end": 6.171
         },
         {
           "id": "w14",
-          "text": "coverage",
-          "start": 6.899,
-          "end": 7.259
+          "text": "limited",
+          "start": 6.214,
+          "end": 6.674
         },
         {
           "id": "w15",
-          "text": "and",
-          "start": 7.299,
-          "end": 7.44
+          "text": "imports",
+          "start": 6.749,
+          "end": 7.209
         },
         {
           "id": "w16",
-          "text": "formula",
-          "start": 7.48,
-          "end": 7.839
+          "text": "and",
+          "start": 7.283,
+          "end": 7.48
         },
         {
           "id": "w17",
-          "text": "safety.",
-          "start": 7.94,
-          "end": 8.34
+          "text": "resources.",
+          "start": 7.513,
+          "end": 8.104
         }
       ]
     },
     {
       "frame": 4,
       "path": "assets/voice/04.wav",
-      "duration_s": 7.393,
+      "duration_s": 7,
       "words": [
         {
           "id": "w0",
-          "text": "Only",
-          "start": 0.159,
-          "end": 0.539
+          "text": "Rejected",
+          "start": 0.18,
+          "end": 0.696
         },
         {
           "id": "w1",
-          "text": "then",
-          "start": 0.599,
-          "end": 0.979
+          "text": "plans",
+          "start": 0.78,
+          "end": 1.102
         },
         {
           "id": "w2",
-          "text": "does",
-          "start": 1.019,
-          "end": 1.159
+          "text": "never",
+          "start": 1.154,
+          "end": 1.477
         },
         {
           "id": "w3",
-          "text": "it",
-          "start": 1.199,
-          "end": 1.319
+          "text": "touch",
+          "start": 1.529,
+          "end": 1.851
         },
         {
           "id": "w4",
-          "text": "write",
-          "start": 1.36,
-          "end": 1.539
+          "text": "the",
+          "start": 1.904,
+          "end": 2.097
         },
         {
           "id": "w5",
-          "text": "atomically",
-          "start": 1.559,
-          "end": 2.259
+          "text": "submission.",
+          "start": 2.129,
+          "end": 2.773
         },
         {
           "id": "w6",
-          "text": ",",
-          "start": 2.259,
-          "end": 2.259
+          "text": "V2",
+          "start": 2.878,
+          "end": 3.007
         },
         {
           "id": "w7",
-          "text": "or",
-          "start": 2.7,
-          "end": 2.899
+          "text": "preserves",
+          "start": 3.028,
+          "end": 3.608
         },
         {
           "id": "w8",
-          "text": "fail",
-          "start": 2.96,
-          "end": 3.24
+          "text": "the",
+          "start": 3.702,
+          "end": 3.896
         },
         {
           "id": "w9",
-          "text": "closed",
-          "start": 3.299,
-          "end": 3.779
+          "text": "pristine",
+          "start": 3.927,
+          "end": 4.443
         },
         {
           "id": "w10",
-          "text": ",",
-          "start": 3.779,
-          "end": 3.779
+          "text": "workbook",
+          "start": 4.527,
+          "end": 5.042
         },
         {
           "id": "w11",
-          "text": "before",
-          "start": 3.819,
-          "end": 4.159
+          "text": "and",
+          "start": 5.126,
+          "end": 5.32
         },
         {
           "id": "w12",
-          "text": "the",
-          "start": 4.179,
-          "end": 4.279
+          "text": "records",
+          "start": 5.351,
+          "end": 5.802
         },
         {
           "id": "w13",
-          "text": "organiser-supplied",
-          "start": 4.38,
-          "end": 5.319
+          "text": "the",
+          "start": 5.876,
+          "end": 6.069
         },
         {
           "id": "w14",
-          "text": "evaluator",
-          "start": 5.44,
-          "end": 6.039
-        },
-        {
-          "id": "w15",
-          "text": "scores",
-          "start": 6.159,
-          "end": 6.519
-        },
-        {
-          "id": "w16",
-          "text": "the",
-          "start": 6.539,
-          "end": 6.639
-        },
-        {
-          "id": "w17",
-          "text": "workbook.",
-          "start": 6.679,
-          "end": 7.179
+          "text": "fallback.",
+          "start": 6.1,
+          "end": 6.616
         }
       ]
     },
     {
       "frame": 5,
       "path": "assets/voice/05.wav",
-      "duration_s": 12.722,
+      "duration_s": 7.5,
       "words": [
         {
           "id": "w0",
-          "text": "In",
-          "start": 0.179,
-          "end": 0.259
+          "text": "Each",
+          "start": 0.18,
+          "end": 0.502
         },
         {
           "id": "w1",
-          "text": "our",
-          "start": 0.299,
-          "end": 0.419
+          "text": "task",
+          "start": 0.554,
+          "end": 0.876
         },
         {
           "id": "w2",
-          "text": "public",
-          "start": 0.479,
-          "end": 0.819
+          "text": "gets",
+          "start": 0.929,
+          "end": 1.251
         },
         {
           "id": "w3",
-          "text": "self-evaluation",
-          "start": 0.959,
-          "end": 2.039
+          "text": "one",
+          "start": 1.303,
+          "end": 1.545
         },
         {
           "id": "w4",
-          "text": "of",
-          "start": 2.079,
-          "end": 2.259
+          "text": "model",
+          "start": 1.584,
+          "end": 1.986
         },
         {
           "id": "w5",
-          "text": "four",
-          "start": 2.299,
-          "end": 2.519
+          "text": "call,",
+          "start": 2.052,
+          "end": 2.374
         },
         {
           "id": "w6",
-          "text": "hundred",
-          "start": 2.579,
-          "end": 2.759
+          "text": "plus",
+          "start": 2.426,
+          "end": 2.748
         },
         {
           "id": "w7",
-          "text": "benchmark",
-          "start": 2.879,
-          "end": 3.379
+          "text": "at",
+          "start": 2.801,
+          "end": 2.962
         },
         {
           "id": "w8",
-          "text": "tasks,",
-          "start": 3.5,
-          "end": 4
+          "text": "most",
+          "start": 2.988,
+          "end": 3.31
         },
         {
           "id": "w9",
           "text": "one",
-          "start": 4.46,
-          "end": 4.579
+          "start": 3.362,
+          "end": 3.604
         },
         {
           "id": "w10",
-          "text": "hundred",
-          "start": 4.679,
-          "end": 5.019
+          "text": "bounded",
+          "start": 3.643,
+          "end": 4.207
         },
         {
           "id": "w11",
-          "text": "thirty-three",
-          "start": 5.059,
-          "end": 5.559
+          "text": "repair,",
+          "start": 4.298,
+          "end": 4.781
         },
         {
           "id": "w12",
-          "text": "passed:",
-          "start": 5.639,
-          "end": 6.079
+          "text": "before",
+          "start": 4.86,
+          "end": 5.343
         },
         {
           "id": "w13",
-          "text": "a",
-          "start": 6.46,
-          "end": 6.559
+          "text": "save",
+          "start": 5.422,
+          "end": 5.744
         },
         {
           "id": "w14",
-          "text": "thirty-three",
-          "start": 6.619,
-          "end": 7.059
+          "text": "and",
+          "start": 5.796,
+          "end": 6.037
         },
         {
           "id": "w15",
-          "text": "point",
-          "start": 7.219,
-          "end": 7.539
+          "text": "reopen",
+          "start": 6.077,
+          "end": 6.56
         },
         {
           "id": "w16",
-          "text": "two",
-          "start": 7.579,
-          "end": 7.679
-        },
-        {
-          "id": "w17",
-          "text": "five",
-          "start": 7.859,
-          "end": 7.98
-        },
-        {
-          "id": "w18",
-          "text": "percent",
-          "start": 8.119,
-          "end": 8.439
-        },
-        {
-          "id": "w19",
-          "text": "pass",
-          "start": 8.519,
-          "end": 8.8
-        },
-        {
-          "id": "w20",
-          "text": "rate,",
-          "start": 8.88,
-          "end": 9.42
-        },
-        {
-          "id": "w21",
-          "text": "with",
-          "start": 9.46,
-          "end": 9.659
-        },
-        {
-          "id": "w22",
-          "text": "forty",
-          "start": 9.699,
-          "end": 10.059
-        },
-        {
-          "id": "w23",
-          "text": "point",
-          "start": 10.099,
-          "end": 10.399
-        },
-        {
-          "id": "w24",
-          "text": "five",
-          "start": 10.439,
-          "end": 10.579
-        },
-        {
-          "id": "w25",
-          "text": "six",
-          "start": 10.779,
-          "end": 10.94
-        },
-        {
-          "id": "w26",
-          "text": "percent",
-          "start": 11.039,
-          "end": 11.42
-        },
-        {
-          "id": "w27",
-          "text": "cell",
-          "start": 11.479,
-          "end": 11.699
-        },
-        {
-          "id": "w28",
-          "text": "accuracy.",
-          "start": 11.8,
-          "end": 12.42
+          "text": "checks.",
+          "start": 6.638,
+          "end": 7.121
         }
       ]
     },
     {
       "frame": 6,
       "path": "assets/voice/06.wav",
-      "duration_s": 13.531,
+      "duration_s": 8,
       "words": [
         {
           "id": "w0",
-          "text": "There",
-          "start": 0.219,
-          "end": 0.359
+          "text": "The",
+          "start": 0.18,
+          "end": 0.376
         },
         {
           "id": "w1",
-          "text": "were",
-          "start": 0.399,
-          "end": 0.5
+          "text": "organiser",
+          "start": 0.408,
+          "end": 0.996
         },
         {
           "id": "w2",
-          "text": "zero",
-          "start": 0.68,
-          "end": 1.019
+          "text": "evaluator",
+          "start": 1.092,
+          "end": 1.679
         },
         {
           "id": "w3",
-          "text": "missing",
-          "start": 1.1,
-          "end": 1.439
+          "text": "recalculates",
+          "start": 1.775,
+          "end": 2.559
         },
         {
           "id": "w4",
-          "text": "predictions",
-          "start": 1.48,
-          "end": 2.059
+          "text": "in",
+          "start": 2.687,
+          "end": 2.817
         },
         {
           "id": "w5",
-          "text": "and",
-          "start": 2.139,
-          "end": 2.24
+          "text": "LibreOffice",
+          "start": 2.839,
+          "end": 3.557
         },
         {
           "id": "w6",
-          "text": "zero",
-          "start": 2.379,
-          "end": 2.7
+          "text": "and",
+          "start": 3.674,
+          "end": 3.87
         },
         {
           "id": "w7",
-          "text": "evaluator",
-          "start": 2.799,
-          "end": 3.46
+          "text": "compares",
+          "start": 3.902,
+          "end": 4.425
         },
         {
           "id": "w8",
-          "text": "errors.",
-          "start": 3.519,
-          "end": 4.019
+          "text": "every",
+          "start": 4.51,
+          "end": 4.836
         },
         {
           "id": "w9",
-          "text": "But",
-          "start": 4.559,
-          "end": 4.699
+          "text": "target",
+          "start": 4.889,
+          "end": 5.281
         },
         {
           "id": "w10",
-          "text": "ninety-four",
-          "start": 4.739,
-          "end": 5.319
+          "text": "cell.",
+          "start": 5.345,
+          "end": 5.607
         },
         {
           "id": "w11",
-          "text": "point",
-          "start": 5.559,
-          "end": 5.819
+          "text": "Executable",
+          "start": 5.649,
+          "end": 6.302
         },
         {
           "id": "w12",
-          "text": "eight",
-          "start": 5.879,
-          "end": 5.96
+          "text": "can",
+          "start": 6.409,
+          "end": 6.605
         },
         {
           "id": "w13",
-          "text": "four",
-          "start": 6.159,
-          "end": 6.259
+          "text": "still",
+          "start": 6.637,
+          "end": 6.963
         },
         {
           "id": "w14",
-          "text": "percent",
-          "start": 6.42,
-          "end": 6.759
+          "text": "mean",
+          "start": 7.016,
+          "end": 7.278
         },
         {
           "id": "w15",
-          "text": "of",
-          "start": 6.799,
-          "end": 6.879
-        },
-        {
-          "id": "w16",
-          "text": "wrong",
-          "start": 6.96,
-          "end": 7.199
-        },
-        {
-          "id": "w17",
-          "text": "cells",
-          "start": 7.319,
-          "end": 7.679
-        },
-        {
-          "id": "w18",
-          "text": "sat",
-          "start": 8,
-          "end": 8.239
-        },
-        {
-          "id": "w19",
-          "text": "inside",
-          "start": 8.319,
-          "end": 8.8
-        },
-        {
-          "id": "w20",
-          "text": "contract-valid",
-          "start": 8.939,
-          "end": 9.819
-        },
-        {
-          "id": "w21",
-          "text": "workbooks.",
-          "start": 9.92,
-          "end": 10.539
-        },
-        {
-          "id": "w22",
-          "text": "Running",
-          "start": 11.479,
-          "end": 11.84
-        },
-        {
-          "id": "w23",
-          "text": "is",
-          "start": 11.88,
-          "end": 12
-        },
-        {
-          "id": "w24",
-          "text": "not",
-          "start": 12.099,
-          "end": 12.259
-        },
-        {
-          "id": "w25",
-          "text": "the",
-          "start": 12.319,
-          "end": 12.439
-        },
-        {
-          "id": "w26",
-          "text": "same",
-          "start": 12.5,
-          "end": 12.679
-        },
-        {
-          "id": "w27",
-          "text": "as",
-          "start": 12.719,
-          "end": 12.839
-        },
-        {
-          "id": "w28",
-          "text": "right.",
-          "start": 12.939,
-          "end": 13.259
+          "text": "wrong.",
+          "start": 7.32,
+          "end": 7.647
         }
       ]
     },
     {
       "frame": 7,
       "path": "assets/voice/07.wav",
-      "duration_s": 7.68,
+      "duration_s": 11.5,
       "words": [
         {
           "id": "w0",
-          "text": "After",
-          "start": 0.159,
-          "end": 0.419
+          "text": "A",
+          "start": 0.18,
+          "end": 0.288
         },
         {
           "id": "w1",
-          "text": "scoring,",
-          "start": 0.519,
-          "end": 0.959
+          "text": "credential-free",
+          "start": 0.305,
+          "end": 1.249
         },
         {
           "id": "w2",
-          "text": "Tinker",
-          "start": 1.259,
-          "end": 1.519
+          "text": "migration",
+          "start": 1.403,
+          "end": 2.009
         },
         {
           "id": "w3",
-          "text": "lifted",
-          "start": 1.639,
-          "end": 1.919
+          "text": "replay",
+          "start": 2.108,
+          "end": 2.513
         },
         {
           "id": "w4",
-          "text": "development",
-          "start": 1.959,
-          "end": 2.48
+          "text": "checked",
+          "start": 2.578,
+          "end": 3.05
         },
         {
           "id": "w5",
-          "text": "passes",
-          "start": 2.539,
-          "end": 2.919
+          "text": "four",
+          "start": 3.127,
+          "end": 3.397
         },
         {
           "id": "w6",
-          "text": "from",
-          "start": 3,
-          "end": 3.099
+          "text": "hundred",
+          "start": 3.441,
+          "end": 3.912
         },
         {
           "id": "w7",
-          "text": "seven",
-          "start": 3.259,
-          "end": 3.48
+          "text": "outcomes:",
+          "start": 3.989,
+          "end": 4.528
         },
         {
           "id": "w8",
-          "text": "to",
-          "start": 3.639,
-          "end": 3.779
+          "text": "three",
+          "start": 4.616,
+          "end": 4.953
         },
         {
           "id": "w9",
-          "text": "nine.",
-          "start": 3.799,
-          "end": 4.139
-        },
-        {
-          "id": "w10",
-          "text": "This",
-          "start": 4.639,
-          "end": 4.779
-        },
-        {
-          "id": "w11",
-          "text": "is",
-          "start": 4.819,
-          "end": 4.9
-        },
-        {
-          "id": "w12",
-          "text": "checkpoint",
-          "start": 5.019,
+          "text": "hundred",
+          "start": 5.008,
           "end": 5.48
         },
         {
+          "id": "w10",
+          "text": "sixty-nine",
+          "start": 5.557,
+          "end": 6.163
+        },
+        {
+          "id": "w11",
+          "text": "accepted",
+          "start": 6.262,
+          "end": 6.801
+        },
+        {
+          "id": "w12",
+          "text": "plans,",
+          "start": 6.889,
+          "end": 7.226
+        },
+        {
           "id": "w13",
-          "text": "selection,",
-          "start": 5.519,
-          "end": 6.019
+          "text": "thirty-one",
+          "start": 7.281,
+          "end": 7.888
         },
         {
           "id": "w14",
-          "text": "not",
-          "start": 6.299,
-          "end": 6.559
+          "text": "pristine",
+          "start": 7.986,
+          "end": 8.526
         },
         {
           "id": "w15",
-          "text": "held-out",
-          "start": 6.599,
-          "end": 6.98
+          "text": "fallbacks,",
+          "start": 8.614,
+          "end": 9.22
         },
         {
           "id": "w16",
-          "text": "proof.",
-          "start": 7.039,
-          "end": 7.379
+          "text": "and",
+          "start": 9.319,
+          "end": 9.521
+        },
+        {
+          "id": "w17",
+          "text": "zero",
+          "start": 9.554,
+          "end": 9.824
+        },
+        {
+          "id": "w18",
+          "text": "wrapper",
+          "start": 9.868,
+          "end": 10.339
+        },
+        {
+          "id": "w19",
+          "text": "mismatches.",
+          "start": 10.416,
+          "end": 11.09
         }
       ]
     },
     {
       "frame": 8,
       "path": "assets/voice/08.wav",
-      "duration_s": 13.584,
-      "spoken_duration_s": 9.35,
+      "duration_s": 19.3,
       "words": [
         {
           "id": "w0",
-          "text": "The",
-          "start": 0.179,
-          "end": 0.299
+          "text": "That",
+          "start": 0.18,
+          "end": 0.515
         },
         {
           "id": "w1",
-          "text": "next",
-          "start": 0.34,
-          "end": 0.539
+          "text": "checks",
+          "start": 0.57,
+          "end": 1.073
         },
         {
           "id": "w2",
-          "text": "step",
-          "start": 0.599,
-          "end": 0.819
+          "text": "migration",
+          "start": 1.155,
+          "end": 1.91
         },
         {
           "id": "w3",
-          "text": "is",
-          "start": 0.859,
-          "end": 0.979
+          "text": "parity,",
+          "start": 2.033,
+          "end": 2.536
         },
         {
           "id": "w4",
-          "text": "targeted:",
-          "start": 1.019,
-          "end": 1.519
+          "text": "not",
+          "start": 2.618,
+          "end": 2.869
         },
         {
           "id": "w5",
-          "text": "deterministic",
-          "start": 1.879,
-          "end": 2.619
+          "text": "benchmark",
+          "start": 2.91,
+          "end": 3.665
         },
         {
           "id": "w6",
-          "text": "transformations",
-          "start": 2.679,
-          "end": 3.519
+          "text": "accuracy.",
+          "start": 3.788,
+          "end": 4.459
         },
         {
           "id": "w7",
-          "text": "where",
-          "start": 3.579,
-          "end": 3.699
+          "text": "FormulaBench",
+          "start": 4.568,
+          "end": 5.574
         },
         {
           "id": "w8",
-          "text": "rules",
-          "start": 3.819,
-          "end": 4.119
+          "text": "v1",
+          "start": 5.738,
+          "end": 5.906
         },
         {
           "id": "w9",
-          "text": "are",
-          "start": 4.179,
-          "end": 4.259
+          "text": "passed",
+          "start": 5.933,
+          "end": 6.436
         },
         {
           "id": "w10",
-          "text": "reliable,",
-          "start": 4.339,
-          "end": 4.94
+          "text": "one",
+          "start": 6.518,
+          "end": 6.77
         },
         {
           "id": "w11",
-          "text": "plus",
-          "start": 5.359,
-          "end": 5.639
+          "text": "hundred",
+          "start": 6.811,
+          "end": 7.398
         },
         {
           "id": "w12",
-          "text": "formula-execution",
-          "start": 5.799,
-          "end": 6.839
+          "text": "thirty-three",
+          "start": 7.493,
+          "end": 8.416
         },
         {
           "id": "w13",
-          "text": "checks",
-          "start": 6.96,
-          "end": 7.259
+          "text": "of",
+          "start": 8.566,
+          "end": 8.734
         },
         {
           "id": "w14",
-          "text": "where",
-          "start": 7.299,
-          "end": 7.399
+          "text": "four",
+          "start": 8.761,
+          "end": 9.097
         },
         {
           "id": "w15",
-          "text": "semantics",
-          "start": 7.48,
-          "end": 7.98
+          "text": "hundred.",
+          "start": 9.151,
+          "end": 9.738
         },
         {
           "id": "w16",
-          "text": "decide",
-          "start": 8.039,
-          "end": 8.38
+          "text": "The",
+          "start": 9.834,
+          "end": 10.085
         },
         {
           "id": "w17",
-          "text": "the",
-          "start": 8.42,
-          "end": 8.5
+          "text": "historical",
+          "start": 10.126,
+          "end": 10.965
         },
         {
           "id": "w18",
-          "text": "answer.",
-          "start": 8.599,
-          "end": 9
+          "text": "ExactSource",
+          "start": 11.101,
+          "end": 12.024
+        },
+        {
+          "id": "w19",
+          "text": "source",
+          "start": 12.174,
+          "end": 12.677
+        },
+        {
+          "id": "w20",
+          "text": "run",
+          "start": 12.759,
+          "end": 13.011
+        },
+        {
+          "id": "w21",
+          "text": "passed",
+          "start": 13.052,
+          "end": 13.555
+        },
+        {
+          "id": "w22",
+          "text": "three",
+          "start": 13.637,
+          "end": 14.056
+        },
+        {
+          "id": "w23",
+          "text": "hundred",
+          "start": 14.124,
+          "end": 14.711
+        },
+        {
+          "id": "w24",
+          "text": "two.",
+          "start": 14.807,
+          "end": 15.059
+        },
+        {
+          "id": "w25",
+          "text": "No",
+          "start": 15.099,
+          "end": 15.267
+        },
+        {
+          "id": "w26",
+          "text": "FormulaBench",
+          "start": 15.295,
+          "end": 16.301
+        },
+        {
+          "id": "w27",
+          "text": "v2",
+          "start": 16.465,
+          "end": 16.632
+        },
+        {
+          "id": "w28",
+          "text": "score",
+          "start": 16.66,
+          "end": 17.079
+        },
+        {
+          "id": "w29",
+          "text": "is",
+          "start": 17.147,
+          "end": 17.315
+        },
+        {
+          "id": "w30",
+          "text": "claimed",
+          "start": 17.342,
+          "end": 17.929
+        },
+        {
+          "id": "w31",
+          "text": "in",
+          "start": 18.025,
+          "end": 18.193
+        },
+        {
+          "id": "w32",
+          "text": "this",
+          "start": 18.22,
+          "end": 18.555
+        },
+        {
+          "id": "w33",
+          "text": "film.",
+          "start": 18.61,
+          "end": 18.945
         }
       ]
     }

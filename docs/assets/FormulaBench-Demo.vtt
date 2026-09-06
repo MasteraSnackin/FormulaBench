@@ -1,49 +1,225 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:08.150
-A spreadsheet formula can run, point to the wrong cells, and quietly return the wrong answer. FormulaBench is built for that risk.
+00:00:00.180 --> 00:00:00.884
+A workbook
 
 2
-00:00:08.150 --> 00:00:15.517
-Qwen proposes the spreadsheet answer. FormulaBench controls what it sees, what it may change, and how correctness is judged.
+00:00:00.884 --> 00:00:01.912
+can open cleanly
 
 3
-00:00:15.517 --> 00:00:22.257
-It begins with a plain-English request and the original workbook, plus the exact sheets and cells that need answers.
+00:00:01.912 --> 00:00:02.939
+and still return
 
 4
-00:00:22.257 --> 00:00:29.676
-FormulaBench reads formula text and cached values, then turns relevant sheets, ranges and nearby cells into a compact evidence pack.
+00:00:02.939 --> 00:00:04.260
+the wrong investment
 
 5
-00:00:29.676 --> 00:00:41.013
-That evidence goes to Qwen three point eight, twenty-seven B, through Tinker: one logical sample, temperature zero, thinking disabled, and no model-level repair loop.
+00:00:04.260 --> 00:00:04.758
+answer.
 
 6
-00:00:41.013 --> 00:00:48.223
-Qwen interprets the request and proposes formulas or values for exact worksheet addresses. It does not freely operate Excel.
+00:00:05.180 --> 00:00:07.311
+FormulaBench v2 reads bounded
 
 7
-00:00:48.223 --> 00:00:59.299
-Deterministic checks require complete coverage, permitted addresses and valid data types. A narrow static screen blocks explicit external references and defined executable functions.
+00:00:07.311 --> 00:00:08.540
+workbook context,
 
 8
-00:00:59.299 --> 00:01:09.748
-A valid response is written into a fresh workbook, then reopened to verify structure and assigned cells. A failure returns the original workbook unchanged, never partly edited.
+00:00:08.540 --> 00:00:09.196
+then asks
 
 9
-00:01:09.748 --> 00:01:21.790
-The production inference path never opens gold. After generation, LibreOffice recalculates the file, then a separate evaluator compares every target value with the golden answer.
+00:00:09.196 --> 00:00:10.343
+Qwen three point
 
 10
-00:01:21.790 --> 00:01:31.769
-The frozen four-hundred-task result used untuned Qwen. It passed one hundred thirty-three tasks: thirty-three point two five per cent, with forty point five six per cent cell accuracy.
+00:00:10.343 --> 00:00:10.753
+eight,
 
 11
-00:01:31.769 --> 00:01:43.080
-Later, FormulaBench trained a rank-thirty-two LoRA on fifty-nine development examples for fifteen steps. It adds a compact correction, not a full retraining of twenty-seven billion parameters.
+00:00:10.753 --> 00:00:12.162
+twenty-seven B for a
 
 12
-00:01:43.080 --> 00:01:55.488
-On fifteen development-validation tasks, base Qwen passed seven and Qwen plus LoRA passed nine. That is real but limited: not a new four-hundred-task score, and not private-benchmark proof.
+00:00:12.162 --> 00:00:12.974
+typed plan.
+
+13
+00:00:13.380 --> 00:00:14.449
+Target cells use
+
+14
+00:00:14.449 --> 00:00:16.206
+fixed workbook operations.
+
+15
+00:00:16.206 --> 00:00:17.581
+Larger sheet changes
+
+16
+00:00:17.581 --> 00:00:18.650
+may use screened
+
+17
+00:00:18.650 --> 00:00:19.949
+Python with limited
+
+18
+00:00:19.949 --> 00:00:21.424
+imports and resources.
+
+19
+00:00:21.880 --> 00:00:23.229
+Rejected plans never
+
+20
+00:00:23.229 --> 00:00:24.578
+touch the submission.
+
+21
+00:00:24.578 --> 00:00:25.627
+V2 preserves the
+
+22
+00:00:25.627 --> 00:00:27.576
+pristine workbook and records
+
+23
+00:00:27.576 --> 00:00:28.436
+the fallback.
+
+24
+00:00:28.880 --> 00:00:30.003
+Each task gets
+
+25
+00:00:30.003 --> 00:00:31.126
+one model call,
+
+26
+00:00:31.126 --> 00:00:31.688
+plus at
+
+27
+00:00:31.688 --> 00:00:32.998
+most one bounded
+
+28
+00:00:32.998 --> 00:00:33.560
+repair,
+
+29
+00:00:33.560 --> 00:00:34.777
+before save and
+
+30
+00:00:34.777 --> 00:00:35.941
+reopen checks.
+
+31
+00:00:36.380 --> 00:00:37.975
+The organiser evaluator
+
+32
+00:00:37.975 --> 00:00:40.102
+recalculates in LibreOffice and
+
+33
+00:00:40.102 --> 00:00:41.545
+compares every target
+
+34
+00:00:41.545 --> 00:00:41.849
+cell.
+
+35
+00:00:41.849 --> 00:00:43.216
+Executable can still
+
+36
+00:00:43.216 --> 00:00:43.967
+mean wrong.
+
+37
+00:00:44.380 --> 00:00:46.778
+A credential-free migration replay
+
+38
+00:00:46.778 --> 00:00:48.189
+checked four hundred
+
+39
+00:00:48.189 --> 00:00:48.816
+outcomes:
+
+40
+00:00:48.816 --> 00:00:50.462
+three hundred sixty-nine
+
+41
+00:00:50.462 --> 00:00:51.481
+accepted plans,
+
+42
+00:00:51.481 --> 00:00:53.519
+thirty-one pristine fallbacks,
+
+43
+00:00:53.519 --> 00:00:54.616
+and zero wrapper
+
+44
+00:00:54.616 --> 00:00:55.410
+mismatches.
+
+45
+00:00:55.880 --> 00:00:57.730
+That checks migration
+
+46
+00:00:57.733 --> 00:00:58.318
+parity,
+
+47
+00:00:58.318 --> 00:01:00.268
+not benchmark accuracy.
+
+48
+00:01:00.268 --> 00:01:02.511
+FormulaBench v1 passed one
+
+49
+00:01:02.511 --> 00:01:04.851
+hundred thirty-three of four
+
+50
+00:01:04.851 --> 00:01:05.534
+hundred.
+
+51
+00:01:05.534 --> 00:01:08.459
+The historical ExactSource source
+
+52
+00:01:08.459 --> 00:01:09.824
+run passed three
+
+53
+00:01:09.824 --> 00:01:10.799
+hundred two.
+
+54
+00:01:10.799 --> 00:01:12.847
+No FormulaBench v2 score
+
+55
+00:01:12.847 --> 00:01:13.920
+is claimed in
+
+56
+00:01:13.920 --> 00:01:14.765
+this film.

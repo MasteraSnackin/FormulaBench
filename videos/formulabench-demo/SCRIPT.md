@@ -1,65 +1,63 @@
-# SCRIPT - formulabench-demo
+# SCRIPT - formulabench-demo-v2
 
-**Voice:** Marcia (HeyGen Starfish, `05f19352e8f74b0392a8f411eba40de1`)
-**Voice settings:** English · natural pace · no music
-**Voice direction:** Calm, exact and quietly confident. Read the figures as evidence, not as a sales boast. Leave a short pause before each contrast.
+**Voice:** Daniel (local macOS British English voice)
+**Voice settings:** British English, 175 words per minute, no music
+**Voice direction:** Calm, exact and evidence-led. Read each figure as a record, not a claim of superiority. Pause briefly before every qualification.
 
 ---
 
-## Line 1 - Plausible is not correct (Frame 1)
+## Line 1 - Wrong investment answer (Frame 1)
 
-**Time:** 0.000–4.702s
-**Delivery:** Begin conversationally; land “wrong answer” firmly.
+**Time:** 0.0-5.0s
+**Delivery:** Open plainly and land “wrong” with weight.
 
-    A formula can look right, reference real cells, and still return the wrong answer.
+    A workbook can open cleanly and still return the wrong investment answer.
 
-## Line 2 - Raise the standard (Frame 2)
+## Line 2 - Bounded context (Frame 2)
 
-**Time:** 4.702–11.546s
-**Delivery:** Measured and explanatory.
+**Time:** 5.0-12.0s
+**Delivery:** Keep the model name distinct and unhurried.
 
-    That’s why FormulaBench doesn’t stop at valid syntax. It asks whether every target cell is actually correct.
+    FormulaBench v2 reads bounded workbook context, then asks Qwen three point eight, twenty-seven B for a typed plan.
 
-## Line 3 - One audited path (Frame 3)
+## Line 3 - Two execution routes (Frame 3)
 
-**Time:** 11.546–20.140s
-**Delivery:** Keep the stage names distinct without sounding like a list.
+**Time:** 12.0-21.0s
+**Delivery:** Separate the two routes clearly.
 
-    The harness inspects the workbook, builds sheet-aware context, samples Qwen once, then validates exact coverage and formula safety.
+    Target cells use fixed workbook operations. Larger sheet changes may use screened Python with limited imports and resources.
 
-## Line 4 - Write, or fail closed (Frame 4)
+## Line 4 - Pristine fallback (Frame 4)
 
-**Time:** 20.140–27.533s
-**Delivery:** Brief pause around “or fail closed”.
+**Time:** 21.0-28.0s
+**Delivery:** Brief pause between the rejection and the fallback.
 
-    Only then does it write atomically, or fail closed, before the organiser-supplied evaluator scores the workbook.
+    Rejected plans never touch the submission. V2 preserves the pristine workbook and records the fallback.
 
-## Line 5 - Public self-evaluation (Frame 5)
+## Line 5 - Bounded model calls (Frame 5)
 
-**Time:** 27.533–40.255s
-**Delivery:** Neutral, legible figures; slight emphasis on “passed”.
+**Time:** 28.0-36.0s
+**Delivery:** Make “at most one” explicit.
 
-    In our public self-evaluation of four hundred benchmark tasks, one hundred thirty-three passed: a thirty-three point two five percent pass rate, with forty point five six percent cell accuracy.
+    Each task gets one model call, plus at most one bounded repair, before save and reopen checks.
 
-## Line 6 - Running is not right (Frame 6)
+## Line 6 - Target-cell evaluation (Frame 6)
 
-**Time:** 40.255–53.786s
-**Delivery:** Let the zero-error receipt settle, then turn soberly on “but”.
-**On screen:** A real full pass for task `54513` (`Sheet1!F8`, `=C8*(1-E8)`, exact value `15.7455`, displayed as `15.75`) is compared with task `13-1`, where 116 of 120 cells were correct but mismatches in `D25`, `D30`, `D31` and `D32` caused the whole task to fail.
+**Time:** 36.0-44.0s
+**Delivery:** Turn soberly on the final sentence.
 
-    There were zero missing predictions and zero evaluator errors. But ninety-four point eight four percent of wrong cells sat inside contract-valid workbooks. Running is not the same as right.
+    The organiser evaluator recalculates in LibreOffice and compares every target cell. Executable can still mean wrong.
 
-## Line 7 - Post-score Tinker checkpoint (Frame 7)
+## Line 7 - Migration parity (Frame 7)
 
-**Time:** 53.786–61.466s
-**Delivery:** Keep the development qualification as prominent as the improvement.
+**Time:** 44.0-55.0s
+**Delivery:** Read the three figures as an audit receipt.
 
-    After scoring, Tinker lifted development passes from seven to nine. This is checkpoint selection, not held-out proof.
+    A credential-free migration replay checked four hundred outcomes: three hundred sixty-nine accepted plans, thirty-one pristine fallbacks, and zero wrapper mismatches.
 
-## Line 8 - Execution-aware checks (Frame 8)
+## Line 8 - Honest score record (Frame 8)
 
-**Time:** 61.466–70.816s
-**Delivery:** Forward-looking and specific. Stop after “answer”.
-**Visual hold:** 70.816–75.050s on the repository card.
+**Time:** 55.0-75.0s
+**Delivery:** Pause after “accuracy”. Keep the final run status neutral and dated.
 
-    The next step is targeted: deterministic transformations where rules are reliable, plus formula-execution checks where semantics decide the answer.
+    That checks migration parity, not benchmark accuracy. FormulaBench v1 passed one hundred thirty-three of four hundred. The historical ExactSource source run passed three hundred two. No FormulaBench v2 score is claimed in this film.

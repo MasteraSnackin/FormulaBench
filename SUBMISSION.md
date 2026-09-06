@@ -7,7 +7,36 @@
 - Repository: https://github.com/MasteraSnackin/FormulaBench
 - Declared track: Research Track: Excel Formula Generation (SpreadsheetBench)
 
-## What we built and why
+## Version and evidence status
+
+The default container now runs `formulabench.v2`, an **unscored parity candidate** backed by the
+vendored ExactSource package. The vendored source is current at ExactSource commit
+`99fe8084bf35a5fca6a2c2e1c9beae802766a618`, and its inference core is the exact core scored in
+ExactSource commit `8b84dba1d9263e2123b8f15267239b70ff817907`. This establishes source parity,
+not a FormulaBench v2 benchmark result. No same-or-better claim will be made until v2 completes a
+fresh 400-task run with the organiser evaluator.
+
+For context, ExactSource's separately published run at that scored commit passed 302/400 tasks
+(75.50%) with 80.06% cell accuracy. It used 498 model calls, reported 5,592,930 output tokens and
+ran for 6h 39m 36s at the coordinator. Those are upstream source-run figures, not FormulaBench v2
+results. The immutable, hash-bound record is
+[`full_400_8b84dba.json`](https://github.com/MasteraSnackin/ExactSource/blob/99fe8084bf35a5fca6a2c2e1c9beae802766a618/experiments/full_400_8b84dba.json).
+
+The 133/400 and 33.25% figures below are historical FormulaBench v1 evidence. Its committed
+workbooks, traces, prediction manifest, evaluator result and implementation remain intact. The v1
+runtime is still available explicitly with `--legacy-engine`.
+
+The canonical v2 image has also passed a credential-free migration audit against all 400 retained
+ExactSource outcomes: 369 accepted plans replayed, 31 fallback workbooks matched their inputs byte
+for byte, and zero workbook-content mismatches remained. This audit did not call a model or read
+golden workbooks. Fresh paid canaries exercised both execution routes: cell task `54513` passed 1/1
+target cell through typed operations, and sheet task `23-24` passed 5,510/5,510 target cells through
+the restricted Python route. Both used the unchanged organiser evaluator and LibreOffice 26.8.0.3.
+The cases were selected as route canaries, so their 2/2 pass count is not a benchmark estimate and
+does not alter the unscored status above. The sanitised evidence is in
+`experiments/v2_migration_validation.json`.
+
+## What we built and why: historical v1 submission
 
 Spreadsheet formula generation often fails while looking plausible: a model can miss the relevant
 range, confuse worksheets, omit template cells or return text that never becomes a valid Excel
@@ -34,7 +63,17 @@ and final values there, disabled thinking and live-formula-first strict coverage
 the gap directly rather than claim an
 improvement or a controlled causal result.
 
-## Models
+## Current v2 model path
+
+v2 keeps `Qwen/Qwen3.8-27B` fixed and uses the ExactSource reasoning path. It builds up to 48,000
+characters of formula-aware workbook context and requests a typed edit plan. Cell-level tasks can
+use typed spreadsheet operations only. Sheet-level tasks can use the same operations or a
+screened, restricted Python transform. Reasoning is requested for initial calls and ordinary
+semantic repairs. Each task has one bounded second-call allowance: either an ordinary semantic
+repair or an initial-cell truncation recovery, never both and never a third call. These are runtime
+properties, not evidence of spreadsheet correctness.
+
+## Historical v1 model configuration
 
 - Inference provider: Tinker
 - Base model: `Qwen/Qwen3.8-27B`
@@ -97,7 +136,7 @@ curated, hash-bound record is
 recalculated evaluator copies remain local, so the committed record is a transparent hash summary,
 not a self-contained or tamper-proof evidence pack.
 
-## Verified evaluation
+## Historical v1 verified evaluation
 
 The first native canary passed development task `54513`: 1/1 task, 1/1 target cell, 100% pass rate
 and 100% cell accuracy under the supplied evaluator with LibreOffice recalculation. It is a
@@ -129,7 +168,7 @@ uv run python evaluate.py \
 
 No partial-run or alternative-evaluator result will be presented as the submission score.
 
-## Our run on the 400
+## Historical v1 run on the 400
 
 The completed run is retained at `submissions/formulabench/`:
 
@@ -172,14 +211,30 @@ submission run.
 
 ## Code
 
-The submitted pipeline runs through:
+The current default pipeline runs through:
 
 ```sh
-python -m formulabench.capture --dataset-dir=/data --out-dir=/out
+python -m formulabench.v2 --dataset-dir=/data --out-dir=/out
 ```
 
-The Docker runtime reads only from `/data` and writes to `/out`. It runs as a non-root user.
-The required credential is `TINKER_API_KEY`, supplied through the environment. When the account's
+The Docker runtime reads benchmark inputs from the read-only `/data` mount, writes published
+results to `/out`, and confines temporary transform files to its container-local temporary area.
+It runs as a non-root user on the pinned Python 3.12.11 slim-bookworm base used by the scored
+ExactSource core. Its installed environment, tokenizer cache, application packages and entry point
+are root-owned and non-writable by the runtime identity. v2 supports fresh runs and zero-call
+preflight. The historical v1 engine is selected explicitly with `--legacy-engine`.
+
+For v2, the wrapper fixes the two mount arguments, mounts the dataset read-only and withholds Tinker
+environment variables from preflight. The adapter holds a POSIX advisory lock on the output
+directory for the complete run, applies `0700` directory and `0600` file modes, rejects symlinks and
+unexpected entry types, and fails before inference when optional serializer dependencies differ
+from the canonical image. The screened Python sheet route is defence in depth, not an OS-level
+untrusted-code sandbox: its child shares the coordinator's unprivileged container UID. This is
+acceptable for the public benchmark but requires stronger isolation and data governance before use
+with confidential workbooks.
+
+The remaining runtime details in this section describe v1. Its required credential is
+`TINKER_API_KEY`, supplied through the environment. When the account's
 Default project is read-only, `TINKER_PROJECT_ID` must identify another writable project. The model,
 provider, tokenizer revision, disabled-thinking template, temperature, sample count, configured
 retry policy, telemetry policy and response contract cannot be overridden by production arguments. Traces distinguish
@@ -187,7 +242,7 @@ the configured model from provider-returned evidence and record the native stop 
 parse state, accepted response format or sanitised rejection, exact known token counts and the
 prompt-plus-parser tool-enforcement method.
 
-An interrupted run is continued with the same command plus `--resume`; validated tasks are
+An interrupted v1 run is continued with `--legacy-engine --resume`; validated tasks are
 skipped and prior `run.log` bytes are preserved. Add `--retry-failures` only when failed
 checkpoints should deliberately make another paid attempt. A contract-only write repair can be
 applied without credentials or provider calls using:
@@ -196,16 +251,24 @@ applied without credentials or provider calls using:
 ./scripts/run_docker.sh \
   data/spreadsheetbench_verified_400 \
   submissions/formulabench \
+  --legacy-engine \
   --resume \
   --replay-write-failures
 ```
 
 ## Things to look at
 
-- `formulabench/contract.py` — sheet-qualified targets, strict validation and atomic writes.
-- `formulabench/context.py` — formula-aware, bounded and spatially distributed workbook evidence.
-- `formulabench/replay.py` — hash-bound, credential-free replay of eligible stored responses.
-- `formulabench/validate_out.py` — read-only validation of final submission artefacts.
+- `formulabench/v2.py` — the default adapter, canonical-runtime guard, fixed CLI contract, output
+  lock and private-permission enforcement.
+- `exactsource/runner.py` and `exactsource/model.py` — the vendored task coordinator, bounded repair
+  policy and Tinker HTTP transport.
+- `exactsource/sandbox.py` — screened sheet-transformation worker and its stated isolation limits.
+- `tools/verify_v2_parity.py` — credential-free initial-prompt reconstruction and accepted-plan
+  replay verifier.
+- `experiments/v2_migration_validation.json` — sanitised source, parity and route-canary evidence.
+- `formulabench/contract.py`, `formulabench/context.py` and `formulabench/replay.py` — the retained
+  historical v1 contract, evidence builder and replay path.
+- `formulabench/validate_out.py` — read-only validation of v1 and v2 output artefacts.
 - `tests/` — synthetic and all-initial-workbook compatibility coverage.
 - `experiments/public_input_audit.json` — reproducible target-size, crop and formula-cache
   measurements from public initial workbooks only.

@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-09-06T10:09:26Z",
+  "purpose": "Sanitised evidence for the ExactSource-to-FormulaBench v2 migration.",
+  "status": {
+    "development_validation_only": true,
+    "fresh_400_task_v2_run_completed": false,
+    "benchmark_score_claimed": false,
+    "same_or_better_claimed": false
+  },
+  "source": {
+    "exactsource_scored_commit": "8b84dba1d9263e2123b8f15267239b70ff817907",
+    "exactsource_vendored_from_commit": "99fe8084bf35a5fca6a2c2e1c9beae802766a618",
+    "vendored_python_files": 16,
+    "vendored_tree_sha256": "293c0958fcdbc86addff96fbc651a8463eb5577063a4a0d3cb5b406b1d16cf00",
+    "vendored_tree_hash_method": "For each lexically sorted top-level *.py file: hash the eight-byte big-endian name length, UTF-8 file name, eight-byte big-endian content length and exact file bytes.",
+    "scored_to_current_exactsource_core_diff": "empty"
+  },
+  "upstream_scored_reference": {
+    "record_url": "https://github.com/MasteraSnackin/ExactSource/blob/99fe8084bf35a5fca6a2c2e1c9beae802766a618/experiments/full_400_8b84dba.json",
+    "record_sha256": "81097eb0d649727b469b3d5f932464889e4bd91f88d57c4053ff446684e8c5a7",
+    "results_json_sha256": "b1c2ff6c5c5dd39c1bcea5c824232c1c48b1d05b6c2383fff1af3cc8cf9df155",
+    "run_metrics_json_sha256": "a526fa53d83adaab2f30a171f1066347dd9735973f4e67e55f094b51828da9d1",
+    "solver_commit": "8b84dba1d9263e2123b8f15267239b70ff817907",
+    "result": {
+      "tasks": 400,
+      "passed": 302,
+      "pass_rate": 0.755,
+      "cell_accuracy": 0.8006,
+      "pass_rate_cell_level": 0.7818,
+      "pass_rate_sheet_level": 0.696
+    },
+    "execution": {
+      "coordinator_wall_time_ms": 23976245,
+      "model_calls": 498,
+      "provider_reported_output_tokens": 5592930
+    },
+    "interpretation": "This is ExactSource's historical scored run, not a FormulaBench v2 result. It is the source baseline whose implementation was migrated."
+  },
+  "inputs": {
+    "dataset_json_sha256": "bcecaa89a005bd4e3bbe98da150a86e8062c27f262e575d5e47bd9861b3525e7",
+    "evaluator_py_sha256": "8840a0e93df958d41dc5892ee42b33210ba773c1e0b73b691bbaf7d06a84d46b",
+    "evaluator_sb_py_sha256": "d259daeee4b854172e7123cffc4232bd5c422534074e6fc1f00fa66502d78035",
+    "libreoffice": "LibreOffice 26.8.0.3 bce0998afefdbc355585ca324285661a2170ba77",
+    "model": "Qwen/Qwen3.8-27B"
+  },
+  "credential_free_parity": {
+    "verifier_sha256": "941134dd95335a9c6c1d56c6e2f0a8a6b337bb435c72c30afc30c608987757fa",
+    "model_calls": 0,
+    "golden_workbooks_read": false,
+    "reference_material": "ExactSource predictions, traces and output workbooks from the scored run",
+    "environment": {
+      "python": "3.12.11",
+      "openpyxl": "3.1.5",
+      "lxml_installed": false,
+      "pillow_installed": false
+    },
+    "result": {
+      "checked": 400,
+      "accepted_plan_replays": 369,
+      "safe_fallback_byte_checks": 31,
+      "mismatches": 0,
+      "host_wall_seconds_including_container_startup": 88.13
+    },
+    "scope": "Rebuild each task's initial prompt, replay retained accepted plans and compare the exact OOXML member-name inventory and each decompressed member payload after normalising only core created and modified timestamp values. ZIP container ordering and metadata are outside the accepted-plan comparison. Failure outputs must remain byte-identical to their initial workbooks.",
+    "interpretation": "This checks deterministic migration parity. It does not repeat model inference, read benchmark answers or transfer ExactSource's score to FormulaBench."
+  },
+  "live_canaries": [
+    {
+      "task_id": "54513",
+      "instruction_type": "Cell-Level Manipulation",
+      "route": "operations",
+      "model_calls": 1,
+      "semantic_repair": false,
+      "temperature": 0.0,
+      "reasoning_effort": true,
+      "max_output_tokens": 16000,
+      "provider_reported_output_tokens": 750,
+      "task_latency_ms": 14518,
+      "runtime_status": "ok",
+      "evaluator": {
+        "items": 1,
+        "graded": 1,
+        "missing": 0,
+        "errors": 0,
+        "passed": 1,
+        "compared_cells": 1,
+        "correct_cells": 1,
+        "pass_rate": 1.0,
+        "cell_accuracy": 1.0
+      },
+      "sha256": {
+        "predictions_jsonl": "4e366ed0278c08589521329526f33124dfb60dc50548a47d33c841a24ede97ed",
+        "trace_jsonl": "d24334ebc973bb0ed788f3ac63af15a5029802e516812bb851149ea4733293d3",
+        "output_xlsx": "a8073262df68a386e055bc25fa9b5d7f9cbf74299a7b103bf2f6776aabde0ca8",
+        "evaluator_result_json": "5fe6e489d0c8f4389fd37067766283f3931136745c93738e0a4146bcb4040a89"
+      }
+    },
+    {
+      "task_id": "23-24",
+      "instruction_type": "Sheet-Level Manipulation",
+      "route": "python",
+      "model_calls": 1,
+      "semantic_repair": false,
+      "temperature": 0.0,
+      "reasoning_effort": true,
+      "max_output_tokens": 32000,
+      "provider_reported_output_tokens": 19188,
+      "task_latency_ms": 416529,
+      "runtime_status": "ok",
+      "evaluator": {
+        "items": 1,
+        "graded": 1,
+        "missing": 0,
+        "errors": 0,
+        "passed": 1,
+        "compared_cells": 5510,
+        "correct_cells": 5510,
+        "pass_rate": 1.0,
+        "cell_accuracy": 1.0
+      },
+      "sha256": {
+        "predictions_jsonl": "0c979ddf03521611904e857033a38e131877d6c87041939fa06e592709fbde74",
+        "trace_jsonl": "482dc8f7e74b980dd919625e9049e03c17e1724b25de01cde0cd040c426bcad3",
+        "output_xlsx": "6a19774c5b566961966399e9f77838d57dd275e89ed727f8ccb01d8be894d389",
+        "evaluator_result_json": "605cd15fe756b88365cda6131bb5276097a24f677bf63d2fbac7517e1baef197"
+      }
+    }
+  ],
+  "sanitisation": {
+    "credential_value_recorded": false,
+    "provider_response_body_recorded": false,
+    "request_prompt_recorded": false,
+    "raw_canary_directories_committed": false,
+    "credential_pattern_scan_of_non_workbook_canary_files": "no_match"
+  },
+  "limits": "Two selected public-development canaries cannot estimate a 400-task pass rate. Hosted temperature-zero outputs are not guaranteed to be bit-for-bit repeatable. Only a complete all-400 output scored by the unchanged organiser evaluator can establish FormulaBench v2 benchmark performance."
+}

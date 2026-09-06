@@ -1,0 +1,421 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "EB Garamond";
+      src: url("assets/fonts/EBGaramond-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Inter";
+      src: url("assets/fonts/Inter-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Inter";
+      src: url("assets/fonts/Inter-700.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/JetBrainsMono-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/JetBrainsMono-700.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    #root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      container-type: size;
+      color: #0b1623;
+    }
+
+    #root [class~="08-score-record-ground"] {
+      position: absolute;
+      inset: 0;
+      background: #f4f0e6;
+    }
+
+    #root [class~="08-score-record-scene"] {
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100cqw;
+      height: 83cqh;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    #root [class~="08-score-record-card"] {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: 4.2cqw;
+      text-align: center;
+    }
+
+    #root [class~="08-score-record-stack"] {
+      width: min(82cqw, 1574px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #root [id="08-score-record-v1"] [class~="08-score-record-stack"],
+    #root [id="08-score-record-historical"] [class~="08-score-record-stack"] {
+      position: relative;
+      display: block;
+      height: 62cqh;
+    }
+
+    #root [id="08-score-record-v1"] [class~="08-score-record-kicker"],
+    #root [id="08-score-record-historical"] [class~="08-score-record-kicker"] {
+      position: absolute;
+      top: 2cqh;
+      left: 0;
+      width: 100%;
+      height: 3.4cqh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+
+    #root [id="08-score-record-v1"] [class~="08-score-record-score-row"],
+    #root [id="08-score-record-historical"] [class~="08-score-record-score-row"] {
+      position: absolute;
+      top: 14cqh;
+      left: 0;
+      width: 100%;
+      height: 25cqh;
+      min-height: 0;
+      margin: 0;
+    }
+
+    #root [id="08-score-record-v1"] [class~="08-score-record-rate"],
+    #root [id="08-score-record-historical"] [class~="08-score-record-rate"] {
+      position: absolute;
+      top: 39.5cqh;
+      left: 0;
+      width: 100%;
+      height: 4cqh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    #root [id="08-score-record-historical"] [class~="08-score-record-caveat"] {
+      position: absolute;
+      top: 47cqh;
+      left: 17cqw;
+      width: 48cqw;
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    #root [class~="08-score-record-kicker"] {
+      margin: 0 0 2.1cqh;
+      font-family: "JetBrains Mono";
+      font-size: 1.45cqw;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    #root [class~="08-score-record-statement"] {
+      margin: 0;
+      max-width: 78cqw;
+      font-family: "EB Garamond";
+      font-size: 7.3cqw;
+      font-weight: 400;
+      letter-spacing: -0.022em;
+      line-height: 0.98;
+    }
+
+    #root [class~="08-score-record-rule"] {
+      width: 24cqw;
+      height: 1px;
+      margin-top: 4.4cqh;
+      background: rgba(11, 22, 35, 0.42);
+      transform-origin: left center;
+    }
+
+    #root [class~="08-score-record-score-row"] {
+      min-height: 17cqh;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 1.5cqw;
+      margin: 0.3cqh 0 1.7cqh;
+      white-space: nowrap;
+    }
+
+    #root [class~="08-score-record-figure"] {
+      font-family: "EB Garamond";
+      font-size: 12.5cqw;
+      font-weight: 400;
+      letter-spacing: -0.025em;
+      line-height: 0.86;
+    }
+
+    #root [class~="08-score-record-unit"] {
+      font-family: "JetBrains Mono";
+      font-size: 2.5cqw;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+
+    #root [class~="08-score-record-rate"] {
+      min-width: 35cqw;
+      margin: 0;
+      font-family: "JetBrains Mono";
+      font-size: 1.7cqw;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    #root [class~="08-score-record-caveat"] {
+      margin: 3.8cqh 0 0;
+      padding-top: 2.1cqh;
+      width: 48cqw;
+      border-top: 1px solid rgba(11, 22, 35, 0.2);
+      font-family: "JetBrains Mono";
+      font-size: 1.4cqw;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
+
+    #root [class~="08-score-record-v2-statement"] {
+      margin: 0;
+      max-width: 78cqw;
+      font-family: "EB Garamond";
+      font-size: 6.7cqw;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.02;
+    }
+
+    #root [class~="08-score-record-requirement"] {
+      min-width: 50cqw;
+      margin: 4.4cqh 0 0;
+      padding-top: 2.3cqh;
+      border-top: 1px solid rgba(11, 22, 35, 0.2);
+      font-family: "JetBrains Mono";
+      font-size: 1.45cqw;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      line-height: 1.3;
+      text-transform: uppercase;
+    }
+
+    #root [class~="08-score-record-lockup-title"] {
+      margin: 0;
+      font-family: "EB Garamond";
+      font-size: 9.9cqw;
+      font-weight: 400;
+      letter-spacing: -0.028em;
+      line-height: 0.92;
+    }
+
+    #root [class~="08-score-record-lockup-line"] {
+      margin: 2.3cqh 0 0;
+      font-family: "JetBrains Mono";
+      font-size: 1.55cqw;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
+
+    #root [class~="08-score-record-repository"] {
+      min-width: 55cqw;
+      height: 7.2cqh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1cqw;
+      box-sizing: border-box;
+      margin-top: 5cqh;
+      padding: 0 2cqw;
+      border: 1px solid #2ccb8c;
+      border-radius: 8px;
+      background: #f4f0e6;
+      font-family: "JetBrains Mono";
+      font-size: 1.55cqw;
+      font-weight: 700;
+      letter-spacing: 0.015em;
+      line-height: 1;
+    }
+
+    #root [class~="08-score-record-spike"] {
+      display: inline-block;
+      color: #2ccb8c;
+      font-size: 2.15cqw;
+      line-height: 1;
+    }
+  </style>
+
+  <div data-hf-id="hf-8ha6" id="root" data-composition-id="08-score-record" data-width="1920" data-height="1080" data-duration="19.3">
+    <div data-hf-id="hf-5ioh" class="clip 08-score-record-ground" data-start="0" data-duration="19.3" data-track-index="0" aria-hidden="true"></div>
+
+    <section data-hf-id="hf-khg8" class="clip 08-score-record-scene" data-start="0" data-duration="19.3" data-track-index="1" aria-label="Three separate score records">
+      <section data-hf-id="hf-kd0a" id="08-score-record-qualification" class="08-score-record-card" aria-label="Migration parity qualification">
+        <div data-hf-id="hf-b41m" class="08-score-record-stack">
+          <p data-hf-id="hf-yrzn" class="08-score-record-kicker">Migration parity</p>
+          <h1 data-hf-id="hf-j8to" class="08-score-record-statement">Not benchmark accuracy</h1>
+          <div data-hf-id="hf-m173" id="08-score-record-qualification-rule" class="08-score-record-rule" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-8aep" id="08-score-record-v1" class="08-score-record-card" aria-label="FormulaBench version one record">
+        <div data-hf-id="hf-6ndq" class="08-score-record-stack">
+          <p data-hf-id="hf-skjz" class="08-score-record-kicker">FormulaBench v1</p>
+          <div data-hf-id="hf-zu6g" class="08-score-record-score-row" aria-label="133 out of 400">
+            <span data-hf-id="hf-p9t8" class="08-score-record-figure">133</span>
+            <span data-hf-id="hf-iel6" class="08-score-record-unit">/ 400</span>
+          </div>
+          <p data-hf-id="hf-h2qh" id="08-score-record-v1-rate" class="08-score-record-rate">33.25% task pass rate</p>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-un2g" id="08-score-record-historical" class="08-score-record-card" aria-label="Historical ExactSource source run record">
+        <div data-hf-id="hf-71or" class="08-score-record-stack">
+          <p data-hf-id="hf-pyyc" class="08-score-record-kicker">Historical ExactSource source run</p>
+          <div data-hf-id="hf-cig6" class="08-score-record-score-row" aria-label="302 out of 400">
+            <span data-hf-id="hf-2tem" class="08-score-record-figure">302</span>
+            <span data-hf-id="hf-8vpa" class="08-score-record-unit">/ 400</span>
+          </div>
+          <p data-hf-id="hf-9v0k" id="08-score-record-historical-rate" class="08-score-record-rate">75.50% task pass rate</p>
+          <p data-hf-id="hf-24uq" class="08-score-record-caveat">Not a FormulaBench v2 result</p>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-nvjn" id="08-score-record-v2" class="08-score-record-card" aria-label="FormulaBench version two status">
+        <div data-hf-id="hf-7fzs" class="08-score-record-stack">
+          <p data-hf-id="hf-s68y" class="08-score-record-kicker">FormulaBench v2</p>
+          <h2 data-hf-id="hf-odb6" class="08-score-record-v2-statement">No score claimed in this film</h2>
+          <p data-hf-id="hf-ey1d" id="08-score-record-requirement" class="08-score-record-requirement">New result requires hash-bound evaluation</p>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-gh6v" id="08-score-record-final" class="08-score-record-card" aria-label="FormulaBench version two repository">
+        <div data-hf-id="hf-4nul" class="08-score-record-stack">
+          <h2 data-hf-id="hf-nd2q" class="08-score-record-lockup-title">FormulaBench v2</h2>
+          <p data-hf-id="hf-4u8u" class="08-score-record-lockup-line">Auditable Excel formula generation</p>
+          <div data-hf-id="hf-u4ay" class="08-score-record-repository">
+            <span data-hf-id="hf-avpz" id="08-score-record-spike" class="08-score-record-spike" aria-hidden="true">✱</span>
+            <span data-hf-id="hf-zukp">github.com/MasteraSnackin/FormulaBench</span>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+    (() => {
+      const compositionId = "08-score-record";
+      const root = document.querySelector('[data-composition-id="08-score-record"]');
+      if (!root || typeof gsap === "undefined") return;
+
+      const byId = (suffix) => document.getElementById(compositionId + "-" + suffix);
+      const tl = gsap.timeline({ paused: true });
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines[compositionId] = tl;
+
+      const qualification = byId("qualification");
+      const v1 = byId("v1");
+      const historical = byId("historical");
+      const v2 = byId("v2");
+      const finalCard = byId("final");
+      const qualificationRule = byId("qualification-rule");
+      const v1Rate = byId("v1-rate");
+      const historicalRate = byId("historical-rate");
+      const requirement = byId("requirement");
+      const spike = byId("spike");
+
+      tl.set([v1, historical, v2, finalCard], { autoAlpha: 0 }, 0);
+      tl.set([v1Rate, historicalRate, requirement], { autoAlpha: 0, y: 10 }, 0);
+      tl.set(spike, { autoAlpha: 0, scale: 0.92 }, 0);
+
+      tl.fromTo(
+        qualification,
+        { autoAlpha: 0, scale: 0.975 },
+        { autoAlpha: 1, scale: 1, duration: 0.58, ease: "power2.out" },
+        0.04,
+      );
+      tl.fromTo(
+        qualificationRule,
+        { scaleX: 0 },
+        { scaleX: 1, duration: 1.15, ease: "power2.out" },
+        1.02,
+      );
+
+      tl.set(qualification, { autoAlpha: 0 }, 3.8);
+      tl.set(v1, { autoAlpha: 1 }, 3.8);
+      tl.fromTo(
+        v1Rate,
+        { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out" },
+        5.55,
+      );
+
+      tl.set(v1, { autoAlpha: 0 }, 8.0);
+      tl.set(historical, { autoAlpha: 1 }, 8.0);
+      tl.fromTo(
+        historicalRate,
+        { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out" },
+        9.82,
+      );
+
+      tl.set(historical, { autoAlpha: 0 }, 12.5);
+      tl.set(v2, { autoAlpha: 1 }, 12.5);
+      tl.fromTo(
+        requirement,
+        { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.42, ease: "power2.out" },
+        14.15,
+      );
+
+      tl.set(v2, { autoAlpha: 0 }, 16.2);
+      tl.set(finalCard, { autoAlpha: 1 }, 16.2);
+      tl.fromTo(
+        spike,
+        { autoAlpha: 0, scale: 0.92 },
+        { autoAlpha: 1, scale: 1, duration: 0.38, ease: "power2.out" },
+        16.32,
+      );
+    })();
+  </script>
+</template>

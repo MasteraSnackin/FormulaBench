@@ -28,11 +28,16 @@ jobs:
       - name: Run unit tests
         run: uv run pytest
 
+      - name: Smoke-test v2 import and entry point
+        run: |
+          uv run python -c 'import exactsource; import formulabench.v2'
+          uv run python -m formulabench.v2 --help
+
       - name: Check code quality
         run: |
-          uv run ruff check formulabench tests experiments training baseline/tinker_predict.py
-          uv run ruff format --check formulabench tests experiments training baseline/tinker_predict.py
-          bash -n scripts/run_training.sh scripts/evaluate_checkpoint.sh
+          uv run ruff check exactsource formulabench tests tools experiments training baseline/tinker_predict.py
+          uv run ruff format --check exactsource formulabench tests tools experiments training baseline/tinker_predict.py
+          bash -n scripts/container_entrypoint.sh scripts/run_docker.sh scripts/run_training.sh scripts/evaluate_checkpoint.sh scripts/verify_v2_migration.sh
 
       - name: Build wheel
         run: uv build --wheel
@@ -46,7 +51,35 @@ jobs:
           docker run --rm --user 12345:12345 \
             --entrypoint /app/.venv/bin/python \
             formulabench:latest \
-            -c 'from formulabench.provider import validate_native_runtime; validate_native_runtime()'
+            -I -c 'import exactsource; import formulabench.v2; from formulabench.provider import validate_native_runtime; validate_native_runtime()'
+          docker run --rm --user 12345:12345 formulabench:latest --help
+          for runtime_user in 10001:10001 12345:12345; do
+            docker run --rm -i --user "$runtime_user" \
+              --entrypoint /app/.venv/bin/python \
+              formulabench:latest \
+              -I - <<'PY'
+          import os
+          from pathlib import Path
+
+          roots = [
+              Path("/app/.venv"),
+              Path("/app/.cache"),
+              Path("/app/exactsource"),
+              Path("/app/formulabench"),
+              Path("/app/container_entrypoint.sh"),
+          ]
+          paths = [path for root in roots for path in (root, *root.rglob("*"))]
+          for path in paths:
+              path_stat = path.lstat()
+              assert path_stat.st_uid == 0 and path_stat.st_gid == 0, path
+              if path.is_symlink():
+                  continue
+              assert not os.access(path, os.W_OK), path
+              required = os.R_OK | (os.X_OK if path.is_dir() else 0)
+              assert os.access(path, required), path
+          assert os.access("/app/container_entrypoint.sh", os.X_OK)
+          PY
+          done
 
   public-dataset-contract:
     runs-on: ubuntu-24.04

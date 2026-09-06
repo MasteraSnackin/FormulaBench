@@ -2,11 +2,18 @@
 
 ## Overview
 
-FormulaBench is a single-host, filesystem-backed batch pipeline for Excel formula generation. It
-reads a SpreadsheetBench task, builds bounded evidence from the initial workbook, requests one
-structured completion from `Qwen/Qwen3.8-27B` through Tinker, and applies the response only when it
-passes the target and formula-safety contracts. Each task produces either a validated workbook or
-a pristine input fallback, together with the prediction and trace needed for audit.
+FormulaBench is a single-host, filesystem-backed batch pipeline for Excel formula generation. The
+current default, `formulabench.v2`, is an unscored parity candidate backed by a vendored copy of
+ExactSource. The historical v1 engine and its 33.25% result remain intact behind the explicit
+`--legacy-engine` adapter route. No FormulaBench v2 score or same-or-better claim exists until a
+fresh 400-task evaluator run is complete.
+
+The canonical v2 container installs FormulaBench as a non-editable distribution. This matters for
+sheet-level transformations: ExactSource starts its screened worker with Python isolated mode, so
+the worker must import `exactsource` from the installed environment rather than relying on the
+container working directory. The v2 adapter also fixes openpyxl's XML serialiser choice in the
+trusted parent and in the worker's existing allow-listed environment. The legacy route never
+installs that adapter hook.
 
 The submitted inference runtime is a Python CLI packaged in Docker. It exposes no web client or HTTP
 API and uses no database, message broker or continuously running inference service. A separate
@@ -17,7 +24,100 @@ mounts the whole public dataset, so this is an application-level code boundary r
 filesystem isolation. The separate evaluator and an explicitly labelled offline aggregate audit do
 open golden workbooks.
 
-## Key Requirements
+### Version scope
+
+The v2 path vendors ExactSource source current at commit
+`99fe8084bf35a5fca6a2c2e1c9beae802766a618`. Its inference core matches the exact core scored in
+ExactSource commit `8b84dba1d9263e2123b8f15267239b70ff817907`. Source parity does not transfer
+ExactSource's score to FormulaBench v2. Sections explicitly headed "Historical v1" document the
+retained submission engine and evidence rather than the default runtime.
+
+## Current v2 Architecture
+
+The container enters through `python -m formulabench.v2 --dataset-dir=/data --out-dir=/out`. The
+adapter translates FormulaBench's mount contract into the vendored ExactSource runner. It also
+implements `--legacy-engine`, which delegates to the unchanged v1 capture path, and supports a
+zero-provider-call `--preflight-only` check. v2 otherwise accepts fresh runs only.
+
+The v2 runner classifies each task as cell-level or sheet-level, then builds up to 48,000
+characters of formula-aware workbook context. Qwen reasons over that evidence and returns a typed
+plan. Cell-level tasks can use only declared spreadsheet operations. Sheet-level tasks may use the
+same operations or screened Python executed as a restricted transform against a temporary
+workbook copy. Typed-operation plans enforce TaskSpec answer-range containment, plan resource
+limits, formula safety and workbook-save constraints before publication. The screened-Python route
+instead applies AST screening and reduced capabilities, checks changed formulas, formula metadata
+and cell hyperlinks, enforces the output-size limit, checks workbook readability, and requires
+declared answer sheets to remain present. It does not enforce TaskSpec answer-range containment or
+general workbook-structure preservation. A rejected plan or transform produces a pristine input
+fallback.
+
+Each task has one bounded second-call allowance. A completed but invalid plan may receive one
+ordinary semantic-repair call. Alternatively, an initially truncated cell response may receive
+one larger no-think-requested recovery call. These cases are mutually exclusive; there is never a
+third call. Reasoning is requested for initial calls and ordinary semantic repair. The recovery
+setting is a bounded completion strategy, not a correctness guarantee.
+
+That second-call limit counts logical model completions. Within each logical call, the fixed HTTP
+transport may retry a qualifying transient failure up to two times, subject to bounded connection,
+read, write, pool and `Retry-After` waits. Traces distinguish transport attempts from logical calls.
+
+### Current v2 operational controls
+
+- The adapter accepts only a fresh, empty output root and holds a non-blocking POSIX advisory lock
+  on that directory's inode from the freshness check until final permission hardening. A second
+  cooperating v2 process therefore fails before inference rather than sharing the run.
+- The output root and its managed subdirectories are set to `0700`; regular artefacts are set to
+  `0600`. Symlinks and other unexpected filesystem entry types fail closed. These controls protect
+  the local batch artefacts from other ordinary host users, subject to the host account and
+  filesystem enforcing POSIX permissions.
+- The adapter rejects a runtime containing Pillow or an effective openpyxl `lxml` serialiser before
+  it loads tasks, creates output or calls Tinker. The canonical Docker image excludes both optional
+  dependencies and selects the standard-library XML path in the trusted parent and transformation
+  child.
+- The host wrapper resolves the dataset and output paths and rejects equality or either path being
+  inside the other. It owns the `/data` and `/out` arguments, appends those fixed mount paths after
+  user arguments, mounts the dataset read-only, and does not pass Tinker environment variables to
+  preflight or credential-free legacy replay. Paid v2 runs receive only `TINKER_API_KEY`; the
+  v1-only `TINKER_PROJECT_ID` is forwarded only when `--legacy-engine` is selected.
+
+The Python sheet route is defence in depth for benchmark-generated transformations, not a
+general-purpose untrusted-code sandbox. It applies AST screening, a reduced built-in namespace,
+allow-listed helpers and environment variables, a temporary workbook copy, a timeout and resource
+limits. However, the child runs as the same unprivileged container user as the coordinator and the
+ordinary inference container needs outbound network access for Tinker. An unknown Python sandbox
+escape could therefore reach capabilities available to that container user. Real private-market
+workbooks need stronger OS-level isolation, provider governance and a trace-retention policy.
+
+### Current v2 reliability limits
+
+- Concurrency is fixed at four to preserve the migrated runtime contract.
+- v2 has no resume or retry mode. An interruption leaves a partial directory for inspection; a new
+  attempt must use a different empty output root.
+- The directory lock is a single-host, cooperative filesystem control. It is not a distributed
+  lease and does not defend against a privileged or malicious process replacing path components.
+- Workbook reopen and contract checks establish structural validity, not formula correctness.
+  Correctness still requires the separate LibreOffice-based organiser evaluator.
+- The full 400-task source run took approximately 6 hours 39 minutes. Hosted model responses can
+  vary even at temperature zero, so source parity and deterministic plan replay do not guarantee a
+  repeat score.
+
+```mermaid
+flowchart TB
+    operator["Operator"] --> adapter["formulabench.v2 adapter"]
+    adapter --> route{"Cell or sheet task"}
+    inputs[("Manifest and initial workbooks")] --> context["Formula-aware context, up to 48k characters"]
+    route --> context
+    context -.-> model["Tinker: Qwen/Qwen3.8-27B reasons and proposes a typed plan"]
+    model --> execute{"Validated route"}
+    execute -->|"Cell"| operations["Typed operations"]
+    execute -->|"Sheet"| sheet["Typed operations or restricted Python"]
+    operations --> publish["Validate and publish workbook or pristine fallback"]
+    sheet --> publish
+    publish --> artefacts[("Predictions, traces and workbooks")]
+    artefacts -.-> evaluator["Separate organiser evaluator"]
+```
+
+## Historical v1 Key Requirements
 
 - **Evaluator-compatible targets:** resolve sheet-qualified cells and ranges with the supplied
   SpreadsheetBench target parser.
@@ -47,7 +147,7 @@ open golden workbooks.
 - **Evidence publication:** present frozen public results without upload, provider or inference
   capability in the hosted surface.
 
-## High-Level Architecture
+## Historical v1 High-Level Architecture
 
 The host wrapper prepares a finite batch run and passes the dataset and output roots to the
 FormulaBench process. The runner builds workbook context, uses the external Tinker service for
@@ -87,26 +187,30 @@ Pages site serves committed static evidence and has no control path into the inf
 
 1. **Build boundary:** Docker installs the locked application and runtime dependency set and checks
    the pinned Qwen tokenizer assets against committed SHA-256 values.
-2. **Runtime data boundary:** `scripts/run_docker.sh` mounts the dataset read-only at `/data` and
-   the selected output directory read-write at `/out`.
-3. **Provider boundary:** the prompt and sampling parameters leave the local process through the
-   native Tinker SDK. The model receives no shell, Python interpreter or unrestricted file tool.
+2. **Runtime data boundary:** `scripts/run_docker.sh` rejects equal or nested resolved host paths,
+   then mounts the dataset read-only at `/data` and the selected output directory read-write at
+   `/out`.
+3. **Provider boundary:** v2 sends the prompt and sampling parameters through its fixed direct HTTP
+   transport; historical v1 uses the native Tinker SDK. The model receives no shell, Python
+   interpreter or unrestricted file tool.
 4. **Evaluation boundary:** the production inference loader does not discover or open golden
    workbooks. The evaluator and explicitly labelled aggregate audit do. Because the whole public
    dataset is mounted, this boundary relies on code structure rather than filesystem isolation.
 
-## Component Details
+## Historical v1 Component Details
 
 ### Host wrapper and container entry point
 
-- **Responsibilities:** validate host paths, build the runtime image, mount the dataset and output
-  directories, forward the supported environment variables and start the batch process.
+- **Responsibilities:** validate and reject overlapping resolved host paths, build the runtime
+  image, mount the dataset and output directories, forward the supported environment variables and
+  start the batch process.
 - **Technology:** POSIX shell and Docker, implemented in
   [`scripts/run_docker.sh`](scripts/run_docker.sh) and
   [`scripts/container_entrypoint.sh`](scripts/container_entrypoint.sh).
 - **Data:** owns no application state. It maps the host dataset to `/data` and the output root to
   `/out`.
-- **Communication:** executes `python -m formulabench.capture` inside the container and provides
+- **Communication:** the current entry point executes `python -m formulabench.v2`; its explicit
+  `--legacy-engine` route delegates to `python -m formulabench.capture`. Both provider paths need
   outbound network access for Tinker inference.
 
 ### Capture supervisor and CLI coordinator
@@ -211,7 +315,7 @@ Pages site serves committed static evidence and has no control path into the inf
 - **Communication:** a browser downloads static files from GitHub Pages and can follow links to the
   public repository. There is no application API or control path to Tinker or the inference runtime.
 
-## Data Flow
+## Historical v1 Data Flow
 
 The following sequence shows a normal task and the failure branch that preserves a complete,
 scorable output set.
@@ -279,7 +383,7 @@ to repair it.
   computing correctness metrics. Scoring should be terminal for a resumable output root, or write
   `results.json` elsewhere, because resume rejects extra root entries.
 
-## Data Model
+## Historical v1 Data Model
 
 | Entity or artefact | Key fields and constraints | Relationship and lifecycle |
 | --- | --- | --- |
@@ -303,10 +407,13 @@ It records 354 contract-valid outputs and 46 fail-closed fallbacks. The separate
 
 ### Development
 
-Developers can run the package directly with Python 3.11 for parity with the submitted image. The
-project declares `>=3.11`, but CI does not test a multi-version Python matrix. Application and
-runtime dependency resolution uses the committed `uv.lock`. The dataset remains outside Git. The
-direct CLI requires a Tinker credential only when inference work remains pending. The Docker
+Developers can run the package directly with Python 3.12.11 for parity with the current image. The
+project declares `>=3.11,<3.14`, matching the vendored engine's supported range, but CI does not
+test a multi-version Python matrix. Application and runtime dependency resolution uses the
+committed `uv.lock`. A direct v2 run fails closed if the
+optional native-Tinker environment has introduced Pillow or `lxml`; `uv sync --locked` restores the
+exact base environment, while Docker remains the submission path. The dataset remains outside Git.
+The v2 Docker wrapper requires a Tinker credential for a paid fresh run but not preflight. The v1
 wrapper requires it for every mode except preflight and stored-response replay, including a fully
 completed resume.
 
@@ -318,17 +425,21 @@ its base stages:
 - `build` installs the locked application and runtime dependency set and verifies the pinned
   tokenizer assets.
 - `contract-test` adds the project and tests, then runs the credential-free contract suite.
-- `runtime` copies only the installed environment, tokenizer cache, application, `sb.py` and the
-  entry point into a Python 3.11 slim image.
+- `runtime` copies only the installed environment, tokenizer cache, both the `formulabench` and
+  vendored `exactsource` packages, `sb.py`, the ExactSource licence notice and the entry point into
+  the same pinned Python 3.12.11 slim image used by the scored ExactSource core.
 
-The runtime image defaults to unprivileged UID and GID `10001`. The wrapper overrides these values
-with the invoking host user's IDs so bind-mounted outputs remain writable and host-owned. It
-exposes no port and exits when the finite batch ends.
+The runtime image defaults to unprivileged UID and GID `10001`. The installed environment,
+tokenizer cache, source packages and entry point remain root-owned and non-writable by that
+identity. The wrapper overrides the runtime IDs with the invoking host user's IDs so bind-mounted
+outputs remain writable and host-owned; those arbitrary IDs also receive read/execute-only access
+to the application assets. The image exposes no port and exits when the finite batch ends.
 
 ### Continuous integration
 
 GitHub Actions runs on Ubuntu 24.04 for each push and pull request. The workflow runs pytest and
-Ruff, builds a wheel, builds the contract-test and runtime images, checks an arbitrary-user runtime
+Ruff across FormulaBench and vendored ExactSource, smoke-tests the v2 import and entry point,
+builds a wheel, builds the contract-test and runtime images, checks an arbitrary-user runtime
 smoke test, downloads the checksum-verified public dataset and verifies the frozen 400-task
 contract. CI does not call Tinker or recalculate the public benchmark result.
 
@@ -368,7 +479,7 @@ and infrastructure automation beyond the Pages workflow.
 - Browsers download the public evidence site and its static media from GitHub Pages. The site makes
   no inference or workbook-data request.
 
-## Scalability & Reliability
+## Historical v1 Scalability & Reliability
 
 ### Load handling
 
@@ -409,7 +520,7 @@ and infrastructure automation beyond the Pages workflow.
   does not fsync the workbook and parent directory. The checkpoint and retry helpers use stronger
   synchronisation, so power-loss durability differs between artefact types.
 
-## Security & Compliance
+## Historical v1 Security & Compliance
 
 ### Implemented controls
 
@@ -463,7 +574,7 @@ certification, privacy impact assessment or regulatory control mapping is claime
 - The project code has no declared licence. Public repository visibility alone does not grant
   permission to reuse or redistribute it.
 
-## Observability
+## Historical v1 Observability
 
 FormulaBench uses local, inspectable artefacts rather than an external observability service:
 
@@ -488,9 +599,11 @@ trace boundary but limits forensic detail.
 | Decision | Benefit | Cost or limitation |
 | --- | --- | --- |
 | Fixed model, renderer and sampling constants | Reduces accidental benchmark drift and makes runs comparable. | Prevents runtime model selection and reasoning-mode experiments. |
-| One logical temperature-zero sample | Gives predictable cost and a clear attempt record. | Transient provider failures become fallbacks until explicitly retried. |
-| Exact target partition | Rejects plausible-looking partial workbooks and out-of-scope edits. | One missing or duplicate cell discards all proposed changes for that task. |
-| Typed spreadsheet operations instead of arbitrary code | Keeps the mutation surface bounded and testable. | Large transformations can require extensive model-authored output. |
+| Historical v1 uses one logical temperature-zero sample with no application retry | Gives predictable cost and a clear attempt record. | Transient provider failures become fallbacks until explicitly retried through the v1 workflow. |
+| V2 retries qualifying transient HTTP failures up to twice per logical call | Improves resilience to short transport failures. | A logical-call count is not an HTTP-attempt count, and backoff can add latency. |
+| Exact target partition in historical v1; TaskSpec answer-range confinement for v2 typed-operation plans | V1 rejects incomplete or extra assignments; v2 rejects typed writes outside declared ranges. | One missing or duplicate v1 cell discards all proposed changes; screened Python does not enforce TaskSpec answer-range containment. |
+| Typed operations for cell tasks; typed operations or restricted Python for sheet tasks | Keeps ordinary edits bounded while allowing larger transformations. | Screened Python remains a larger mutation surface and is not safe for general-purpose use. |
+| One bounded second-call allowance in v2 | Allows either semantic repair or initial-cell truncation recovery. | It can increase cost and latency, and never guarantees correctness. |
 | Formula-first output | Keeps calculations live and inspectable. | Semantic correctness is unknown until an external recalculation step. |
 | Bounded deterministic context | Controls token use and cost. | Relevant evidence may be omitted from large workbooks. |
 | Files and JSONL instead of a database | Makes the submission portable and compatible with the organiser evaluator. | Limits horizontal scale and requires whole-file checkpoint rewrites. |
@@ -502,15 +615,20 @@ trace boundary but limits forensic detail.
 
 ## Future Improvements
 
-- Add task routing so cell-level formula synthesis and sheet-level transformations can use
-  different strategies.
-- Replace model-enumerated output for large filter, sort, append, group, deduplication, clear and
-  transpose tasks with bounded deterministic operations.
-- Use task-aware retrieval based on instruction-linked headers, regions and formula dependencies.
+- Complete and evaluate the active all-400 FormulaBench v2 batch before publishing any performance
+  claim.
+- Add restart-safe v2 checkpoints and an explicit, provenance-checked retry workflow without
+  weakening the fresh-run default.
+- Move Python-route execution into a separate UID or disposable networkless worker boundary while
+  retaining access only to the temporary input and output workbook.
+- Expand deterministic operations for transformations that still require generated Python.
+- Improve task-aware retrieval based on instruction-linked headers, regions and formula
+  dependencies, then measure it on a frozen development partition.
 - Recalculate candidate formulas inside a reproducible networkless sandbox before publication.
 - Move synchronous workbook inspection and writing off the coordinator thread, then introduce a
   bounded work queue.
-- Add provider queue and request timeouts while preserving explicit control over new samples.
+- Add a total logical-call and provider-queue deadline; v2 currently has per-attempt transport
+  timeouts but no end-to-end task deadline covering retries and backoff.
 - Replace repeated full `predictions.jsonl` rewrites with immutable per-task completion records and
   a deterministic final export.
 - Add a run manifest with timestamps, source commit, image digest, dependency lock digest, dataset

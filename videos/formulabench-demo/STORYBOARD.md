@@ -1,8 +1,8 @@
 ---
 format: 1920x1080
-duration: 75.050s
-message: "FormulaBench turns spreadsheet-generation claims into reproducible, cell-level evidence, then separates the frozen public score from a later Tinker development experiment."
-arc: "Hook → Standard of proof → Method → Safety gate → Public results → Failure insight → Post-score Tinker experiment → Next step"
+duration: 75s
+message: "FormulaBench v2 makes spreadsheet generation auditable by constraining the model, preserving failed inputs and separating migration parity from benchmark accuracy."
+arc: "Wrong result, bounded method, controlled execution, evaluator, migration evidence, honest score record"
 audience: "Encode hackathon judges, spreadsheet researchers, and fund-operations teams"
 mode: autonomous
 music: none
@@ -10,228 +10,230 @@ music: none
 
 ## Video direction
 
-- Palette system: warm cream is the default paper ground; ink is the editorial voice; warm navy is reserved for formulas and workbook surfaces; audit green is the single voltage moment in each frame; failure red appears only as semantic status inside the navy surface.
-- Type system: EB Garamond carries sentence-case claims and hero figures, Inter carries explanations, and JetBrains Mono carries formulae, cells, stage labels, and evaluator receipts.
-- Motion grammar: smooth long-tail settles, one purposeful move at a time, with every reveal paced to the spoken cue across the back half of the shot. Working states are finite and die when their receipt lands. Holds are genuinely still; no breathing cards or late camera drift.
-- Rhythm: controlled–sharp–mechanical–measured–peak–hold–qualified–resolve. Frames 2 and 6 are deliberate held reads; Frame 5 is the public-score peak; Frame 7 is a compact post-score checkpoint; Frame 8 gives the URL the longest hold.
-- Composition: editorial asymmetry, visible grid structure, two focal points per produced frame, and all essential copy above the bottom 17% caption band.
-- Never show: generic chatbot chrome, floating glass cards, AI sparkle motifs, stock photography, purple-blue gradients, fake testimonials, unverified baseline comparisons, front-loaded slideshow motion, or independent screensaver drift.
+- Palette system: warm cream is the paper ground; ink is the editorial voice; warm navy is reserved for workbook and code surfaces; audit green is the one voltage moment in each frame; failure red appears only for rejected work.
+- Type system: EB Garamond carries sentence-case claims and hero figures, Inter carries explanations, and JetBrains Mono carries formulae, paths, cells and receipts.
+- Motion grammar: smooth long-tail settles with each element revealed on its spoken cue. Working states are finite and stop when their receipt lands. Holds stay still; no breathing cards or late camera drift.
+- Rhythm: Frame 1 creates tension. Frames 2 to 6 explain the method. Frame 7 is the evidence peak. Frame 8 slows down for the qualification and repository hold.
+- Composition: editorial asymmetry, visible spreadsheet structure, at least two focal points in produced frames, and all essential copy above the bottom 17% caption band.
+- Never show: generic chatbot chrome, AI sparkle motifs, stock photography, purple-blue gradients, faux testimonials, unverified performance claims, front-loaded slideshow motion or independent screensaver drift.
 
-## Frame 1 - Plausible is not correct
+## Frame 1 - Open does not mean correct
 
-- scene: An Excel-style formula types into a warm-navy formula bar, computes a polished but wrong result, and receives an emphatic REJECTED audit stamp.
-- voiceover: "A formula can look right, reference real cells, and still return the wrong answer."
-- duration: 4.702s
-- poster: 4.2s
+- scene: A workbook opens without an error, calculates a polished value and then fails its target-cell check.
+- voiceover: "A workbook can open cleanly and still return the wrong investment answer."
+- duration: 5s
+- poster: 4.4s
 - transition_in: cut
 - status: animated
-- src: compositions/frames/01-plausible-not-correct.html
+- src: compositions/frames/01-open-not-correct.html
 - type: hook
 - persuasion: Pain validation
 - beat: tension
 - blueprint: typewriter-reveal (Adapt)
 - asset_candidates:
-- focal: none; native formula-bar and worksheet composition
-- roles: native formula bar = focal; worksheet cells = supporting; audit stamp = voltage
+- focal: none; native formula bar and workbook grid
+- roles: formula bar = focal; workbook grid = supporting; failed target cell = voltage
 - sfx:
 
-Adapt: keep the live type-on and in-place correction engine; replace the brand-pop resolve with a semantic audit stamp, because the story is about proof rather than a product reveal.
+Adapt: keep the live type-on and in-place correction engine. Resolve on a failed target-cell receipt rather than a brand reveal.
 
-Scene 1 (0.0–1.6s): only the formula bar is visible over an oversized worksheet grid; `=IFERROR(INDEX(Returns!$F:$F,MATCH(A12,Returns!$A:$A,0)),0)` types on character by character with a square caret (`discrete-text-sequence`, `context-sensitive-cursor`) in a rule-of-thirds upper band, with the result cell still blank below.
-Scene 2 (1.6–3.4s): as the narration says “reference real cells”, the result cell resolves to `£4,200,000`; a small green syntax chip reads `VALID`, while a red semantic note reveals one cue later: `Expected £4,020,000` (`discrete-text-sequence`). The worksheet expands into an asymmetric 70/30 composition with formula left and evidence right.
-Scene 3 (3.4–4.702s): on “wrong answer”, `REJECTED` stamps across the result in one smooth scale settle (`spring-pop-entrance`, restrained register), the caret dies, and the frame holds completely still on the contradiction.
+Scene 1 (0.0-1.8s): only a warm-navy formula bar sits over an oversized worksheet grid. A valid-looking formula types on with a square caret (`discrete-text-sequence`, `context-sensitive-cursor`) in the upper third.
+Scene 2 (1.8-3.6s): the result cell resolves to `£4,200,000`; an `OPENED` receipt appears beside it, then the expected value `£4,020,000` reveals on the next spoken cue. The layout opens into an asymmetric 70/30 split.
+Scene 3 (3.6-5.0s): the target cell receives a restrained red `WRONG VALUE` stamp (`spring-pop-entrance`). The caret stops and the contradiction holds completely still.
 
-narrativeRole: Establish that plausible syntax and real references are not enough; the benchmark must test the answer.
-keyMessage: A formula that looks right can still be wrong.
+narrativeRole: Establish that file validity and formula plausibility do not establish spreadsheet correctness.
+keyMessage: A cleanly opened workbook can still return the wrong answer.
 
-## Frame 2 - Raise the standard
+## Frame 2 - Bounded workbook context
 
-- scene: “Valid syntax” is replaced in place by “Correct target cells”, with FormulaBench named as the evidence layer beneath.
-- voiceover: "That’s why FormulaBench doesn’t stop at valid syntax. It asks whether every target cell is actually correct."
-- duration: 6.844s
-- poster: 6.1s
+- scene: The full workbook recedes while the exact sheets, ranges and task instructions selected for the model stay visible.
+- voiceover: "FormulaBench v2 reads bounded workbook context, then asks Qwen three point eight, twenty-seven B for a typed plan."
+- duration: 8.2s
+- poster: 6.3s
 - transition_in: zoom-through
 - status: animated
-- src: compositions/frames/02-raise-the-standard.html
-- type: benefit_highlight
-- persuasion: Negative contrast
-- beat: clarity
-- blueprint: kinetic-type-beats (Adapt)
-- asset_candidates:
-- focal: none; native kinetic typography and cell coverage rail
-- roles: fixed statement = focal; coverage rail = supporting; FormulaBench wordmark = voltage
-- sfx:
-
-Adapt: keep the fixed-line token swap signature, but use a measured editorial cadence rather than a rapid product-name flash.
-
-Scene 1 (0.0–2.3s): a fixed serif line lands left of centre: `A workbook can have` while the mono token `VALID SYNTAX` seats beside it via a per-word reveal (`dynamic-content-sequencing`). A thin 1px rule draws beneath the line.
-Scene 2 (2.3–5.3s): on “doesn’t stop”, `VALID SYNTAX` cuts out in place and `CORRECT TARGET CELLS` replaces it at the same anchor (`discrete-text-sequence`); beneath, cells A12, B12, C12, and D12 reveal sequentially and lock green only on the words “every target cell”.
-Scene 3 (5.3–6.844s): the label `FORMULABENCH / RESEARCH: EXCEL FORMULA GENERATION` appears in mono at the top edge; the main statement and cell rail hold still for the final read.
-
-narrativeRole: State the value claim by beat two: FormulaBench measures correctness at the cells that matter.
-keyMessage: The standard is exact target-cell correctness, not syntactic validity.
-
-## Frame 3 - One audited path
-
-- scene: A single worksheet-width audit line moves through six named stages from workbook inspection towards the organiser-supplied evaluator.
-- voiceover: "The harness inspects the workbook, builds sheet-aware context, samples Qwen once, then validates exact coverage and formula safety."
-- duration: 8.594s
-- poster: 7.8s
-- transition_in: push-slide LEFT
-- status: animated
-- src: compositions/frames/03-audited-path.html
+- src: compositions/frames/02-bounded-context.html
 - type: product_intro
-- persuasion: Show-don’t-tell proof
+- persuasion: Risk reduction
 - beat: control
 - blueprint: spatial-pan-stations (Adapt)
 - asset_candidates:
-- focal: none; native workbook audit stations
-- roles: current station = focal; audit line = supporting; stage receipt = voltage
+- focal: none; native workbook-context strip
+- roles: selected sheets = focal; excluded workbook regions = supporting; model label = voltage
 - sfx:
 
-Adapt: keep the single virtual traversal and terminal held station; compress six stages into three paired stops so the path remains legible at video scale.
+Adapt: keep one virtual camera crossing named stations. Replace historical milestones with the exact context layers handed to the model.
 
-Scene 1 (0.0–2.6s): an oversized worksheet world opens on paired stations `01 INSPECT` and `02 CONTEXT`; the audit line draws between them and the world pans left to centre each cue (`viewport-change`, `svg-path-draw`) while sheet tabs and named ranges assemble as supporting detail.
-Scene 2 (2.6–5.8s): the camera continues on the same axis to `03 SAMPLE ONCE`; a single Qwen request strip locks in, then `04 VALIDATE COVERAGE` reveals only when named, with a four-cell target set snapping into exact alignment (`coordinate-target-zoom`, `dynamic-content-sequencing`).
-Scene 3 (5.8–8.594s): the final pan lands on `05 FORMULA SAFETY`; sheet-qualified references and the external-reference gate tick on in sequence, then the line terminates at a green `CONTRACT VALID` receipt and holds (`stat-bars-and-fills`, no camera motion after 7.8s).
+Scene 1 (0.0-2.2s): the camera opens on station `01 TASK`, showing the analyst request and target range only. A hairline audit path draws towards the next station (`svg-path-draw`).
+Scene 2 (2.2-4.7s): one lateral pan (`viewport-change`) lands on `02 WORKBOOK CONTEXT`; the named sheets and nearby formulas reveal sequentially while unrelated regions dim outside the bounded window.
+Scene 3 (4.7-7.0s): the final pan lands on `03 QWEN3.8-27B`. A compact `TYPED PLAN REQUESTED` receipt seats beneath the model name and the camera holds.
 
-narrativeRole: Make the method inspectable and reproducible rather than presenting an unexplained model answer.
-keyMessage: FormulaBench uses one controlled, sheet-aware, contract-checked generation path.
+narrativeRole: Introduce v2 as a bounded, inspectable model call rather than an opaque workbook upload.
+keyMessage: The model receives task-specific workbook context and must return a typed plan.
 
-## Frame 4 - Write, or fail closed
+## Frame 3 - Two execution routes
 
-- scene: A validation ledger checks five constraints, then branches cleanly to an atomic workbook write or a visible fallback before evaluation.
-- voiceover: "Only then does it write atomically, or fail closed, before the organiser-supplied evaluator scores the workbook."
-- duration: 7.393s
-- poster: 5.6s
+- scene: One audit rail divides into typed workbook operations for target cells and screened Python for larger sheet changes.
+- voiceover: "Target cells use fixed workbook operations. Larger sheet changes may use screened Python with limited imports and resources."
+- duration: 8.5s
+- poster: 8.2s
+- transition_in: push-slide LEFT
+- status: animated
+- src: compositions/frames/03-two-routes.html
+- type: feature_showcase
+- persuasion: Method transparency
+- beat: clarity
+- blueprint: compose
+- asset_candidates:
+- focal: none; native split execution diagram
+- roles: typed operations = left focal; screened Python = right focal; shared validator = voltage
+- sfx:
+
+Scene 1 (0.0-2.7s): a single audit rail enters from the left and stops under `TYPED PLAN`; the first route label appears only as the narration reaches target cells (`dynamic-content-sequencing`).
+Scene 2 (2.7-5.6s): the rail branches into a left lane labelled `TYPED WORKBOOK OPERATIONS`; `set value`, `set formula` and `copy style` reveal one at a time in a dense but flat 60/40 composition.
+Scene 3 (5.6-8.0s): the right lane reveals `SCREENED PYTHON`, followed by `limited imports` and `resource caps`. The branches remain equal in height without card tilt or decorative glow.
+Scene 4 (8.0-9.0s): both lanes terminate at one green `VALIDATE OUTPUT` node. The finished diagram holds still.
+
+narrativeRole: Explain the v2 execution split without overstating the Python screen as a security sandbox.
+keyMessage: V2 uses fixed operations where possible and a constrained alternative for larger transformations.
+
+## Frame 4 - Pristine fallback
+
+- scene: A rejected plan is stopped before write, and the original workbook passes through unchanged with an explicit fallback reason.
+- voiceover: "Rejected plans never touch the submission. V2 preserves the pristine workbook and records the fallback."
+- duration: 7s
+- poster: 6.2s
 - transition_in: squeeze
 - status: animated
-- src: compositions/frames/04-write-or-fail-closed.html
+- src: compositions/frames/04-pristine-fallback.html
 - type: feature_showcase
 - persuasion: Risk reversal
 - beat: trust
 - blueprint: agent-progress-theater (Adapt)
 - asset_candidates:
-- focal: none; native validation ledger
-- roles: ledger = focal; write/fallback branch = supporting; evaluator receipt = voltage
+- focal: none; native validation ledger and pristine workbook receipt
+- roles: rejected plan = focal; pristine workbook = supporting; fallback reason = voltage
 - sfx:
 
-Adapt: keep the working-state-to-receipt mutation, but remove the cursor and decorative loader; the validator itself is the actor.
+Adapt: keep the working-state-to-receipt mutation. Replace a celebratory checklist with a visible rejection and untouched-workbook handoff.
 
-Scene 1 (0.0–1.6s): a warm-navy ledger enters with one active row only: `Target coverage`; its indicator draws to completion, then `Sheet exists` and `Formula allowed` cascade in as the narration reaches “only then” (`svg-path-draw`, `dynamic-content-sequencing`).
-Scene 2 (1.6–4.0s): five rows mutate from numbered outline to green checks one by one; a pending `Reopen and verify` row finishes last, and the working indicator dies immediately (`scale-swap-transition`, `svg-path-draw`).
-Scene 3 (4.0–5.0s): the ledger splits into two equal paths: `ATOMIC REPLACE` in audit green and `FAIL CLOSED` in ink; both are explicit, neither is hidden. A small `NO SILENT PARTIALS` label seats between them.
-Scene 4 (5.0–7.393s): the paths collapse into one receipt reading `WORKBOOK READY FOR SELF-EVALUATION`; it holds with no idle motion. The footer records the actual order: temporary save, reopen and verify, atomic replace, then evaluator.
+Scene 1 (0.0-2.0s): a validation ledger types `CHECKING PLAN` beside a finite spinner (`discrete-text-sequence`, `svg-icon-enrichment`). Rows for target ownership, paths and limits arrive on their spoken cues.
+Scene 2 (2.0-4.2s): one row turns failure red and the spinner stops immediately. A `REJECTED BEFORE WRITE` strip replaces the working label (`scale-swap-transition`).
+Scene 3 (4.2-6.0s): the rejected plan collapses while a pristine workbook receipt expands into the same centre: `INPUT PRESERVED` and `FALLBACK RECORDED`.
+Scene 4 (6.0-7.0s): the receipt holds with its reason visible in monospace. No hidden partial workbook appears.
 
-narrativeRole: Demonstrate that invalid or partial output cannot silently masquerade as success.
-keyMessage: The harness either writes a re-opened workbook atomically or fails closed before grading.
+narrativeRole: Show that rejected output becomes an explicit pristine fallback rather than a silent partial submission.
+keyMessage: Rejected plans cannot modify the submitted workbook.
 
-## Frame 5 - Public self-evaluation
+## Frame 5 - One call, one bounded second chance
 
-- scene: Our public self-evaluation of 400 benchmark tasks builds as one large pass-rate instrument, followed by cell accuracy and coverage receipts.
-- voiceover: "In our public self-evaluation of four hundred benchmark tasks, one hundred thirty-three passed: a thirty-three point two five percent pass rate, with forty point five six percent cell accuracy."
-- duration: 12.722s
-- poster: 10.4s
+- scene: A model-call counter advances once, exposes one optional repair branch and then closes before save and reopen checks.
+- voiceover: "Each task gets one model call, plus at most one bounded repair, before save and reopen checks."
+- duration: 7.5s
+- poster: 7.2s
+- transition_in: crossfade
+- status: animated
+- src: compositions/frames/05-bounded-calls.html
+- type: feature_showcase
+- persuasion: Scope control
+- beat: scrutiny
+- blueprint: agent-progress-theater (Adapt)
+- asset_candidates:
+- focal: none; native call ledger
+- roles: initial call = focal; optional repair = supporting; closed call budget = voltage
+- sfx:
+
+Adapt: keep the stateful progress ledger, but make the call ceiling and save checks the receipt.
+
+Scene 1 (0.0-2.4s): `LOGICAL CALL 1` seats beside a Qwen request strip. A single counter ticks from zero to one and stops (`counting-dynamic-scale`, fixed-size register).
+Scene 2 (2.4-4.8s): a narrow branch labelled `OPTIONAL` expands only as the narration says “at most one”; it carries `semantic repair` and `truncation recovery`, never both.
+Scene 3 (4.8-6.7s): the branch closes into `CALL BUDGET CLOSED`. `SAVE` and `REOPEN` checks land in sequence with drawn checkmarks (`svg-path-draw`).
+Scene 4 (6.7-8.0s): the full ledger holds on the exact ceiling and completed workbook checks.
+
+narrativeRole: Make the bounded logical-call policy and post-write verification visible.
+keyMessage: V2 allows one initial call and at most one narrowly defined second call.
+
+## Frame 6 - Evaluation at the target cells
+
+- scene: LibreOffice recalculates the workbook, then the organiser evaluator checks the required cells against their expected values.
+- voiceover: "The organiser evaluator recalculates in LibreOffice and compares every target cell. Executable can still mean wrong."
+- duration: 8s
+- poster: 7.3s
+- transition_in: push-slide LEFT
+- status: animated
+- src: compositions/frames/06-target-cell-evaluation.html
+- type: feature_showcase
+- persuasion: Show-don't-tell proof
+- beat: scrutiny
+- blueprint: grid-card-assemble (Adapt)
+- asset_candidates:
+- focal: none; native worksheet target-cell field
+- roles: target cells = focal; LibreOffice receipt = supporting; mismatch = voltage
+- sfx:
+
+Adapt: keep the sequential field population but use one worksheet surface rather than a dashboard card grid.
+
+Scene 1 (0.0-2.4s): a workbook receipt appears at the top left: `OPEN`, `RECALCULATE`, `SAVE`. The three states reveal in order and stop on `LIBREOFFICE 26.8.0.3`.
+Scene 2 (2.4-5.2s): target cells populate across a full-width worksheet field one by one (`center-outward-expansion`, short-path form). Each cell pairs `expected` and `produced` values.
+Scene 3 (5.2-7.0s): most cells settle green while one exact mismatch turns red only on the final sentence. The heading changes in place to `EXECUTABLE, STILL WRONG` (`discrete-text-sequence`).
+Scene 4 (7.0-8.0s): the evaluator receipt and mismatched target cell hold together for comparison.
+
+narrativeRole: Demonstrate why workbook execution and target-cell correctness require separate evidence.
+keyMessage: The evaluator judges recalculated target values, not whether the file merely runs.
+
+## Frame 7 - Migration parity receipt
+
+- scene: A 400-outcome replay resolves into 369 accepted plans, 31 pristine fallbacks and zero wrapper mismatches.
+- voiceover: "A credential-free migration replay checked four hundred outcomes: three hundred sixty-nine accepted plans, thirty-one pristine fallbacks, and zero wrapper mismatches."
+- duration: 11.5s
+- poster: 10.2s
 - transition_in: zoom-through
 - status: animated
-- src: compositions/frames/05-public-self-evaluation.html
+- src: compositions/frames/07-migration-parity.html
 - type: social_proof
-- persuasion: Statistical proof
+- persuasion: Reproducibility evidence
 - beat: confidence
 - blueprint: dataviz-countup (Adapt)
 - asset_candidates:
-- focal: none; native evaluator instrument
-- roles: pass rate = focal; passed tasks and cell accuracy = supporting; public self-evaluation tag = voltage
+- focal: none; native migration audit instrument
+- roles: 400 checked = focal; 369 and 31 partition = supporting; zero mismatches = voltage
 - sfx:
 
-Adapt: keep the number-and-graphic landing as one beat, but use a single flat ring plus editorial receipts instead of a perspective dashboard.
+Adapt: keep a single count-up instrument as the hero. Replace marketing metrics with a partitioned audit receipt and a permanent scope qualification.
 
-Scene 1 (0.0–5.9s): the mono kicker `PUBLIC SELF-EVALUATION / 400 BENCHMARK TASKS` reveals first. The denominator `/ 400` stays fixed; the serif numerator and thin circular sweep begin only as the narration reaches `133`, then count from `0 → 133` (`counting-dynamic-scale`, `stat-bars-and-fills`, `svg-path-draw`).
-Scene 2 (5.9–9.7s): the hero `33.25% PASS RATE` arrives on its spoken cue while a precise progress bar fills to the same value. No extra claim appears.
-Scene 3 (9.7–12.2s): only when spoken, `40.56% CELL ACCURACY` draws in beneath a 1px rule; the pass figure remains dominant at a 3:1 scale ratio.
-Scene 4 (12.2–12.722s): all three receipts settle into one evidence lockup and hold completely still.
+Scene 1 (0.0-3.3s): the kicker `CREDENTIAL-FREE MIGRATION REPLAY` appears before a large `400` count-up and thin progress ring (`counting-dynamic-scale`, `stat-bars-and-fills`).
+Scene 2 (3.3-6.7s): the total resolves into two exact bands: `369 ACCEPTED PLANS REPLAYED` and `31 PRISTINE FALLBACKS VERIFIED`. The fills arrive on their spoken cues and sum visually to 400.
+Scene 3 (6.7-9.4s): a large `0` settles above `WRAPPER MISMATCHES`; the prior bands remain visible but subordinate.
+Scene 4 (9.4-11.0s): `MIGRATION PARITY, NOT BENCHMARK ACCURACY` reveals under a hairline rule and the complete receipt holds still.
 
-narrativeRole: Put the verified public self-evaluation result at the visual peak without inflating or obscuring it.
-keyMessage: The 400-task run passed 133 tasks with 40.56% cell accuracy.
+narrativeRole: Present deterministic migration evidence while keeping its scope distinct from formula accuracy.
+keyMessage: The v2 wrapper reproduced every retained ExactSource outcome in the migration replay.
 
-## Frame 6 - Running is not right
+## Frame 8 - Three separate score records
 
-- scene: Two apparently valid workbooks open side by side; the semantic audit reveals that most wrong cells lived inside contract-valid files.
-- voiceover: "There were zero missing predictions and zero evaluator errors. But ninety-four point eight four percent of wrong cells sat inside contract-valid workbooks. Running is not the same as right."
-- duration: 13.531s
-- poster: 12.0s
+- scene: Three dated records appear in sequence, then clear to a FormulaBench v2 repository card.
+- voiceover: "That checks migration parity, not benchmark accuracy. FormulaBench v1 passed one hundred thirty-three of four hundred. The historical ExactSource source run passed three hundred two. No FormulaBench v2 score is claimed in this film."
+- duration: 19.3s
+- poster: 19.0s
 - transition_in: blur-crossfade 0.4s
 - status: animated
-- src: compositions/frames/06-running-is-not-right.html
-- type: feature_showcase
-- persuasion: Honest limitation
-- beat: scrutiny
-- blueprint: comparison-split (Adapt)
-- asset_candidates:
-- focal: none; paired native workbook surfaces
-- roles: contract-valid workbook = left focal; semantic audit = right focal; 94.84% receipt = voltage
-- sfx:
-
-Adapt: keep the equal-weight split and paired reveal; remove the 3D tilt because the design system forbids tilt, using mirrored lateral arrivals and hairline workbook frames instead.
-
-Scene 1 (0.0–4.0s): the shared heading `COMPLETE RUN` reveals above two empty workbook frames; mono receipts `0 MISSING PREDICTIONS` and `0 EVALUATOR ERRORS` land at opposite inner edges in sync with the first sentence (`dynamic-content-sequencing`).
-Scene 2 (4.0–5.2s): both illustrative workbook surfaces slide in from opposite sides on mirrored paths (`split-tilt-cards`, tilt suppressed); their top status bars both read `CONTRACT VALID`.
-Scene 3 (5.2–10.9s): the right workbook's semantic cells turn failure red one by one as the serif figure `94.84%` lands between the two surfaces with the mono unit `OF WRONG CELLS` (`counting-dynamic-scale`, `discrete-text-sequence`).
-Scene 4 (10.9–13.531s): the workbooks dim and the line `Running is not the same as right.` takes the centre in EB Garamond italic; the split stops moving and holds.
-
-narrativeRole: Show the most important limitation: contract checks catch malformed output, not semantic error.
-keyMessage: Most wrong cells were inside files that satisfied the output contract.
-
-## Frame 7 - Post-score Tinker checkpoint
-
-- scene: A dated provider capture establishes the training run, then yields to a FormulaBench-authored development A/B summary with a permanent qualification.
-- voiceover: "After scoring, Tinker lifted development passes from seven to nine. This is checkpoint selection, not held-out proof."
-- duration: 7.680s
-- poster: 6.7s
-- transition_in: blur-crossfade 0.4s
-- status: animated
-- src: compositions/frames/07-tinker-development-evidence.html
-- type: social_proof
-- persuasion: Qualified experimental evidence
-- beat: qualification
-- blueprint: viewport-change + theme-crossfade-morph (Adapt)
-- asset_candidates:
-- focal: sanitised Tinker capture followed by the controlled development comparison
-- roles: provider capture = provenance; A/B result = focal; permanent caveat = trust guardrail
-- sfx:
-
-Adapt: preserve the real provider pixels inside the editorial frame, using a restrained camera move and a single crossfade rather than recreating the dashboard or animating unsupported throughput figures.
-
-Scene 1 (0.0–3.0s): the mono qualification `POST-SCORE DEVELOPMENT CHECKPOINT SELECTION` and dated source label appear before the sanitised provider capture. The capture is fitted without cropping its axes; a subtle 1.06× camera push centres the model, rank and non-zero activity charts (`viewport-change`).
-Scene 2 (3.0–6.2s): the provider capture crossfades to the FormulaBench-authored comparison at pixel-identical geometry (`theme-crossfade-morph`). `7 / 15 → 9 / 15` becomes the sole large figure, while `+2 net passes` remains subordinate.
-Scene 3 (6.2–7.680s): the comparison holds with `NOT A HELD-OUT GENERALISATION RESULT` fixed above the caption band. No exact throughput or utilisation average is shown because the provider view does not supply one.
-
-narrativeRole: Record the post-score Tinker experiment without presenting development checkpoint selection as the frozen public benchmark.
-keyMessage: A rank-32 LoRA improved this controlled 15-task development comparison from seven passes to nine, but this is not held-out evidence.
-
-## Frame 8 - Execution-aware checks
-
-- scene: The next research experiment resolves into two concrete checks, then clears to a factual FormulaBench end card and repository address.
-- voiceover: "The next step is targeted: deterministic transformations where rules are reliable, plus formula-execution checks where semantics decide the answer."
-- duration: 13.584s
-- poster: 10.4s
-- transition_in: crossfade 0.4s
-- status: animated
-- src: compositions/frames/08-evidence-before-confidence.html
+- src: compositions/frames/08-score-record.html
 - type: cta
-- persuasion: Future pacing
+- persuasion: Honest limitation
 - beat: resolve
 - blueprint: titlecard-reveal (Adapt)
 - asset_candidates:
-- focal: none; native closing lockup
-- roles: two next-step lanes = supporting; FormulaBench lockup = focal; repository address = voltage
+- focal: none; native three-record score ledger and repository lockup
+- roles: score records = supporting; v2 status = focal; repository address = voltage
 - sfx:
 
-Adapt: keep the calm card-chain and long final hold; use one precise two-lane research card before the wordmark instead of a sales CTA.
+Adapt: keep the calm card-chain shape. Give each evidence state its own full-opacity record, then end on a static repository lockup.
 
-Scene 1 (0.0–4.1s): a clean cream field holds `NEXT / RESEARCH STEP`; two horizontal lanes reveal sequentially, `DETERMINISTIC TRANSFORMATIONS` first and `FORMULA-EXECUTION VERIFICATION` second. Each has one thin progress line and no card shadow (`discrete-text-sequence`, `stat-bars-and-fills`).
-Scene 2 (4.1–9.35s): the lanes slide up and crossfade into the specific experiment: `Use fixed operations for known transformations. Run generated formulas and check their results.` The meta label reads `NEXT EXPERIMENT / EXECUTION-AWARE CHECKS`.
-Scene 3 (9.35–13.584s): after the spoken sentence ends, the frame cuts at full opacity to `FormulaBench` with `RESEARCH: EXCEL FORMULA GENERATION` above, `Workbook outputs and traces are public.` beneath, and `github.com/MasteraSnackin/FormulaBench` below. The audit-green spike seats once, then the lockup holds completely static to the last frame.
+Scene 1 (0.0-3.8s): a centred qualification holds: `MIGRATION PARITY` above `NOT BENCHMARK ACCURACY`. One restrained rule draws underneath; nothing else appears.
+Scene 2 (3.8-8.0s): a hard cut at full opacity replaces it with `FORMULABENCH V1` and the record `133 / 400`, followed by `33.25% TASK PASS RATE` as the narration names it.
+Scene 3 (8.0-12.5s): another hard cut reveals `HISTORICAL EXACTSOURCE SOURCE RUN`, `302 / 400` and `75.50% TASK PASS RATE`. A permanent line reads `NOT A FORMULABENCH V2 RESULT`.
+Scene 4 (12.5-16.2s): the third record reads `FORMULABENCH V2`, `NO SCORE CLAIMED IN THIS FILM`, and `NEW RESULT REQUIRES HASH-BOUND EVALUATION`.
+Scene 5 (16.2-20.0s): the ledger clears to the FormulaBench v2 lockup, `AUDITABLE EXCEL FORMULA GENERATION`, and `github.com/MasteraSnackin/FormulaBench`. The green spike seats once, then the card stays static to the final frame.
 
-narrativeRole: Connect the observed semantic error rate to two testable changes in the next benchmark run.
-keyMessage: The next experiment combines verified transformations with executed-formula checks.
+narrativeRole: Prevent score substitution and leave judges with a precise repository path.
+keyMessage: Historical evidence is public, but FormulaBench v2 receives no score until its new run is evaluated.

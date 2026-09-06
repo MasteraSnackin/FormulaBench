@@ -6,9 +6,13 @@ artefacts; these source compositions make their claims, timing and provenance re
 
 ## What is separated
 
-- The main film reports the frozen public run: 133 of 400 tasks passed, with 40.56% cell accuracy.
-- The Tinker scene appears after that score and its failure analysis. It reports a separate,
-  controlled 15-task development comparison: 7/15 base passes and 9/15 checkpoint passes.
+- The main film explains the current v2 path: bounded workbook context, typed planning, two
+  execution routes, pristine fallback and target-cell evaluation.
+- Its 400/369/31/0 receipt is migration parity, not benchmark accuracy.
+- It keeps three records separate: historical FormulaBench v1 at 133/400, the historical
+  ExactSource source run at 302/400, and FormulaBench v2 with no score claimed in the film.
+- The standalone Tinker evidence clip reports a separate controlled 15-task development
+  comparison: 7/15 base passes and 9/15 checkpoint passes.
 - The development comparison is labelled checkpoint-selection evidence, not a held-out
   generalisation result or a replacement public score.
 - The provider capture establishes the model, LoRA configuration and non-zero training activity.
@@ -34,17 +38,18 @@ repository card before rendering.
 npm run render -- --quality high --output renders/FormulaBench-Demo.raw.mp4
 npm run render -- --composition compositions/tinker-evidence.html --quality high --output renders/FormulaBench-Tinker-Evidence.raw.mp4
 
-# Align the delivery files to the final intended 30 fps content frame without re-encoding.
-ffmpeg -i renders/FormulaBench-Demo.raw.mp4 -t 75.033333 -map 0:v:0 -map 0:a:0 -c copy -movflags +faststart renders/FormulaBench-Demo.mp4
+# Finalise the delivery files without re-encoding.
+ffmpeg -i renders/FormulaBench-Demo.raw.mp4 -map 0:v:0 -map 0:a:0 -c copy -movflags +faststart renders/FormulaBench-Demo.mp4
 ffmpeg -i renders/FormulaBench-Tinker-Evidence.raw.mp4 -t 30.233333 -map 0:v:0 -map 0:a:0 -c copy -movflags +faststart renders/FormulaBench-Tinker-Evidence.mp4
 ```
 
-The main composition is 75.05 seconds. The standalone Tinker evidence composition is 30.25 seconds.
-The lossless finalisation step removes the renderer's terminal capture packet, so each delivery file
-ends on its intended content frame while retaining the complete 75.05- and 30.25-second audio tracks.
+The main composition is exactly 75.00 seconds; its lossless remux adds fast-start metadata without
+trimming any frame or audio sample. The standalone Tinker evidence composition is 30.25 seconds.
+The Tinker finalisation step removes the renderer's terminal capture packet, so that delivery file
+ends on its intended content frame while retaining the complete 30.25-second audio track.
 Generated renders, snapshots, browser caches and temporary captures are intentionally ignored.
-The final narration WAV is 13.584 seconds long: spoken words finish at 9.35 seconds and the remaining
-silence preserves the closing repository-card hold. Both durations are retained in the audio metadata.
+The final main-film narration WAV is 19.3 seconds long and includes the closing repository-card
+hold. Main-film durations and word timings are retained in the audio metadata.
 
 ## Source map
 

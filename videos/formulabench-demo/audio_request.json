@@ -1,42 +1,42 @@
 {
-  "provider": "heygen",
-  "speed": 1,
+  "provider": "macos-say",
+  "voice": "Daniel",
+  "rate_wpm": 175,
   "lines": [
     {
       "id": "01",
-      "text": "A formula can look right, reference real cells, and still return the wrong answer."
+      "text": "A workbook can open cleanly and still return the wrong investment answer."
     },
     {
       "id": "02",
-      "text": "That’s why FormulaBench doesn’t stop at valid syntax. It asks whether every target cell is actually correct."
+      "text": "FormulaBench v2 reads bounded workbook context, then asks Qwen three point eight, twenty-seven B for a typed plan."
     },
     {
       "id": "03",
-      "text": "The harness inspects the workbook, builds sheet-aware context, samples Qwen once, then validates exact coverage and formula safety."
+      "text": "Target cells use fixed workbook operations. Larger sheet changes may use screened Python with limited imports and resources."
     },
     {
       "id": "04",
-      "text": "Only then does it write atomically, or fail closed, before the organiser-supplied evaluator scores the workbook."
+      "text": "Rejected plans never touch the submission. V2 preserves the pristine workbook and records the fallback."
     },
     {
       "id": "05",
-      "text": "In our public self-evaluation of four hundred benchmark tasks, one hundred thirty-three passed: a thirty-three point two five percent pass rate, with forty point five six percent cell accuracy."
+      "text": "Each task gets one model call, plus at most one bounded repair, before save and reopen checks."
     },
     {
       "id": "06",
-      "text": "There were zero missing predictions and zero evaluator errors. But ninety-four point eight four percent of wrong cells sat inside contract-valid workbooks. Running is not the same as right."
+      "text": "The organiser evaluator recalculates in LibreOffice and compares every target cell. Executable can still mean wrong."
     },
     {
       "id": "07",
-      "text": "After scoring, Tinker lifted development passes from seven to nine. This is checkpoint selection, not held-out proof."
+      "text": "A credential-free migration replay checked four hundred outcomes: three hundred sixty-nine accepted plans, thirty-one pristine fallbacks, and zero wrapper mismatches."
     },
     {
       "id": "08",
-      "text": "The next step is targeted: deterministic transformations where rules are reliable, plus formula-execution checks where semantics decide the answer."
+      "text": "That checks migration parity, not benchmark accuracy. FormulaBench v1 passed one hundred thirty-three of four hundred. The historical ExactSource source run passed three hundred two. No FormulaBench v2 score is claimed in this film."
     }
   ],
   "bgm": {
     "mode": "none"
-  },
-  "voice": "05f19352e8f74b0392a8f411eba40de1"
+  }
 }

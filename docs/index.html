@@ -32,35 +32,35 @@
     <main id="main">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow">Encode × Ylookup · complete public benchmark</p>
+          <p class="eyebrow">Encode × Ylookup · current v2 method and historical evidence</p>
           <h1 id="hero-title">A formula can run and still return the wrong answer.</h1>
-          <p class="lede">FormulaBench turns a spreadsheet instruction and an initial workbook into an auditable output. It checks exact target coverage, formula safety and workbook integrity before the organiser-supplied evaluator checks the answer.</p>
+          <p class="lede">FormulaBench v2 turns a spreadsheet instruction and bounded workbook context into a typed plan, then applies route-specific controls before the organiser evaluator checks the target cells. V2 is the current default and remains unscored.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#evidence">Inspect the result</a>
-            <a class="button button-secondary" href="https://github.com/MasteraSnackin/FormulaBench/tree/main/submissions/formulabench">Open run artefacts</a>
+            <a class="button button-primary" href="#evidence">Inspect evidence records</a>
+            <a class="button button-secondary" href="https://github.com/MasteraSnackin/FormulaBench/tree/main/submissions/formulabench">Open v1 run artefacts</a>
           </div>
         </div>
-        <div class="hero-score" role="img" aria-label="133 of 400 public benchmark tasks passed">
-          <span class="score-kicker">Public self-evaluation</span>
+        <div class="hero-score" role="img" aria-label="Historical FormulaBench v1 result: 133 of 400 public benchmark tasks passed">
+          <span class="score-kicker">Historical v1 self-evaluation</span>
           <span class="score-fraction"><strong>133</strong><span>/ 400</span></span>
           <span class="score-rule" aria-hidden="true"><i></i></span>
           <span class="score-caption">33.25% pass rate</span>
         </div>
       </section>
 
-      <section class="run-proof" aria-label="Frozen result provenance">
+      <section class="run-proof" aria-label="FormulaBench v2 migration evidence">
         <span class="status-dot" aria-hidden="true"></span>
-        <strong>Frozen public run</strong>
-        <span>400 evaluated · 0 missing · 0 evaluator errors</span>
-        <a href="https://github.com/MasteraSnackin/FormulaBench/blob/main/submissions/formulabench/results.json">results.json</a>
-        <code title="SHA-256">c1e6fb6b…66be0d</code>
+        <strong>V2 migration replay</strong>
+        <span>400 checked · 369 accepted plans · 31 pristine fallbacks · 0 wrapper mismatches</span>
+        <a href="https://github.com/MasteraSnackin/FormulaBench/blob/main/experiments/v2_migration_validation.json">validation record</a>
+        <code title="Scope">parity, not accuracy</code>
       </section>
 
       <section class="section score-section" id="evidence" aria-labelledby="score-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">01 / measured result</p>
-            <h2 id="score-title">How the result breaks down</h2>
+            <p class="eyebrow">01 / historical v1 measured result</p>
+            <h2 id="score-title">How the retained v1 result breaks down</h2>
           </div>
           <p>Task pass rate is the ranking metric: every evaluated cell must be correct. Cell accuracy shows partial correctness but cannot turn a failed task into a pass.</p>
         </div>
@@ -95,7 +95,7 @@
       <section class="section" id="tinker" aria-labelledby="tinker-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">02 / Tinker development A/B</p>
+            <p class="eyebrow">02 / historical Tinker development A/B</p>
             <h2 id="tinker-title">LoRA gained two net passes on the same 15 tasks.</h2>
           </div>
           <p>Qwen3.8-27B was evaluated before and after rank-32 LoRA training. Both runs used the same development-validation tasks, production prompt contract and organiser evaluator.</p>
@@ -137,25 +137,25 @@
       <section class="section method-section" id="method" aria-labelledby="method-title">
         <div class="section-heading compact-heading">
           <div>
-            <p class="eyebrow">03 / controlled path</p>
-            <h2 id="method-title">FormulaBench treats the workbook as evidence</h2>
+            <p class="eyebrow">03 / current v2 controlled path</p>
+            <h2 id="method-title">V2 constrains both the plan and the write</h2>
           </div>
-          <p>Each task gets one logical model sample. The model cannot run arbitrary Python, and FormulaBench never publishes a partial edit as a successful output.</p>
+          <p>Each task gets one model call and at most one bounded repair or truncation-recovery call. A rejected plan leaves the submitted workbook pristine.</p>
         </div>
         <ol class="pipeline">
-          <li><span>01</span><strong>Inspect</strong><p>Read formula and cached-value views of the initial workbook.</p></li>
-          <li><span>02</span><strong>Context</strong><p>Build bounded, sheet-aware evidence with answer ranges first.</p></li>
-          <li><span>03</span><strong>Sample</strong><p>Ask Qwen3.8-27B once at temperature zero with thinking disabled.</p></li>
-          <li><span>04</span><strong>Validate</strong><p>Reject missing, duplicate, overlapping, outside or unsafe assignments.</p></li>
-          <li><span>05</span><strong>Write</strong><p>Apply to a fresh copy, save atomically and reopen for verification.</p></li>
-          <li><span>06</span><strong>Evaluate</strong><p>Recalculate in isolation, then use the organiser-supplied evaluator.</p></li>
+          <li><span>01</span><strong>Inspect</strong><p>Build bounded, formula-aware context from the task and initial workbook.</p></li>
+          <li><span>02</span><strong>Plan</strong><p>Ask Qwen3.8-27B for a typed, machine-checkable plan.</p></li>
+          <li><span>03</span><strong>Route</strong><p>Use fixed workbook operations, or screened Python for larger sheet changes.</p></li>
+          <li><span>04</span><strong>Validate</strong><p>Apply route-specific limits, formula checks and workbook controls.</p></li>
+          <li><span>05</span><strong>Publish</strong><p>Save and reopen an accepted output, or preserve the pristine input.</p></li>
+          <li><span>06</span><strong>Evaluate</strong><p>Recalculate in LibreOffice, then compare every required target cell.</p></li>
         </ol>
       </section>
 
       <section class="section finding-section" aria-labelledby="finding-title">
         <div class="finding-number" aria-hidden="true">94.84%</div>
         <div class="finding-copy">
-          <p class="eyebrow">04 / the useful failure</p>
+          <p class="eyebrow">04 / historical v1 failure analysis</p>
           <h2 id="finding-title">Most wrong cells survived the structural checks.</h2>
           <p>94.84% of wrong cells were in contract-valid workbooks. The harness can prove that an answer is complete, bounded and safely written. It cannot prove that the spreadsheet logic is semantically correct.</p>
           <dl class="finding-details">
@@ -176,28 +176,28 @@
           <div>
             <h3>Supported by the evidence</h3>
             <ul>
-              <li>All 400 public tasks produced outputs and were evaluated.</li>
-              <li>The fixed configuration passed 133 tasks.</li>
-              <li>Validation and replay are traceable task by task.</li>
-              <li>The code, predictions, outputs and evaluator result are public.</li>
+              <li>The v2 wrapper replayed 400 retained outcomes with zero content mismatches.</li>
+              <li>The historical ExactSource source run passed 302 of 400 tasks.</li>
+              <li>The retained FormulaBench v1 run passed 133 of 400 tasks.</li>
+              <li>Two selected v2 route canaries passed their target-cell checks.</li>
             </ul>
           </div>
           <div>
             <h3>Not claimed</h3>
             <ul>
-              <li>The public benchmark is not a statistically unseen holdout.</li>
-              <li>The 33.25% score is not an improvement over the organiser’s approximate 59% reference.</li>
-              <li>The two runs used materially different reasoning and output contracts.</li>
-              <li>Passing the static formula gate does not make active workbook content universally safe.</li>
+              <li>Migration parity is not a FormulaBench v2 benchmark score.</li>
+              <li>The historical ExactSource result is not transferred to FormulaBench v2.</li>
+              <li>Selected canaries cannot estimate the 400-task pass rate.</li>
+              <li>The screened Python route is not a general-purpose security sandbox.</li>
             </ul>
           </div>
         </div>
       </section>
 
       <section class="section next-section" aria-labelledby="next-title">
-        <p class="eyebrow">06 / next experiment</p>
-        <h2 id="next-title">Use deterministic code for large transformations, then run and check generated formulas.</h2>
-        <p>The failure distribution points to a hybrid next step: deterministic engines for large transformations, paired with isolated formula execution and output invariants for model-authored logic.</p>
+        <p class="eyebrow">06 / current v2 architecture</p>
+        <h2 id="next-title">Fixed operations where possible, screened transformation code where necessary.</h2>
+        <p>FormulaBench v2 implements the hybrid path suggested by the v1 failure analysis. The new engine still needs its own complete, hash-bound evaluator result before any performance claim is made.</p>
         <div class="resource-line">
           <a href="presentation.html">View presentation</a>
           <a href="video.html">Watch demo video</a>

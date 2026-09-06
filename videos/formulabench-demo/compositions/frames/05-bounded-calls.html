@@ -1,0 +1,520 @@
+<template>
+  <div data-hf-id="hf-meq4" id="root" data-composition-id="05-bounded-calls" data-width="1920" data-height="1080" data-duration="8">
+    <div data-hf-id="hf-y979" class="clip 05-bounded-calls-ground" data-start="0" data-duration="8" data-track-index="0"></div>
+
+    <div data-hf-id="hf-als3" class="clip 05-bounded-calls-stage" data-start="0" data-duration="8" data-track-index="1">
+      <div data-hf-id="hf-uimc" class="05-bounded-calls-kicker">MODEL CALL POLICY</div>
+      <div data-hf-id="hf-ncgq" class="05-bounded-calls-title">Logical call ledger</div>
+
+      <section data-hf-id="hf-qr7g" id="05-bounded-calls-ledger" class="05-bounded-calls-ledger">
+        <div data-hf-id="hf-c47w" class="05-bounded-calls-primary">
+          <div data-hf-id="hf-j2zi" class="05-bounded-calls-counter-block">
+            <div data-hf-id="hf-ivc5" class="05-bounded-calls-label">LOGICAL CALL</div>
+            <div data-hf-id="hf-jo8f" class="05-bounded-calls-counter-wrap">
+              <span data-hf-id="hf-jhq1" id="05-bounded-calls-counter" class="05-bounded-calls-counter">0</span>
+              <span data-hf-id="hf-96z6" class="05-bounded-calls-counter-unit">CALL</span>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-zbl2" id="05-bounded-calls-request" class="05-bounded-calls-request">
+            <div data-hf-id="hf-h8mk" class="05-bounded-calls-request-chrome">
+              <span data-hf-id="hf-wc9n">QWEN3.8-27B</span>
+              <span data-hf-id="hf-jzbj">INITIAL</span>
+            </div>
+            <div data-hf-id="hf-2p0u" class="05-bounded-calls-request-body">
+              <span data-hf-id="hf-4g5t" class="05-bounded-calls-request-mark">01</span>
+              <div data-hf-id="hf-yeow">
+                <div data-hf-id="hf-8qlg" class="05-bounded-calls-label 05-bounded-calls-light-label">REQUEST</div>
+                <div data-hf-id="hf-h7lj" class="05-bounded-calls-request-title">TYPED PLAN</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-erj9" class="05-bounded-calls-branch-zone">
+          <div data-hf-id="hf-m1de" id="05-bounded-calls-branch" class="05-bounded-calls-branch">
+            <div data-hf-id="hf-rfou" class="05-bounded-calls-branch-label">OPTIONAL · AT MOST ONE</div>
+            <div data-hf-id="hf-rhv0" class="05-bounded-calls-options">
+              <div data-hf-id="hf-hiuj" id="05-bounded-calls-semantic" class="05-bounded-calls-option">
+                <span data-hf-id="hf-ms68">A</span>
+                <strong data-hf-id="hf-f0hv">SEMANTIC REPAIR</strong>
+              </div>
+              <div data-hf-id="hf-p7m1" id="05-bounded-calls-or" class="05-bounded-calls-or">OR</div>
+              <div data-hf-id="hf-ghii" id="05-bounded-calls-truncation" class="05-bounded-calls-option">
+                <span data-hf-id="hf-ll95">B</span>
+                <strong data-hf-id="hf-q8c4">TRUNCATION RECOVERY</strong>
+              </div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-0r7d" id="05-bounded-calls-closed" class="05-bounded-calls-closed">CALL BUDGET CLOSED</div>
+        </div>
+
+        <div data-hf-id="hf-5myn" class="05-bounded-calls-verification">
+          <div data-hf-id="hf-n47d" id="05-bounded-calls-save" class="05-bounded-calls-check">
+            <svg data-hf-id="hf-4hw3" class="05-bounded-calls-check-icon" viewBox="0 0 64 64" aria-hidden="true">
+              <circle data-hf-id="hf-zlg9" cx="32" cy="32" r="29" />
+              <path data-hf-id="hf-vfdv" id="05-bounded-calls-save-path" d="M 17 33 L 27 43 L 48 21" />
+            </svg>
+            <div data-hf-id="hf-y7yw">
+              <div data-hf-id="hf-uhmw" class="05-bounded-calls-label">WORKBOOK CHECK</div>
+              <div data-hf-id="hf-dx32" class="05-bounded-calls-check-title">SAVE</div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-0lmi" class="05-bounded-calls-verification-rule"></div>
+
+          <div data-hf-id="hf-p0zh" id="05-bounded-calls-reopen" class="05-bounded-calls-check">
+            <svg data-hf-id="hf-gf03" class="05-bounded-calls-check-icon" viewBox="0 0 64 64" aria-hidden="true">
+              <circle data-hf-id="hf-dt0t" cx="32" cy="32" r="29" />
+              <path data-hf-id="hf-laj3" id="05-bounded-calls-reopen-path" d="M 17 33 L 27 43 L 48 21" />
+            </svg>
+            <div data-hf-id="hf-x11t">
+              <div data-hf-id="hf-lyrk" class="05-bounded-calls-label">WORKBOOK CHECK</div>
+              <div data-hf-id="hf-897e" class="05-bounded-calls-check-title">REOPEN</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <style>
+    @font-face {
+      font-family: "EB Garamond";
+      src: url("assets/fonts/EBGaramond-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    @font-face {
+      font-family: "Inter";
+      src: url("assets/fonts/Inter-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/JetBrainsMono-400.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    #root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      container-type: size;
+      color: #0B1623;
+    }
+
+    #root *,
+    #root *::before,
+    #root *::after {
+      box-sizing: border-box;
+    }
+
+    #root [class~="05-bounded-calls-ground"] {
+      position: absolute;
+      inset: 0;
+      background: #F4F0E6;
+    }
+
+    #root [class~="05-bounded-calls-stage"] {
+      position: absolute;
+      top: 5.5cqh;
+      right: 4.2cqw;
+      bottom: 18.5cqh;
+      left: 4.2cqw;
+    }
+
+    #root [class~="05-bounded-calls-kicker"],
+    #root [class~="05-bounded-calls-label"],
+    #root [class~="05-bounded-calls-branch-label"] {
+      font-family: "JetBrains Mono";
+      font-size: 1.22cqw;
+      line-height: 1;
+      letter-spacing: 0.13em;
+    }
+
+    #root [class~="05-bounded-calls-kicker"] {
+      color: rgba(11, 22, 35, 0.64);
+    }
+
+    #root [class~="05-bounded-calls-title"] {
+      margin-top: 2.1cqh;
+      font-family: "EB Garamond";
+      font-size: 4.6cqw;
+      font-weight: 400;
+      line-height: 0.96;
+      letter-spacing: -0.022em;
+    }
+
+    #root [class~="05-bounded-calls-ledger"] {
+      position: absolute;
+      top: 17cqh;
+      right: 3.8cqw;
+      left: 3.8cqw;
+      height: 55cqh;
+      display: grid;
+      grid-template-rows: 16cqh 21cqh 18cqh;
+      overflow: hidden;
+      background: #F4F0E6;
+      border: 1px solid rgba(11, 22, 35, 0.14);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(11, 22, 35, 0.08), 0 4px 16px rgba(11, 22, 35, 0.04);
+      will-change: transform, opacity;
+    }
+
+    #root [class~="05-bounded-calls-primary"] {
+      display: grid;
+      grid-template-columns: minmax(19cqw, 0.64fr) minmax(0, 1.36fr);
+      border-bottom: 1px solid rgba(11, 22, 35, 0.12);
+    }
+
+    #root [class~="05-bounded-calls-counter-block"] {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4cqh 2.2cqw;
+      background: #F8D5D5;
+      border-right: 1px solid rgba(11, 22, 35, 0.12);
+    }
+
+    #root [class~="05-bounded-calls-counter-wrap"] {
+      display: flex;
+      width: 11cqw;
+      align-items: baseline;
+      justify-content: flex-end;
+    }
+
+    #root [class~="05-bounded-calls-counter"] {
+      display: inline-block;
+      width: 5.4cqw;
+      font-family: "EB Garamond";
+      font-size: 7.4cqw;
+      font-weight: 400;
+      line-height: 0.8;
+      letter-spacing: -0.025em;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      transform-origin: 50% 50%;
+    }
+
+    #root [class~="05-bounded-calls-counter-unit"] {
+      margin-left: 0.7cqw;
+      font-family: "JetBrains Mono";
+      font-size: 1.05cqw;
+      letter-spacing: 0.08em;
+    }
+
+    #root [class~="05-bounded-calls-request"] {
+      display: grid;
+      grid-template-columns: 18cqw minmax(0, 1fr);
+      color: #F4F0E6;
+      background: #151817;
+      will-change: transform, opacity;
+    }
+
+    #root [class~="05-bounded-calls-request-chrome"] {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.4cqh;
+      padding: 0 2cqw;
+      color: rgba(244, 240, 230, 0.62);
+      background: #202523;
+      border-right: 1px solid rgba(244, 240, 230, 0.14);
+      font-family: "JetBrains Mono";
+      font-size: 1.08cqw;
+      letter-spacing: 0.08em;
+    }
+
+    #root [class~="05-bounded-calls-request-body"] {
+      display: flex;
+      align-items: center;
+      padding: 0 2.4cqw;
+    }
+
+    #root [class~="05-bounded-calls-request-mark"] {
+      display: grid;
+      width: 4.8cqw;
+      height: 4.8cqw;
+      margin-right: 1.5cqw;
+      place-items: center;
+      color: #151817;
+      background: #F4F0E6;
+      border-radius: 6px;
+      font-family: "JetBrains Mono";
+      font-size: 1.35cqw;
+    }
+
+    #root [class~="05-bounded-calls-light-label"] {
+      color: rgba(244, 240, 230, 0.54);
+    }
+
+    #root [class~="05-bounded-calls-request-title"] {
+      margin-top: 1.3cqh;
+      font-family: "Inter";
+      font-size: 2.1cqw;
+      letter-spacing: 0.04em;
+    }
+
+    #root [class~="05-bounded-calls-branch-zone"] {
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #F8D5D5;
+      border-bottom: 1px solid rgba(11, 22, 35, 0.12);
+    }
+
+    #root [class~="05-bounded-calls-branch"] {
+      position: absolute;
+      inset: 2.2cqh 2.4cqw;
+      padding: 2.1cqh 2cqw;
+      background: #F4F0E6;
+      border: 1px solid rgba(11, 22, 35, 0.14);
+      border-radius: 8px;
+      transform-origin: 50% 0%;
+      will-change: transform, opacity;
+    }
+
+    #root [class~="05-bounded-calls-branch-label"] {
+      color: rgba(11, 22, 35, 0.58);
+      text-align: center;
+    }
+
+    #root [class~="05-bounded-calls-options"] {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 5cqw minmax(0, 1fr);
+      align-items: center;
+      gap: 1cqw;
+      margin-top: 2.2cqh;
+    }
+
+    #root [class~="05-bounded-calls-option"] {
+      display: flex;
+      height: 7.4cqh;
+      align-items: center;
+      padding: 0 1.4cqw;
+      background: #F8D5D5;
+      border: 1px solid rgba(11, 22, 35, 0.12);
+      border-radius: 6px;
+      font-family: "Inter";
+      font-size: 1.42cqw;
+      letter-spacing: 0.03em;
+      will-change: transform, opacity;
+    }
+
+    #root [class~="05-bounded-calls-option"] span {
+      display: grid;
+      width: 3cqw;
+      height: 3cqw;
+      margin-right: 1cqw;
+      place-items: center;
+      color: #F4F0E6;
+      background: #202523;
+      border-radius: 9999px;
+      font-family: "JetBrains Mono";
+      font-size: 1.05cqw;
+    }
+
+    #root [class~="05-bounded-calls-option"] strong {
+      font-weight: 400;
+    }
+
+    #root [class~="05-bounded-calls-or"] {
+      color: rgba(11, 22, 35, 0.58);
+      font-family: "JetBrains Mono";
+      font-size: 1.25cqw;
+      letter-spacing: 0.1em;
+      text-align: center;
+      will-change: transform, opacity;
+    }
+
+    #root [class~="05-bounded-calls-closed"] {
+      position: absolute;
+      z-index: 2;
+      width: 34cqw;
+      height: 8cqh;
+      display: grid;
+      place-items: center;
+      color: #0B1623;
+      background: #2CCB8C;
+      border-radius: 8px;
+      font-family: "JetBrains Mono";
+      font-size: 1.38cqw;
+      letter-spacing: 0.1em;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+
+    #root [class~="05-bounded-calls-verification"] {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+      align-items: stretch;
+      padding: 2.2cqh 2.4cqw;
+      background: #F4F0E6;
+    }
+
+    #root [class~="05-bounded-calls-check"] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5cqw;
+      will-change: transform, opacity;
+    }
+
+    #root [class~="05-bounded-calls-check-icon"] {
+      width: 4.5cqw;
+      height: 4.5cqw;
+      flex: 0 0 auto;
+    }
+
+    #root [class~="05-bounded-calls-check-icon"] circle {
+      fill: #202523;
+      stroke: #202523;
+      stroke-width: 2;
+    }
+
+    #root [class~="05-bounded-calls-check-icon"] path {
+      fill: none;
+      stroke: #F4F0E6;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #root [class~="05-bounded-calls-check-title"] {
+      margin-top: 1.25cqh;
+      font-family: "EB Garamond";
+      font-size: 3.2cqw;
+      font-weight: 400;
+      line-height: 0.9;
+      letter-spacing: -0.018em;
+    }
+
+    #root [class~="05-bounded-calls-verification-rule"] {
+      width: 1px;
+      height: 100%;
+      background: rgba(11, 22, 35, 0.14);
+    }
+  </style>
+
+  <script>
+    (() => {
+      const ledger = document.getElementById("05-bounded-calls-ledger");
+      const counter = document.getElementById("05-bounded-calls-counter");
+      const request = document.getElementById("05-bounded-calls-request");
+      const branch = document.getElementById("05-bounded-calls-branch");
+      const semantic = document.getElementById("05-bounded-calls-semantic");
+      const orLabel = document.getElementById("05-bounded-calls-or");
+      const truncation = document.getElementById("05-bounded-calls-truncation");
+      const closed = document.getElementById("05-bounded-calls-closed");
+      const save = document.getElementById("05-bounded-calls-save");
+      const reopen = document.getElementById("05-bounded-calls-reopen");
+      const savePath = document.getElementById("05-bounded-calls-save-path");
+      const reopenPath = document.getElementById("05-bounded-calls-reopen-path");
+
+      [savePath, reopenPath].forEach((path) => {
+        const length = path.getTotalLength();
+        path.style.strokeDasharray = `${length}`;
+        path.style.strokeDashoffset = `${length}`;
+      });
+
+      const countState = { value: 0 };
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(
+        ledger,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.38, ease: "power3.out" },
+        0.04
+      );
+      tl.fromTo(
+        request,
+        { opacity: 0, x: 18 },
+        { opacity: 1, x: 0, duration: 0.46, ease: "power3.out" },
+        0.38
+      );
+      tl.to(
+        countState,
+        {
+          value: 1,
+          duration: 1.5,
+          ease: "power2.inOut",
+          onUpdate: () => {
+            counter.textContent = String(Math.round(countState.value));
+          }
+        },
+        0.34
+      );
+
+      tl.fromTo(
+        branch,
+        { opacity: 0, scaleY: 0.04 },
+        { opacity: 1, scaleY: 1, duration: 0.56, ease: "power3.out" },
+        2.4
+      );
+      tl.fromTo(
+        semantic,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.38, ease: "power3.out" },
+        2.82
+      );
+      tl.fromTo(
+        orLabel,
+        { opacity: 0, scale: 0.84 },
+        { opacity: 1, scale: 1, duration: 0.32, ease: "power3.out" },
+        3.28
+      );
+      tl.fromTo(
+        truncation,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.38, ease: "power3.out" },
+        3.62
+      );
+
+      tl.to(
+        branch,
+        { opacity: 0, scaleY: 0.04, duration: 0.42, ease: "power2.in" },
+        4.8
+      );
+      tl.fromTo(
+        closed,
+        { opacity: 0, scale: 0.82 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" },
+        5.02
+      );
+
+      tl.fromTo(
+        save,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" },
+        5.34
+      );
+      tl.to(
+        savePath,
+        { strokeDashoffset: 0, duration: 0.46, ease: "power2.out" },
+        5.5
+      );
+      tl.fromTo(
+        reopen,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" },
+        5.86
+      );
+      tl.to(
+        reopenPath,
+        { strokeDashoffset: 0, duration: 0.46, ease: "power2.out" },
+        6.04
+      );
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["05-bounded-calls"] = tl;
+    })();
+  </script>
+</template>

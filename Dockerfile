@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7
-ARG PYTHON_IMAGE=python:3.11-slim-bookworm@sha256:528257d48c1da0dcecc2e725d1ae34498d60c965f1241e39cd6a85a8859bdf84
+ARG PYTHON_IMAGE=python:3.12.11-slim-bookworm@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
 ARG UV_IMAGE=ghcr.io/astral-sh/uv:0.12.10@sha256:2bb3ebca0a796a155094a27773d290c4b074572e6107f171d88d086682fd2500
 
 FROM ${UV_IMAGE} AS uv-bin
@@ -53,16 +53,27 @@ if tokenizer.convert_tokens_to_ids("<|im_end|>") != 248046:
     raise RuntimeError("pinned tokenizer stop token failed verification")
 PY
 
+# Install the project non-editably so ExactSource's isolated Python worker can
+# import its own package without relying on /app being present on sys.path.
+COPY NOTICE-EXACTSOURCE.md ./
+COPY sb.py ./
+COPY exactsource/ ./exactsource/
+COPY formulabench/ ./formulabench/
+RUN uv sync --locked --no-dev --no-editable
+
 FROM build AS contract-test
 
 COPY .dockerignore ./
+COPY NOTICE-EXACTSOURCE.md ./
 COPY sb.py ./
+COPY exactsource/ ./exactsource/
 COPY formulabench/ ./formulabench/
 COPY experiments/ ./experiments/
 COPY scripts/ ./scripts/
 COPY tests/ ./tests/
+COPY tools/ ./tools/
 COPY training/ ./training/
-RUN uv sync --locked --no-install-project
+RUN uv sync --locked --no-editable
 RUN .venv/bin/python -m pytest
 
 FROM base AS runtime
@@ -86,15 +97,20 @@ ENV VIRTUAL_ENV=/app/.venv \
     TRANSFORMERS_OFFLINE=1 \
     TRANSFORMERS_VERBOSITY=error
 
-COPY --from=build --chown=10001:10001 /app/.venv/ /app/.venv/
-COPY --from=build --chown=10001:10001 /app/.cache/ /app/.cache/
+COPY --from=build /app/.venv/ /app/.venv/
+COPY --from=build /app/.cache/ /app/.cache/
 # The wrapper deliberately runs with the host UID so bind-mounted results are
 # host-owned.  Tokenizer assets must therefore be readable by an arbitrary,
-# unprivileged runtime UID rather than only by the image's default user.
-RUN chmod -R a+rX /app/.cache
-COPY --chown=10001:10001 sb.py ./
-COPY --chown=10001:10001 formulabench/ ./formulabench/
-COPY --chown=10001:10001 scripts/container_entrypoint.sh ./container_entrypoint.sh
+# unprivileged runtime UID rather than only by the image's default user.  All
+# application assets remain root-owned and non-writable by the runtime UID.
+RUN chmod -R a+rX,go-w /app/.venv /app/.cache
+COPY NOTICE-EXACTSOURCE.md ./
+COPY sb.py ./
+COPY exactsource/ ./exactsource/
+COPY formulabench/ ./formulabench/
+COPY scripts/container_entrypoint.sh ./container_entrypoint.sh
+RUN chmod -R a+rX,go-w /app/NOTICE-EXACTSOURCE.md /app/sb.py /app/exactsource \
+    /app/formulabench /app/container_entrypoint.sh
 
 USER 10001:10001
 
