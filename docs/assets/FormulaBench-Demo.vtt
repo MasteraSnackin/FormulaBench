@@ -5,25 +5,41 @@ WEBVTT
 A formula can look right, reference real cells, and still return the wrong answer.
 
 2
-00:00:04.801 --> 00:00:11.361
-That’s why FormulaBench doesn’t stop at valid syntax. It asks whether every target cell is actually correct.
+00:00:04.801 --> 00:00:07.861
+That’s why FormulaBench doesn’t stop at valid syntax.
 
 3
+00:00:08.202 --> 00:00:11.361
+It asks whether every target cell is actually correct.
+
+4
 00:00:11.645 --> 00:00:19.886
 The harness inspects the workbook, builds sheet-aware context, samples Qwen once, then validates exact coverage and formula safety.
 
-4
-00:00:20.299 --> 00:00:27.319
-Only then does it write atomically — or fail closed — before the organiser-supplied evaluator scores the workbook.
-
 5
-00:00:27.712 --> 00:00:39.953
-In our public self-evaluation of four hundred benchmark tasks, one hundred thirty-three passed: a thirty-three point two five percent pass rate, with forty point five six percent cell accuracy.
+00:00:20.299 --> 00:00:27.319
+Only then does it write atomically, or fail closed, before the organiser-supplied evaluator scores the workbook.
 
 6
-00:00:40.474 --> 00:00:53.514
-There were zero missing predictions and zero evaluator errors. But ninety-four point eight four percent of wrong cells sat inside contract-valid workbooks. Running is not the same as right.
+00:00:27.712 --> 00:00:33.612
+In our public self-evaluation of four hundred benchmark tasks, one hundred thirty-three passed:
 
 7
-00:00:53.965 --> 00:01:07.065
-The next step is targeted: deterministic transformations where rules are reliable, plus formula-execution checks where semantics decide the answer. FormulaBench. Evidence before confidence.
+00:00:33.993 --> 00:00:39.953
+a thirty-three point two five percent pass rate, with forty point five six percent cell accuracy.
+
+8
+00:00:40.474 --> 00:00:44.274
+There were zero missing predictions and zero evaluator errors.
+
+9
+00:00:44.814 --> 00:00:50.794
+But ninety-four point eight four percent of wrong cells sat inside contract-valid workbooks.
+
+10
+00:00:51.734 --> 00:00:53.514
+Running is not the same as right.
+
+11
+00:00:53.965 --> 00:01:02.906
+The next step is targeted: deterministic transformations where rules are reliable, plus formula-execution checks where semantics decide the answer.

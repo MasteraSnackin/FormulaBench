@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="FormulaBench: an auditable Excel formula-generation research submission for the Encode x Ylookup hackathon.">
     <meta name="theme-color" content="#10262b">
-    <title>FormulaBench — Research evidence</title>
+    <title>FormulaBench | Research evidence</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css">
     <script defer src="app.js"></script>
@@ -32,7 +32,7 @@
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
           <p class="eyebrow">Encode × Ylookup · complete public benchmark</p>
-          <h1 id="hero-title">A formula that runs is not necessarily right.</h1>
+          <h1 id="hero-title">A formula can run and still return the wrong answer.</h1>
           <p class="lede">FormulaBench turns a spreadsheet instruction and an initial workbook into an auditable output. It checks exact target coverage, formula safety and workbook integrity before the organiser-supplied evaluator checks the answer.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#evidence">Inspect the result</a>
@@ -59,7 +59,7 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow">01 / measured result</p>
-            <h2 id="score-title">One score, three useful views</h2>
+            <h2 id="score-title">How the result breaks down</h2>
           </div>
           <p>Task pass rate is the ranking metric: every evaluated cell must be correct. Cell accuracy shows partial correctness but cannot turn a failed task into a pass.</p>
         </div>
@@ -95,9 +95,9 @@
         <div class="section-heading compact-heading">
           <div>
             <p class="eyebrow">02 / controlled path</p>
-            <h2 id="method-title">The workbook is handled as evidence</h2>
+            <h2 id="method-title">FormulaBench treats the workbook as evidence</h2>
           </div>
-          <p>One logical model sample per task. No arbitrary model-written Python. No partial edits published as success.</p>
+          <p>Each task gets one logical model sample. The model cannot run arbitrary Python, and FormulaBench never publishes a partial edit as a successful output.</p>
         </div>
         <ol class="pipeline">
           <li><span>01</span><strong>Inspect</strong><p>Read formula and cached-value views of the initial workbook.</p></li>
@@ -114,10 +114,10 @@
         <div class="finding-copy">
           <p class="eyebrow">03 / the useful failure</p>
           <h2 id="finding-title">Most wrong cells survived the structural checks.</h2>
-          <p>94.84% of wrong cells were in contract-valid workbooks. The harness can prove that an answer is complete, bounded and safely written; it cannot prove that the spreadsheet logic is semantically correct.</p>
+          <p>94.84% of wrong cells were in contract-valid workbooks. The harness can prove that an answer is complete, bounded and safely written. It cannot prove that the spreadsheet logic is semantically correct.</p>
           <dl class="finding-details">
             <div><dt>46</dt><dd>final fail-closed fallbacks</dd></div>
-            <div><dt>84.76%</dt><dd>of wrong cells came from four tasks with more than 10,000 targets</dd></div>
+            <div><dt>84.76%</dt><dd>of wrong cells came from four tasks with more than 10,000 target cells</dd></div>
             <div><dt>24.10%</dt><dd>pass rate when context was truncated, versus 41.95% when it was not</dd></div>
           </dl>
           <p class="qualification">The truncation figures are an association in this run, not proof of causation.</p>
@@ -127,7 +127,7 @@
       <section class="section integrity-section" id="limits" aria-labelledby="integrity-title">
         <div class="integrity-title">
           <p class="eyebrow">04 / evaluation integrity</p>
-          <h2 id="integrity-title">What this result does—and does not—show</h2>
+          <h2 id="integrity-title">What this result shows, and what it does not</h2>
         </div>
         <div class="integrity-columns">
           <div>
@@ -135,7 +135,7 @@
             <ul>
               <li>All 400 public tasks produced outputs and were evaluated.</li>
               <li>The fixed configuration passed 133 tasks.</li>
-              <li>Validation and replay behaviour is traceable task by task.</li>
+              <li>Validation and replay are traceable task by task.</li>
               <li>The code, predictions, outputs and evaluator result are public.</li>
             </ul>
           </div>
@@ -153,7 +153,7 @@
 
       <section class="section next-section" aria-labelledby="next-title">
         <p class="eyebrow">05 / next experiment</p>
-        <h2 id="next-title">Use rules where rules are reliable. Verify execution where semantics decide.</h2>
+        <h2 id="next-title">Use deterministic code for large transformations, then run and check generated formulas.</h2>
         <p>The failure distribution points to a hybrid next step: deterministic engines for large transformations, paired with isolated formula execution and output invariants for model-authored logic.</p>
         <div class="resource-line">
           <a href="presentation.html">View presentation</a>
